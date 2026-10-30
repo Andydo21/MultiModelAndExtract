@@ -1,0 +1,3 @@
+﻿images,answers,correct,partial,wrong,no_answer,answer_accuracy,strict_accuracy,attribute_leakage_rate,answers_with_leakage,citation_faithfulness,claims
+off,45,31,12,1,1,0.822,0.689,0.048,4,0.917,84
+on,45,29,9,7,0,0.744,0.644,0.082,6,0.835,85

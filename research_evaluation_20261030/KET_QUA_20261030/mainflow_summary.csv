@@ -1,0 +1,3 @@
+﻿images,questions,generated,failed_response_rejected,failed_gateway_offline,images_sent,key_value_recall_mean,key_value_recall_sd,key_value_questions,key_value_all_found,gold_sources_sent_mean,generation_s_median,retrieval_s_median
+off,50,45,1,4,0,0.842,0.322,20,15,0.955,43.7,67.19999999999999
+on,50,45,1,4,27,0.775,0.368,20,13,0.955,44.0,67.19999999999999

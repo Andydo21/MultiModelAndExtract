@@ -1,0 +1,381 @@
+{% extends 'ai_extract/base.html' %}
+{% load static %}
+{% block title %}{% if newidea_mode %}A2 — Hỏi đáp kho kiến thức{% else %}Contract Guard AI — Tri thức và bằng chứng hợp đồng{% endif %}{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="{% static 'ai_extract/css/structure_visualization.css' %}">
+<style>
+.intelligence-grid{display:grid;grid-template-columns:1fr;gap:16px;margin:16px 0}
+.intelligence-panel{background:var(--panel,#172234);border:1px solid #475569;border-radius:12px;padding:24px}
+.intelligence-panel label{display:block;margin:16px 0 7px}.intelligence-panel input,.intelligence-panel textarea,.intelligence-panel select{width:100%;box-sizing:border-box;padding:11px;border:1px solid #64748b;border-radius:6px;background:#101a2a;color:#eef2ff}
+.intelligence-panel button{margin:12px 8px 0 0;padding:10px 16px;border:0;border-radius:6px;background:#6366f1;color:white;cursor:pointer}
+.evidence-record{border-top:1px solid #475569;margin-top:20px;padding-top:16px;overflow-wrap:anywhere}
+.qwen-output{margin-top:16px;white-space:normal}.qwen-output summary{cursor:pointer;color:#a5b4fc}.qwen-output pre{max-height:340px;overflow:auto;font-size:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere;background:#0d1423;padding:12px;border-radius:6px}.qwen-output details{margin:12px 0}
+.evidence-record p,#qa-answer{white-space:pre-wrap;line-height:1.6}.evidence-record a{color:#a5b4fc}
+#intelligence-status{white-space:pre-wrap;color:#e9bf66;min-height:24px}.intelligence-panel h2{font-size:20px}
+@media(max-width:850px){.intelligence-grid{grid-template-columns:1fr}}
+.a2-workspace{max-width:920px;margin:0 auto;padding-bottom:36px}.a2-workspace>h1{font-size:30px;margin-bottom:8px}.a2-intro{color:#a8b3c7;margin-bottom:22px;line-height:1.6}.a2-primary{margin-bottom:20px;border-color:#6366f1}.a2-primary textarea{font:inherit;line-height:1.6;min-height:110px}.a2-options{margin:12px 0}.a2-options>summary{color:#a8b3c7;font-size:13px;cursor:pointer}.a2-tool{border:1px solid #475569;border-radius:12px;margin:14px 0;background:var(--panel,#172234)}.a2-tool>summary{padding:18px 22px;cursor:pointer;font-weight:600;list-style-position:inside}.a2-tool[open]>summary{border-bottom:1px solid #475569}.a2-tool>.intelligence-panel{border:0;background:transparent}.a2-sources{margin-top:16px}.a2-sources>summary{padding:12px 0;cursor:pointer;color:#a5b4fc}.a2-workspace button:disabled{opacity:.55;cursor:wait}.a2-workspace a:focus-visible,.a2-workspace summary:focus-visible{outline:2px solid #a5b4fc;outline-offset:4px}#company-answer:empty,#company-coverage:empty{display:none}#company-answer{margin-top:20px;line-height:1.7}#intelligence-status:empty{display:none}
+.latency-metric-container{display:none;flex-wrap:wrap;align-items:center;gap:12px;margin:16px 0 12px 0;padding:12px 18px;background:linear-gradient(135deg,rgba(30,41,59,0.92) 0%,rgba(15,23,42,0.96) 100%);border:1px solid rgba(99,102,241,0.45);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,0.3);backdrop-filter:blur(8px)}
+.latency-metric-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(15,23,42,0.75);border:1px solid rgba(148,163,184,0.25);border-radius:20px;font-size:13px;color:#e2e8f0}
+.latency-metric-pill .icon{font-size:15px}
+.latency-metric-pill .label{color:#94a3b8;font-weight:500}
+.latency-metric-pill .value{font-weight:700;font-family:'Space Grotesk',monospace,sans-serif}
+.latency-metric-pill.retrieval .value{color:#34d399}
+.latency-metric-pill.response .value{color:#a78bfa}
+.latency-metric-pill.documents .value{color:#38bdf8}
+</style>
+{% endblock %}
+{% block content %}
+<div class="a2-workspace">
+<h1>A2 — Hỏi kho tri thức</h1>
+<p class="a2-intro">Hỏi từ tài liệu đã lưu và kinh nghiệm chuyên gia đã duyệt.</p>
+<div id="intelligence-status" role="status" aria-live="polite"></div>
+{% if newidea_mode %}
+<section class="intelligence-panel a2-primary">
+  <h2>Bạn muốn biết điều gì?</h2>
+  <p class="a2-intro">Tìm trên toàn bộ kho tài liệu được phép truy cập và tổng hợp câu trả lời từ các nguồn phù hợp.</p>
+  {% if request.user.is_superuser %}<p>Tài khoản quản trị đang tìm trong kho của tất cả công ty.</p>{% endif %}
+  <form id="company-search-form"><label for="company-query">Câu hỏi</label><textarea id="company-query" rows="3" required maxlength="2000" placeholder="Ví dụ: Chuyên gia khuyến nghị xử lý điều khoản thanh toán như thế nào?"></textarea><button>Hỏi A2</button><details class="a2-options"><summary>Tùy chọn trả lời</summary><label><input type="checkbox" id="company-generate" checked style="width:auto"> Tổng hợp câu trả lời từ nguồn tìm được</label></details></form>
+  <div id="company-latency-bar" class="latency-metric-container" role="status"></div>
+  <div id="company-answer" style="white-space:pre-wrap" aria-live="polite"></div>
+  <details class="a2-sources"><summary>Nguồn và nội dung tìm được</summary><p id="company-coverage"></p><div id="company-nodes"></div><div id="company-results"></div></details>
+  <details class="a2-sources"><summary>Ý kiến chuyên gia liên quan</summary><div id="company-cases"></div></details>
+</section>
+{% endif %}
+<div class="intelligence-grid">
+  <details class="a2-tool" {% if selected_contract %}open{% endif %}><summary>Hỏi một tài liệu cụ thể</summary>
+  <section class="intelligence-panel">
+    <form id="qa-form">{% csrf_token %}
+      <label for="selected-contract">Hợp đồng</label>
+      <select id="selected-contract" required>
+        <option value="">Chọn hợp đồng</option>
+        {% for item in available_contracts %}<option value="{{ item.id }}" data-workspace-url="{% url contract_workspace_url_name item.id %}" {% if item.id == selected_contract.id %}selected{% endif %}>{{ item.contract_code }} — {{ item.title }}</option>{% endfor %}
+      </select>
+      <label for="selected-version">Phiên bản</label>
+      <select id="selected-version" required>
+        {% for item in selected_contract.versions.all %}<option value="{{ item.id }}" {% if item.id == selected_version.id %}selected{% endif %}>v{{ item.version_number }}</option>{% empty %}<option value="">Chọn hợp đồng trước</option>{% endfor %}
+      </select>
+      <label for="query">Câu hỏi</label><textarea id="query" rows="3" required placeholder="Điều khoản thanh toán quy định thời hạn và số tiền như thế nào?"></textarea>
+      <label><input type="checkbox" id="generate-answer" style="width:auto"> Trả lời từ tài liệu đã lưu</label>
+      <label for="qa-mode">Phạm vi</label>
+      <select id="qa-mode"><option value="structural">Tra cứu điều khoản và dẫn chiếu</option><option value="whole_contract">Rà soát toàn bộ nguồn đã trích xuất</option></select>
+      <button type="submit">Hỏi A2</button>
+    </form>
+    <div id="qa-latency-bar" class="latency-metric-container" role="status"></div>
+    <p>Điểm tìm kiếm dùng để xếp hạng. Citation hợp lệ chưa tự chứng minh mọi nhận định là đúng.</p>
+    <p id="qa-coverage"></p><details><summary>Cấu trúc hợp đồng đã nhận diện</summary><div id="qa-outline"></div></details><details class="structure-panel"><summary>Luồng truy xuất và bằng chứng gửi Qwen</summary><div id="retrieval-trace"></div></details>
+    <div id="qa-answer"></div><div id="qa-nodes"></div><div id="qa-evidence"></div>
+    <button type="button" id="expert-handoff" disabled>Gửi câu hỏi cho chuyên gia</button>
+    <h2 style="margin-top:28px">Kinh nghiệm chuyên gia liên quan</h2><div id="qa-cases"></div>
+  </section>
+  </details>
+  <details class="a2-tool" id="expert-tools"><summary>Bổ sung và quản lý ý kiến chuyên gia</summary>
+  <section class="intelligence-panel">
+    <h2 id="expert-submission">Câu hỏi và kiến thức của chuyên gia</h2>
+    <p>Nhập nội dung; Qwen tách các ý và điều khoản theo ngữ nghĩa. Tài liệu đính kèm được trích xuất bằng A3 rồi nối với câu hỏi và bằng chứng nguồn.</p>
+    <form id="expert-submission-form">
+      <label for="expert-question">Câu hỏi / vấn đề cần phân tích</label><textarea id="expert-question" rows="3" required maxlength="2000" placeholder="Ví dụ: Điều kiện nghiệm thu này có ảnh hưởng thời hạn thanh toán không?"></textarea>
+      <button type="button" id="expert-ask">Hỏi kho kiến thức</button>
+      <div id="expert-ask-result" aria-live="polite"></div>
+      <label for="expert-answer">Câu trả lời của chuyên gia (nếu có)</label><textarea id="expert-answer" rows="4" maxlength="12000" placeholder="Nhập câu trả lời cho đúng câu hỏi ở trên; Qwen tách các ý, mã máy, hành động và cách giải quyết, giữ nguyên nguồn."></textarea>
+      <label for="expert-submission-note">Ghi chú hoặc nhận định của chuyên gia (nếu có)</label><textarea id="expert-submission-note" rows="3" maxlength="12000" placeholder="Dán ghi chú thực tế; không cần tự chia điều khoản hoặc điền từng trường."></textarea>
+      <label for="expert-files">Tài liệu đính kèm (tùy chọn)</label><input id="expert-files" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.docx,.txt"><p>Tối đa 3 file, mỗi file 15 MB, tổng 30 MB.</p>
+      <label><input id="expert-use-selected" type="checkbox" style="width:auto"> Gắn thêm tài liệu đang chọn trong phần hỏi tài liệu cụ thể</label>
+      <button type="submit">Tách nội dung và lưu liên kết</button>
+    </form>
+    <div id="expert-submission-result" role="status" aria-live="polite"></div>
+    <details class="a2-options"><summary>Nhập hoặc chỉnh sửa case thủ công</summary>
+    <p>Chọn tài liệu và phiên bản trong phần “Hỏi một tài liệu cụ thể”. Ý kiến mới được lưu nháp để quản lý phê duyệt.</p>
+    <label for="expert-note">Ghi chú kinh nghiệm của chuyên gia</label><textarea id="expert-note" rows="3" placeholder="Mô tả vấn đề, sửa đổi, kết quả xác minh và điều kiện áp dụng thực tế…"></textarea>
+    <button type="button" id="draft-expert-case">Qwen đề xuất nội dung nháp</button>
+    <form id="knowledge-form">
+      <input type="hidden" id="case-revision-source">
+      <input type="hidden" id="inquiry-source">
+      <label for="case-title">Tiêu đề *</label><input id="case-title" name="title" required maxlength="255">
+      <label for="clause_type">Loại điều khoản</label><input id="clause_type" name="clause_type" maxlength="100" placeholder="Thanh toán, chấm dứt, bảo mật…">
+      <label for="issue">Vấn đề / rủi ro của điều khoản *</label><textarea id="issue" name="issue" rows="3" required></textarea>
+      <label for="reasoning">Căn cứ nhận định của chuyên gia</label><textarea id="reasoning" name="reasoning" rows="2"></textarea>
+      <label for="resolution">Cách xử lý / nội dung sửa đổi</label><textarea id="resolution" name="resolution" rows="3"></textarea>
+      <label for="verification">Kết quả xác minh sau xử lý</label><textarea id="verification" name="verification" rows="2"></textarea>
+      <label for="applicability">Điều kiện áp dụng và ngoại lệ</label><textarea id="applicability" name="applicability" rows="2"></textarea>
+      <label for="source_reference">Bằng chứng tài liệu trong phiên bản đã chọn</label><select id="source_reference" name="source_reference"><option value="">Hỏi A2 để tải danh sách nguồn</option></select>
+      <button type="submit">Lưu nháp / revision mới</button><button type="reset">Case mới</button>
+    </form>
+    <h2 style="margin-top:28px">Thư viện case công ty</h2>
+    <form id="case-search-form">
+      <label for="case-search">Vấn đề cần tìm</label><input id="case-search" placeholder="Ví dụ: thời hạn thanh toán">
+      <label for="case-type-filter">Loại hợp đồng cần áp dụng</label><input id="case-type-filter" placeholder="Tên loại hợp đồng đầy đủ">
+      <button type="submit">Tìm case đã duyệt</button><button type="button" id="all-cases">Danh sách</button>
+    </form>
+    <div id="knowledge-list"></div>
+    </details>
+  </section>
+  </details>
+</div>
+<details class="a2-tool" id="inquiry-tools"><summary>Câu hỏi đang chờ chuyên gia</summary><section class="intelligence-panel"><p>Phân công và theo dõi phản hồi của chuyên gia.</p><div id="expert-inquiries"></div><div id="inquiry-context" aria-live="polite"></div></section></details>
+</div>
+{% endblock %}
+{% block page_js %}<script src="{% static 'ai_extract/js/structure_visualization.js' %}"></script>
+{{ user.username|json_script:'intelligence-user' }}
+{{ search_endpoint|json_script:'intelligence-search-endpoint' }}
+<script>
+(() => {
+  const status=document.getElementById('intelligence-status');
+  const contract=document.getElementById('selected-contract');
+  const version=document.getElementById('selected-version');
+  const form=document.getElementById('knowledge-form');
+  const canReview={{ can_review|yesno:'true,false' }};
+  const currentUsername=JSON.parse(document.getElementById('intelligence-user').textContent);
+  const searchEndpoint=JSON.parse(document.getElementById('intelligence-search-endpoint').textContent);
+  const fields=['title','clause_type','issue','reasoning','resolution','verification','applicability','source_reference'];
+  function revealSection(element){let parent=element?.parentElement;while(parent){if(parent.tagName==='DETAILS')parent.open=true;parent=parent.parentElement;}}
+  let lastSearchId=null;
+  document.getElementById('expert-submission-form').onsubmit=async event=>{
+    event.preventDefault();const button=event.target.querySelector('button[type="submit"]');button.disabled=true;
+    const parent=document.getElementById('expert-submission-result');parent.replaceChildren();
+    try{
+      const payload=new FormData();payload.append('question',document.getElementById('expert-question').value);payload.append('note',document.getElementById('expert-submission-note').value);payload.append('answer',document.getElementById('expert-answer').value);
+      const files=Array.from(document.getElementById('expert-files').files);if(files.length>3||files.some(f=>f.size>15*1024*1024)||files.reduce((s,f)=>s+f.size,0)>30*1024*1024)throw new Error('Tối đa 3 file, mỗi file 15 MB, tổng 30 MB.');files.forEach(file=>payload.append('files',file));
+      if(document.getElementById('expert-use-selected').checked){if(!version.value)throw new Error('Chọn tài liệu và phiên bản trước.');payload.append('version_id',version.value);}
+      const response=await fetch('/api/newidea/expert-submissions/',{method:'POST',headers:{'X-CSRFToken':document.querySelector('[name=csrfmiddlewaretoken]').value},body:payload});const queued=await response.json();if(!response.ok)throw new Error(queued.error||'Không tạo được yêu cầu.');
+      for(let attempt=0;attempt<900;attempt++){
+        await new Promise(resolve=>setTimeout(resolve,2000));const job=await api(`/api/newidea/jobs/?id=${queued.search_id}`);
+        const progress=job.result?.progress;parent.textContent=`Yêu cầu #${queued.search_id}: ${progress?.stage==='a3_extraction'?'A3 đang trích xuất tài liệu đính kèm':progress?.stage==='qwen_semantic_extraction'?`Qwen đang tách ngữ nghĩa · lô ${progress.batch}/${progress.batches}`:'Đang chờ xử lý'}.`;
+        if(job.status==='FAILED')throw new Error(job.result.error||'Xử lý không hoàn tất.');
+        if(job.status==='COMPLETED'){
+          const result=job.result.response;parent.replaceChildren();text(parent,'p',`Phân tích: ${result.analysis_status} · ${result.units.length} đơn vị ngữ nghĩa · Neo4j: ${result.graph.status}. Các quan hệ là đề xuất nháp, cần kiểm tra.`);
+          result.documents.forEach(doc=>{const link=text(parent,'a',`Mở kết quả A3: ${doc.title} · `);link.href=doc.source_url;link.target='_blank';link.rel='noopener';});
+          renderQwenJson(parent,result);const names=new Map(result.units.map(u=>[u.id,u.title]));names.set('question','Câu hỏi chuyên gia');names.set('answer','Câu trả lời chuyên gia');
+          result.units.forEach(unit=>{const row=text(parent,'article','');row.className='evidence-record';text(row,'h3',`${unit.title} · ${unit.kind}`);text(row,'p',unit.quote);(unit.concepts||[]).forEach(c=>text(row,'p',`${c.relation}: ${c.value}`));if(unit.source_url){const link=text(row,'a','Mở bằng chứng nguồn');link.href=unit.source_url;link.target='_blank';link.rel='noopener';}});
+          result.relations.forEach(relation=>text(parent,'p',`${names.get(relation.from_id)} → ${relation.kind} → ${names.get(relation.to_id)}`));
+          if(result.related_units?.length){text(parent,'h3','Các ý khác có chung mã máy, hành động hoặc cách giải quyết');text(parent,'p','Chung đối tượng không có nghĩa cùng điều kiện áp dụng. Các ý nháp chưa được duyệt.');result.related_units.forEach(unit=>{const row=text(parent,'article','');row.className='evidence-record';text(row,'h4',unit.title);text(row,'p',unit.quote);text(row,'p',`${unit.review_status} · ${unit.common.map(c=>c.value).join(', ')}`);if(unit.source_url){const link=text(row,'a','Mở nguồn');link.href=unit.source_url;}});}return;
+        }
+      }
+      throw new Error(`Yêu cầu #${queued.search_id} vẫn đang xử lý. Xem trạng thái tại /api/newidea/jobs/?id=${queued.search_id}`);
+    }catch(error){text(parent,'p',error.message);}finally{button.disabled=false;}
+  };
+  document.getElementById('expert-ask').onclick=async()=>{
+    const button=document.getElementById('expert-ask'),parent=document.getElementById('expert-ask-result');button.disabled=true;parent.replaceChildren();
+    try{const query=document.getElementById('expert-question').value.trim();if(!query)throw new Error('Nhập câu hỏi trước.');text(parent,'p','Đang tìm trong toàn bộ kho kiến thức được phép truy cập…');const result=await queuedSearch({query,scope:'knowledge',generate:true},parent);parent.replaceChildren();renderQwenJson(parent,result);text(parent,'p',result.answer_text||result.answer||'Chưa có câu trả lời đủ bằng chứng.');(result.citations||result.results||[]).forEach(source=>{const row=text(parent,'article','');row.className='evidence-record';renderSourceQuotes(row,result,source);text(row,'p',source.text);if(source.source_url){const link=text(row,'a','Mở nguồn');link.href=source.source_url;link.target='_blank';link.rel='noopener';}});}catch(error){text(parent,'p',error.message);}finally{button.disabled=false;}
+  };
+
+  function setSources(records){const select=form.elements.source_reference;select.replaceChildren();const empty=text(select,'option','Chọn bằng chứng');empty.value='';records.forEach(r=>{const option=text(select,'option',`${r.chunk_id} · ${r.source_location} · ${r.text.slice(0,90)}`);option.value=r.chunk_id;});}
+  function ensureSource(id){const select=form.elements.source_reference;if(id&&!Array.from(select.options).some(o=>o.value===id)){const option=text(select,'option',id);option.value=id;}select.value=id||'';}
+  async function loadInquiries(){try{const data=await api('/api/newidea/inquiries/');const parent=document.getElementById('expert-inquiries');parent.replaceChildren();if(!data.inquiries.length)text(parent,'p','Chưa có yêu cầu.');data.inquiries.forEach(i=>{const row=text(parent,'article','');row.className='evidence-record';text(row,'p',`#${i.id} · ${i.question} · ${i.status} · ${i.assignee||'Chưa phân công'}`);const link=text(row,'a','Mở hợp đồng để xử lý');link.href=`/newidea/contracts/${i.contract_id}/?version_id=${i.version_id}&inquiry_id=${i.id}`;if(canReview&&['OPEN','ASSIGNED'].includes(i.status)){const select=text(row,'select','');data.reviewers.forEach(r=>{const o=text(select,'option',r.username);o.value=r.id;});const button=text(row,'button','Phân công');button.onclick=async()=>{try{await api('/api/newidea/inquiries/',{action:'assign',id:i.id,assignee_id:Number(select.value)});await loadInquiries();}catch(e){status.textContent=e.message;}};}if(i.assignee===currentUsername&&['ASSIGNED','ANSWERED'].includes(i.status)&&Number(version.value)===i.version_id){const answer=text(row,'button','Soạn câu trả lời');answer.onclick=()=>openInquiry(i.id);}});}catch(e){status.textContent=e.message;}}
+  async function openInquiry(id){
+    try{
+      const data=await api(`/api/newidea/inquiries/?id=${encodeURIComponent(id)}`);
+      const i=data.inquiry;
+      if(Number(version.value)!==i.version_id)throw new Error('Yêu cầu thuộc phiên bản khác. Mở đúng liên kết hợp đồng.');
+      const parent=document.getElementById('inquiry-context');parent.replaceChildren();
+      revealSection(parent);
+      text(parent,'h3',`Yêu cầu #${i.id}: ${i.question}`);
+      text(parent,'p',`Trạng thái: ${i.status} · Chuyên gia: ${i.assignee||'Chưa phân công'}`);
+      text(parent,'p',data.search.answer||'Chưa có câu trả lời tổng hợp.');
+      (data.search.sources||[]).forEach(source=>{text(parent,'p',`${source.chunk_id||source.evidence_id||'Nguồn'} · ${source.source_location||''}`);text(parent,'p',source.text||'');});
+      if(i.assignee!==currentUsername||!['ASSIGNED','ANSWERED'].includes(i.status)){
+        status.textContent='Đã mở ngữ cảnh yêu cầu. Chuyên gia được phân công mới có thể soạn câu trả lời.';return;
+      }
+      await loadSources();form.reset();
+      document.getElementById('inquiry-source').value=i.id;
+      if(data.case){fields.forEach(f=>form.elements[f].value=data.case[f]||'');ensureSource(data.case.source_reference);}
+      else{form.elements.title.value=`Xử lý: ${i.question.slice(0,200)}`;form.elements.issue.value=i.question;}
+      status.textContent=`Đang soạn yêu cầu #${i.id}; lưu nháp rồi chuyển reviewer khác phê duyệt.`;
+      revealSection(form);form.scrollIntoView({behavior:'smooth'});
+    }catch(e){status.textContent=e.message;}
+  }
+  function text(parent,tag,value){const node=document.createElement(tag);node.textContent=value;parent.appendChild(node);return node;}
+  function renderSourceQuotes(parent,data,source){
+    const quotes=(data.answer_quotes||[]).filter(q=>q.evidence_id===source.evidence_id);
+    if(!quotes.length)return;
+    text(parent,'p','Trích nguyên văn từ nguồn:');
+    quotes.forEach(q=>text(parent,'blockquote',q.quote));
+  }
+  function renderQwenJson(parent,data){
+    const diagnostics=data.generation_diagnostics||{};
+    const warning=diagnostics.review_warning;
+    if(warning){
+      const notice=text(parent,'aside','');notice.className='evidence-record';
+      text(notice,'strong','Điểm chưa chắc cần đối chiếu với nguồn');
+      text(notice,'p','Qwen nêu ghi chú này trong cùng lượt trả lời; đây không phải kết quả kiểm chứng độc lập.');
+      const reasons=(warning.claim_checks||[]).filter(c=>c.supported===false).map(c=>c.reason).filter(Boolean);
+      [...new Set(reasons.length?reasons:[warning.reason].filter(Boolean))].forEach(reason=>text(notice,'p',reason));
+    }
+    const missing=diagnostics.completeness_warning?.missing_parts||[];
+    if(missing.length)text(parent,'p','Phần chưa được trả lời đầy đủ: '+missing.join('; '));
+    const outputs=data.qwen_outputs||[];if(!outputs.length)return;
+    const panel=text(parent,'details','');panel.className='qwen-output';
+    text(panel,'summary',`JSON output của Qwen (${outputs.length} lượt gọi)`);
+    const download=text(panel,'button','Tải JSON');download.type='button';
+    download.onclick=()=>{const url=URL.createObjectURL(new Blob([JSON.stringify({qwen_outputs:outputs},null,2)],{type:'application/json;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download=`qwen-output-${data.search_id||data.submission_id||'result'}.json`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+    const stages={answer:'Trả lời',citation_repair:'Sửa citation',verification:'Xác minh',semantic_extraction:'Tách ngữ nghĩa',section_review:'Rà soát phần',review_combine:'Tổng hợp các phần',failed:'Phản hồi chưa được chấp nhận'};
+    outputs.forEach((item,index)=>{
+      const row=text(panel,'details','');text(row,'summary',`${index+1}. ${stages[item.stage]||item.task}${item.batch?` · lô ${item.batch}`:''}${item.attempt?` · lần ${item.attempt}`:''}`);
+      const response=item.response;let content=response?.choices?.[0]?.message?.content;
+      if(content!==undefined){try{content=JSON.parse(content);}catch{}text(row,'pre',typeof content==='string'?content:JSON.stringify(content,null,2));}
+      const raw=text(row,'details','');text(raw,'summary','Phản hồi API gốc · token · finish_reason');text(raw,'pre',JSON.stringify(response,null,2));
+    });
+  }
+  async function api(url,body){const response=await fetch(url,body?{method:'POST',headers:{'Content-Type':'application/json','X-CSRFToken':document.querySelector('[name=csrfmiddlewaretoken]').value},body:JSON.stringify(body)}:{});if(!response.headers.get('content-type')?.includes('application/json'))throw new Error('Phiên đăng nhập hết hạn hoặc không có quyền truy cập.');const data=await response.json();if(!response.ok||!data.success)throw new Error(data.error||'Không thực hiện được thao tác.');return data;}
+  function renderCases(parent,cases,editing=false){parent.replaceChildren();if(!cases.length)text(parent,'p','Chưa có case phù hợp.');cases.forEach(c=>{const article=document.createElement('article');article.className='evidence-record';parent.appendChild(article);text(article,'h3',c.title);text(article,'p',`${c.contract_code} · v${c.version_number} · case r${c.revision} · ${c.status}\nTác giả: ${c.author} · Reviewer: ${c.reviewer||'Chưa duyệt'}`);for(const [f,label] of [['issue','Vấn đề'],['resolution','Xử lý'],['verification','Xác minh'],['applicability','Điều kiện áp dụng'],['source_reference','Nguồn']])text(article,'p',`${label}: ${c[f]||'Chưa ghi'}`);text(article,'p',c.evidence_id);if(editing&&(canReview||c.author===currentUsername)){const revise=text(article,'button','Tạo revision');revise.onclick=()=>{ensureSource(c.source_reference);fields.forEach(f=>form.elements[f].value=c[f]);document.getElementById('inquiry-source').value='';document.getElementById('case-revision-source').value=c.id;status.textContent=`Revision mới giữ nguồn ${c.contract_code} v${c.version_number}.`;};if(canReview&&['draft','approved'].includes(c.status)&&(c.status!=='draft'||c.author!==currentUsername)){const action=c.status==='draft'?'approve':'deprecate';const button=text(article,'button',action==='approve'?'Phê duyệt':'Ngừng sử dụng');button.onclick=async()=>{button.disabled=true;try{await api('/api/contract-knowledge/',{id:c.id,action});status.textContent='Đã ghi trạng thái và audit.';await loadCases();}catch(e){status.textContent=e.message;}finally{button.disabled=false;}};}}});}
+  async function loadCases(params=''){try{renderCases(document.getElementById('knowledge-list'),(await api('/api/contract-knowledge/'+params)).cases,true);}catch(e){status.textContent=e.message;}}
+  contract.onchange=()=>{if(contract.value)window.location.href=contract.selectedOptions[0].dataset.workspaceUrl;};
+  function generationLabel(data){
+    if(data.generation_diagnostics?.review_warning)return 'Đã có câu trả lời; xem ghi chú tự rà soát';
+    const state=data.generation_diagnostics?.state;
+    if(state==='output_limit_reached')return 'Qwen đã chạm giới hạn token trước khi trả lời xong; đang hiển thị đoạn nguồn';
+    if(state==='context_limit_exceeded')return `Nguồn truy xuất vượt dung lượng xử lý của model (${data.generation_diagnostics.context_capacity} token); chưa tổng hợp được, đang hiển thị đoạn nguồn`;
+    if(state==='retrieval_unavailable')return 'Dịch vụ tìm kiếm nguồn tạm không sẵn sàng; chưa thể kết luận về nội dung tài liệu';
+    if(state==='gateway_unavailable')return 'AI tạm không truy cập được; đang hiển thị đoạn nguồn';
+    if(state==='citation_validation_failed')return 'Câu trả lời chưa đạt kiểm tra bằng chứng; đang hiển thị đoạn nguồn';
+    if(state==='insufficient_evidence')return 'Chưa đủ bằng chứng để tổng hợp';
+    return {generated:'Đã tổng hợp; nguồn trích dẫn ở bên dưới',source_excerpt:'Đang hiển thị đoạn nguồn',abstained:'Chưa tìm được bằng chứng'}[data.generation_status]||'Đã nhận kết quả tra cứu';
+  }
+  const searchStages={queued:'Đang chờ worker',discovering:'Đang tìm tài liệu phù hợp',retrieving:'Đang tìm bằng từ khóa, ngữ nghĩa và ảnh',reranking:'Đang xếp hạng các nguồn',reading_graph:'Đang đọc cấu trúc và quan hệ Neo4j',reviewing_document:'Đang rà soát tài liệu',generating:'Qwen đang soạn câu trả lời',repairing_citations:'Đang kiểm tra và sửa trích dẫn',verifying:'Qwen đang tự rà soát câu trả lời',completed:'Đã hoàn tất'};
+  async function queuedSearch(body, output){
+    const started=Date.now();
+    if(output)output.setAttribute('aria-live','polite');
+    function show(progress={}){
+      const elapsed=Math.floor((Date.now()-started)/1000);
+      const count=progress.documents_total&&progress.documents_done!==undefined?` · ${progress.documents_done}/${progress.documents_total} tài liệu`:'';
+      const message=`${searchStages[progress.stage]||'Đang xử lý tra cứu'}${count} · tổng thời gian ${elapsed} giây`;
+      status.textContent=message;
+      if(output)output.textContent=message;
+    }
+    show({stage:'queued'});
+    try{
+    const job=await api('/api/newidea/jobs/',body);
+    for(let attempt=0;attempt<300;attempt++){
+      await new Promise(resolve=>setTimeout(resolve,2000));
+      const receipt=await api(`/api/newidea/jobs/?id=${job.search_id}`);
+      if(receipt.status==='COMPLETED'){
+        const res = receipt.result.response || {};
+        res.client_latency_ms = Date.now() - started;
+        return res;
+      }
+      if(receipt.status==='FAILED')throw new Error(receipt.result.error||'Tra cứu không hoàn tất.');
+      show(receipt.result.progress||{stage:receipt.status==='QUEUED'?'queued':null});
+    }
+    throw new Error(`Tra cứu #${job.search_id} vẫn đang xử lý; xem trạng thái tại /api/newidea/jobs/?id=${job.search_id}`);
+    }catch(error){
+      if(output)output.textContent=error.message;
+      throw error;
+    }
+  }
+  function formatMs(ms){
+    if(!ms && ms!==0) return '0 ms';
+    if(ms>=1000) return (ms/1000).toFixed(2)+' s';
+    return Math.round(ms)+' ms';
+  }
+  function renderLatencyBar(container,data,clientMs){
+    if(!container) return;
+    container.replaceChildren();
+    const retMs = data.retrieval_latency_ms || (data.stage_timings_ms ? (data.stage_timings_ms.source_and_graph_expansion || data.stage_timings_ms.corpus_index) : null) || 0;
+    const respMs = clientMs || data.latency_ms || 0;
+    const p1 = document.createElement('div');
+    p1.className = 'latency-metric-pill retrieval';
+    p1.innerHTML = `<span class="icon">⏱️</span><span class="label">Thời gian truy xuất:</span><span class="value">${formatMs(retMs)}</span>`;
+    container.appendChild(p1);
+    const p2 = document.createElement('div');
+    p2.className = 'latency-metric-pill response';
+    p2.innerHTML = `<span class="icon">⚡</span><span class="label">Thời gian phản hồi:</span><span class="value">${formatMs(respMs)}</span>`;
+    container.appendChild(p2);
+    const count = (data.citations || data.results || []).length;
+    if(count > 0){
+      const p3 = document.createElement('div');
+      p3.className = 'latency-metric-pill documents';
+      p3.innerHTML = `<span class="icon">📑</span><span class="label">Bằng chứng nguồn:</span><span class="value">${count} đoạn</span>`;
+      container.appendChild(p3);
+    }
+    container.style.display = 'flex';
+  }
+  function renderMatchedNodes(parent,nodes){
+    if(!parent)return;parent.replaceChildren();if(!nodes.length)return;
+    const details=text(parent,'details','');text(details,'summary',`Nội dung và đề mục tìm được (${nodes.length})`);
+    nodes.forEach(n=>{const row=text(details,'p','');const link=text(row,'a',`${n.title} · ${(n.evidence_ids||[]).map(id=>`[${id}]`).join(' ')}`);link.href=n.source_url||n.graph_url||'#';link.target='_blank';link.rel='noopener';if(n.graph_url){text(row,'span',' · ');const graph=text(row,'a','Xem node và quan hệ');graph.href=n.graph_url;graph.target='_blank';graph.rel='noopener';}});
+  }
+  function renderStructure(data){
+    renderMatchedNodes(document.getElementById('qa-nodes'),data.matched_nodes||[]);
+    const coverage=data.context_coverage||{};
+    const label=coverage.mode==='whole_contract'
+      ? `Đã rà soát ${coverage.batches_reviewed}/${coverage.batches_total} lô nguồn; lỗi ${coverage.batches_failed}; chưa xử lý ${coverage.batches_not_attempted}.`
+      : `Đã chọn ${coverage.selected_leaf_count}/${coverage.source_leaf_count} đoạn nguồn; phần mở rộng vượt ngân sách ${coverage.omitted_expansions}; dẫn chiếu chưa tìm thấy ${(coverage.unresolved_article_references||[]).join(', ')||'0'}.`;
+    const streams=coverage.retrieval_streams||{};
+    const names={keyword:'Từ khóa',dense:'Ngữ nghĩa',colpali:'Trang ảnh'};
+    const states={ready:'Sẵn sàng',empty:'Chưa có kết quả',unavailable:'Không kết nối được',not_indexed:'Chưa lập chỉ mục',disabled:'Chưa bật'};
+    const gateLabel=coverage.mode==='whole_contract'?'Kiểm tra theo từng lô':(data.quality_gate?.accepted?'Đủ nguồn để tổng hợp':'Chỉ trả nguồn đối chiếu');
+    document.getElementById('qa-coverage').textContent=label+' | '+Object.entries(streams).map(([name,detail])=>(names[name]||name)+': '+(states[detail.state]||detail.state)).join(' | ')+' | Xếp hạng lại: '+(states[coverage.reranker_state]||'Chưa sử dụng')+' | '+gateLabel+' | Cấu trúc: '+({model_complete:'Model đã phân tích nguồn',model_partial:'Model phân tích một phần',model_unavailable:'Model chưa phân tích được',native_structure:'Cấu trúc từ nguồn native',legacy_structure:'Cấu trúc cũ, cần phân tích lại',source_changed_requires_reanalysis:'Nguồn đổi, cần phân tích lại'}[coverage.structure_status]||'Chưa xác định');
+    const outline=document.getElementById('qa-outline');outline.replaceChildren();
+    window.renderDocumentTree(outline, data.structure_visualization);
+    window.renderRetrievalTrace(document.getElementById('retrieval-trace'), data.retrieval_trace);
+  }
+  function renderGraphContext(parent,context){
+    if(!parent||!context?.edges?.length)return;
+    const details=text(parent,'details','');
+    text(details,'summary',`Ngữ cảnh Neo4j gửi AI: ${context.nodes.length} node, ${context.edges.length} quan hệ`);
+    text(details,'p',context.partial?'Ngữ cảnh có giới hạn; chỉ gửi các node và quan hệ gắn với nguồn đã chọn.':'Đã gửi các node và quan hệ liên quan tới nguồn đã chọn.');
+    const nodes=Object.fromEntries(context.nodes.map(n=>[n.id,n]));
+    context.edges.slice(0,12).forEach(edge=>{
+      const a=nodes[edge.from_id],b=nodes[edge.to_id];
+      text(details,'p',`${a.label||a.kind} → ${edge.type}${edge.predicate?' ('+edge.predicate+')':''} → ${b.label||b.kind} · ${(edge.evidence_ids||[]).map(id=>'['+id+']').join(' ')}`);
+    });
+    if(context.edges.length>12)text(details,'p','Hiển thị 12 quan hệ đầu; AI nhận toàn bộ số quan hệ nêu trên.');
+  }
+  document.getElementById('qa-mode').onchange=()=>{if(document.getElementById('qa-mode').value==='whole_contract')document.getElementById('generate-answer').checked=true;};
+  document.getElementById('qa-form').onsubmit=async e=>{e.preventDefault();const button=e.target.querySelector('button');button.disabled=true;try{if(!searchEndpoint)throw new Error('Chọn hợp đồng trước khi tìm kiếm.');const t0=performance.now();const body={query:document.getElementById('query').value,version_id:Number(version.value),generate:document.getElementById('generate-answer').checked,mode:document.getElementById('qa-mode').value};const data=body.generate?await queuedSearch(body,document.getElementById('qa-answer')):await api(searchEndpoint,body);const clientMs=performance.now()-t0;renderLatencyBar(document.getElementById('qa-latency-bar'),data,data.client_latency_ms||clientMs);lastSearchId=data.search_id;document.getElementById('expert-handoff').disabled=false;setSources(data.evidence_sources||[]);document.getElementById('qa-answer').textContent=data.answer_text||data.answer;renderStructure(data);const evidence=document.getElementById('qa-evidence');evidence.replaceChildren();text(evidence,'h3','Nguồn tài liệu');renderQwenJson(evidence,data);data.citations.forEach(c=>{const article=document.createElement('article');article.className='evidence-record';evidence.appendChild(article);text(article,'h3',`${c.original_name} · ${c.source_location||''}`);if((data.answer_source_ids||[]).includes(c.evidence_id))text(article,'p','Được trích dẫn trong câu trả lời');text(article,'p',c.source_location);renderSourceQuotes(article,data,c);text(article,'p',c.text);const link=text(article,'a','Mở nguồn để đối chiếu');link.href=c.source_url;link.target='_blank';link.rel='noopener';});renderCases(document.getElementById('qa-cases'),data.similar_cases);status.textContent=`${generationLabel(data)} · Tìm kiếm ${data.retrieval_latency_ms} ms · Tổng ${data.latency_ms} ms`;}catch(e){status.textContent=e.message;}finally{button.disabled=false;}};
+  document.getElementById('draft-expert-case').onclick=async e=>{
+    e.target.disabled=true;
+    try{
+      const data=await api('/api/contract-knowledge/draft/',{version_id:Number(version.value),note:document.getElementById('expert-note').value});
+      ensureSource(data.draft.source_reference);fields.forEach(f=>form.elements[f].value=data.draft[f]||'');
+      document.getElementById('case-revision-source').value='';
+      status.textContent='Chuyên gia cần kiểm tra và xác nhận từng trường trước khi lưu nháp. Case vẫn cần reviewer phê duyệt để tái sử dụng.';
+    }catch(error){status.textContent=error.message;}finally{e.target.disabled=false;}
+  };
+  form.onsubmit=async e=>{e.preventDefault();const button=form.querySelector('[type=submit]');button.disabled=true;try{const body=Object.fromEntries(fields.map(f=>[f,form.elements[f].value]));const id=document.getElementById('case-revision-source').value;if(!id&&!version.value)throw new Error('Chọn hợp đồng và phiên bản trước khi lưu case.');body.action=id?'revise':'create';if(id)body.id=Number(id);else body.version_id=Number(version.value);const inquiryId=document.getElementById('inquiry-source').value;if(inquiryId){body.action='answer';body.id=Number(inquiryId);}const data=await api(inquiryId?'/api/newidea/inquiries/':'/api/contract-knowledge/',body);status.textContent=`Đã lưu case nháp r${data.case.revision}.`;form.reset();document.getElementById('inquiry-source').value='';document.getElementById('case-revision-source').value='';await loadCases();await loadInquiries();}catch(e){status.textContent=e.message;}finally{button.disabled=false;}};
+  document.getElementById('case-search-form').onsubmit=e=>{e.preventDefault();loadCases('?'+new URLSearchParams({q:document.getElementById('case-search').value,contract_type:document.getElementById('case-type-filter').value}));};
+  
+  async function loadSources(){if(version.value){try{setSources((await api(`/api/newidea/versions/${version.value}/sources/`)).sources);}catch(e){status.textContent=e.message;}}}
+  version.onchange=()=>{lastSearchId=null;document.getElementById('expert-handoff').disabled=true;form.reset();document.getElementById('inquiry-source').value='';document.getElementById('case-revision-source').value='';loadSources();loadInquiries();};
+  form.addEventListener('reset',()=>{document.getElementById('inquiry-source').value='';document.getElementById('case-revision-source').value='';});
+  document.getElementById('expert-handoff').onclick=async()=>{try{const data=await api('/api/newidea/inquiries/',{search_id:lastSearchId});status.textContent=`Đã gửi yêu cầu #${data.inquiry.id}; quản lý sẽ phân công chuyên gia.`;await loadInquiries();}catch(e){status.textContent=e.message;}};
+  const companyForm=document.getElementById('company-search-form');
+  if(companyForm)companyForm.onsubmit=async e=>{
+    e.preventDefault();const button=companyForm.querySelector('button');button.disabled=true;
+    try{
+      const t0=performance.now();
+      const body={query:document.getElementById('company-query').value,scope:'knowledge',generate:document.getElementById('company-generate').checked};
+      const data=body.generate?await queuedSearch(body,document.getElementById('company-answer')):await api('/api/newidea/search/',body);
+      const clientMs=performance.now()-t0;
+      renderLatencyBar(document.getElementById('company-latency-bar'),data,data.client_latency_ms||clientMs);
+      const coverage=data.context_coverage;
+      document.getElementById('company-coverage').textContent=`Kho có ${coverage.versions_total} tài liệu; đã khảo sát ${coverage.versions_scanned} tài liệu${coverage.versions_with_sources!==undefined?`, ${coverage.versions_with_sources} có nội dung đã số hóa, ${coverage.indexed_versions} có chỉ mục vector`:''} và ${coverage.knowledge_records||0} nội dung chuyên gia, chọn ${coverage.versions_deeply_searched} tài liệu liên quan để đọc sâu; ${coverage.access_scope==='all_companies'?'tất cả công ty':'toàn bộ nguồn được phép truy cập'}${coverage.partial?'; kết quả truy xuất có giới hạn':''}.`;
+      document.getElementById('company-answer').textContent=data.answer_text||data.answer||'';
+      renderQwenJson(document.getElementById('company-answer'),data);
+      status.textContent=body.generate?generationLabel(data):'Đã tìm các đoạn nguồn liên quan';
+      const parent=document.getElementById('company-results');parent.replaceChildren();
+      if(!data.results.length)text(parent,'p',data.generation_diagnostics?.state==='retrieval_unavailable'?'Chưa lấy được nguồn do dịch vụ tra cứu không sẵn sàng.':'Chưa tìm được đoạn nguồn đủ liên quan. Kiểm tra câu hỏi hoặc số hóa những tài liệu chưa có nội dung.');
+      renderMatchedNodes(document.getElementById('company-nodes'),data.matched_nodes||[]);
+      renderGraphContext(document.getElementById('company-nodes'),data.graph_context);
+      (data.citations||data.results).forEach(r=>{const row=text(parent,'article','');row.className='evidence-record';const link=text(row,'a',`[${r.evidence_id}] ${r.original_name} · ${r.source_location}`);link.href=r.source_url;link.target='_blank';link.rel='noopener';if(r.evidence_kind==='expert_unit'||r.evidence_kind==='expert_question')text(row,'p',`${r.evidence_kind==='expert_question'?'Câu hỏi đã lưu':'Nội dung chuyên gia'} · ${r.author} · ${r.review_status==='draft'?'Nháp, chưa duyệt':r.review_status}.`);if(r.evidence_kind==='expert_opinion')text(row,'p',`${r.is_demo?'Mẫu ý kiến demo':'Ý kiến chuyên gia đã duyệt'} · ${r.author} · revision ${r.revision}. Cần đối chiếu điều kiện áp dụng.`);renderSourceQuotes(row,data,r);text(row,'p',r.text);if(r.contract_id&&r.version_id){const ask=text(row,'a','Hỏi trên đúng phiên bản này');ask.href=`/newidea/contracts/${r.contract_id}/?version_id=${r.version_id}`;}});
+      renderCases(document.getElementById('company-cases'),data.similar_cases);
+    }catch(e){status.textContent=e.message;}finally{button.disabled=false;}
+  };
+  document.getElementById('all-cases').onclick=()=>loadCases();loadCases();loadSources();loadInquiries();
+  const requestedSubmission=new URLSearchParams(window.location.search).get('submission_id');
+  if(requestedSubmission){
+    const parent=document.getElementById('expert-submission-result');revealSection(parent);
+    api(`/api/newidea/expert-submissions/?id=${encodeURIComponent(requestedSubmission)}`).then(data=>{
+      parent.replaceChildren();text(parent,'h3',`Nguồn chuyên gia #${data.submission_id} · ${data.author} · Nháp, chưa duyệt`);
+      text(parent,'h4','Câu hỏi');text(parent,'p',data.question);
+      if(data.answer){text(parent,'h4','Câu trả lời');text(parent,'p',data.answer_text||data.answer);}
+      if(data.note){text(parent,'h4','Ghi chú');text(parent,'p',data.note);}
+      renderQwenJson(parent,data);
+      (data.units||[]).forEach(unit=>{const row=text(parent,'article','');row.className='evidence-record';text(row,'h4',`${unit.title} · ${unit.kind}`);text(row,'p',unit.quote);});
+      parent.scrollIntoView({behavior:'smooth',block:'start'});
+    }).catch(error=>text(parent,'p',error.message));
+  }
+  const requestedInquiry=new URLSearchParams(window.location.search).get('inquiry_id');
+  if(requestedInquiry)openInquiry(requestedInquiry);
+
+})();
+</script>
+{% endblock %}

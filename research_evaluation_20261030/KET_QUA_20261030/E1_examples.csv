@@ -1,0 +1,41 @@
+﻿question_id,evidence,format,citation_precision,citation_recall,key_value_recall,input_tokens,output_tokens,visual_tokens,generation_s,answer
+P002,gold,A,1.0,1.0,,214,266,,8.4,"Realvirtual.io Professional hỗ trợ TwinCAT và OPC UA interfaces, PLC connections, và software wiring."
+P002,gold,B,1.0,1.0,,226,266,,8.3,"Realvirtual.io Professional hỗ trợ TwinCAT và OPC UA interfaces, PLC connections, và software wiring."
+P002,gold,C,1.0,1.0,,214,266,,8.4,"Realvirtual.io Professional hỗ trợ TwinCAT và OPC UA interfaces, PLC connections, và software wiring."
+P002,gold,D,1.0,1.0,,238,122,,6.7,"realvirtual.io Professional hỗ trợ TwinCAT và OPC UA interfaces, PLC connections, và software wiring."
+P002,gold,E,1.0,1.0,,293,122,,13.2,"realvirtual.io Professional hỗ trợ TwinCAT và OPC UA interfaces, PLC connections, và software wiring."
+P002,retrieved,A,1.0,1.0,,683,122,,61.2,"realvirtual.io Professional hỗ trợ TwinCAT và OPC UA interfaces, PLC connections, và software wiring."
+P002,retrieved,B,1.0,1.0,,758,274,,44.9,"realvirtual.io Professional hỗ trợ các giao diện TwinCAT và OPC UA, PLC connections, và software wiring."
+P002,retrieved,C,1.0,1.0,,712,266,,25.2,"realvirtual.io Professional hỗ trợ TwinCAT và OPC UA interfaces, PLC connections, và software wiring."
+P002,retrieved,D,1.0,1.0,,858,134,,34.7,"realvirtual.io Professional hỗ trợ các giao diện và kết nối TwinCAT và OPC UA, PLC, và các kết nối phần mềm."
+P002,retrieved,E,1.0,1.0,,1209,122,,27.5,"realvirtual.io Professional hỗ trợ TwinCAT và OPC UA interfaces, PLC connections, và software wiring."
+P018,gold,A,1.0,1.0,,224,113,,6.0,The front expansion valve was replaced recently.
+P018,gold,B,1.0,1.0,,236,209,,34.5,Máy nén và van tiết lưu phía trước đã được kiểm tra và van tiết lưu phía trước đã được thay thế gần đây.
+P018,gold,C,1.0,1.0,,224,113,,32.3,The front expansion valve was replaced recently.
+P018,gold,D,1.0,1.0,,251,113,,7.0,The front expansion valve was replaced recently.
+P018,gold,E,1.0,1.0,,319,209,,16.9,Máy nén và van tiết lưu phía trước đã được kiểm tra và van tiết lưu phía trước đã được thay thế gần đây.
+P018,retrieved,A,1.0,1.0,,415,112,,11.1,Van tiết lưu phía trước đã được thay thế gần đây.
+P018,retrieved,B,1.0,1.0,,474,197,,27.2,Máy nén và van tiết lưu phía trước đã được kiểm tra và xác định là hoạt động bình thường.
+P018,retrieved,C,1.0,1.0,,415,112,,4.6,Van tiết lưu phía trước đã được thay thế gần đây.
+P018,retrieved,D,1.0,1.0,,543,200,,8.7,Máy nén và van tiết lưu phía trước đã được kiểm tra và thay thế nếu cần thiết.
+P018,retrieved,E,1.0,1.0,,1425,124,,6.3,Máy nén và van tiết lưu phía trước đã được kiểm tra và thay thế nếu cần thiết.
+P023,gold,A,1.0,1.0,,245,156,,35.6,Bộ phận bị ngắt là relay magnetics clutch.
+P023,gold,B,1.0,0.5,,269,122,,32.9,Bộ phận bị ngắt là relay magnetics clutch.
+P023,gold,C,1.0,1.0,,245,156,,5.9,Bộ phận bị ngắt là relay magnetics clutch.
+P023,gold,D,1.0,1.0,,321,149,,36.7,Magnetic Clutch Relay bị ngắt
+P023,gold,E,1.0,1.0,,671,162,,11.0,Magnetic Clutch Relay
+P023,retrieved,A,1.0,1.0,,411,172,,7.8,Magnetic clutch relay
+P023,retrieved,B,1.0,1.0,,470,205,,56.4,Bộ phận bị ngắt là relay
+P023,retrieved,C,1.0,1.0,,411,172,,7.9,Magnetic clutch relay
+P023,retrieved,D,1.0,1.0,,612,220,,7.4,Magnetic Clutch Relay
+P023,retrieved,E,1.0,1.0,,1020,138,,7.2,Magnetic Clutch Relay
+P029,gold,A,1.0,0.5,,205,112,,12.9,COBOTTA không cần máy nén khí bên ngoài.
+P029,gold,B,1.0,0.5,,228,116,,41.5,COBOTTA không cần máy nén khí bên ngoài để hút chân không.
+P029,gold,C,1.0,0.5,,205,112,,17.0,COBOTTA không cần máy nén khí bên ngoài.
+P029,gold,D,1.0,1.0,,251,153,,58.3,Tùy chọn hút chân không của COBOTTA không cần máy nén khí bên ngoài.
+P029,gold,E,1.0,0.5,,372,117,,6.2,Tùy chọn hút chân không của COBOTTA không cần máy nén khí bên ngoài.
+P029,retrieved,A,1.0,0.5,,363,116,,5.0,COBOTTA không cần máy nén khí bên ngoài để hút chân không.
+P029,retrieved,B,1.0,0.5,,421,120,,15.5,Tùy chọn hút chân không của COBOTTA không cần máy nén khí bên ngoài.
+P029,retrieved,C,1.0,0.5,,363,116,,44.2,COBOTTA không cần máy nén khí bên ngoài để hút chân không.
+P029,retrieved,D,1.0,0.5,,456,121,,4.6,Tùy chọn hút chân không của COBOTTA không cần máy nén khí bên ngoài.
+P029,retrieved,E,1.0,0.5,,698,120,,7.9,Tùy chọn hút chân không của COBOTTA không cần máy nén khí bên ngoài.

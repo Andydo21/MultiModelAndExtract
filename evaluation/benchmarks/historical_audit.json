@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "description": "Selectors only; observed numeric values are read from manuscripts and original logs at runtime.",
+  "raw_archives": [
+    {"configuration": "J", "path": "scratch/newidea-pods-four-live.json"},
+    {"configuration": "M", "path": "scratch/newidea-pods-markdown-live.json"}
+  ],
+  "manuscripts": [
+    {
+      "path": "A2_A3_research_paper_revised.md",
+      "tables": [
+        {
+          "anchor": "### Bảng 3",
+          "kind": "run_table",
+          "columns": {"e2e_s": 2, "input_tokens": 3, "output_tokens": 4},
+          "rows": [
+            {"prefix": "Q1 Dual-arm", "question_id": "Q1", "configuration": "J"},
+            {"prefix": "Q2 tải nâng", "question_id": "Q2", "configuration": "J"},
+            {"prefix": "Q3 Guidance", "question_id": "Q3", "configuration": "J"},
+            {"prefix": "Q4 tránh", "question_id": "Q4", "configuration": "J"},
+            {"prefix": "Q2 chạy lại", "question_id": "Q2", "configuration": "M"}
+          ]
+        },
+        {"anchor": "### Bảng 5", "kind": "stage_table", "question_id": "Q2", "configuration": "M"}
+      ]
+    },
+    {
+      "path": "research_paper.md",
+      "tables": [
+        {"anchor": "| Ký hiệu |", "kind": "embedded_table", "rows": [
+          {"prefix": "Q1", "question_id": "Q1"},
+          {"prefix": "Q2", "question_id": "Q2"},
+          {"prefix": "Q3", "question_id": "Q3"},
+          {"prefix": "Q4", "question_id": "Q4"}
+        ], "configurations": {"J": 2, "M": 3}}
+      ]
+    }
+  ]
+}

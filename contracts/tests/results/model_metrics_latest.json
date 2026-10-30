@@ -1,0 +1,1174 @@
+{
+  "created_at": "2026-10-12T02:04:42.632150+07:00",
+  "scope": "synthetic_smoke_not_representative_benchmark",
+  "real_model_responses": true,
+  "normalization": "Unicode NFC + collapse whitespace; case, accents and punctuation retained",
+  "errors": [],
+  "classification": {
+    "status": "not_measured",
+    "reason": "No labeled document classifier in this evaluation."
+  },
+  "numeric_prediction": {
+    "status": "not_applicable",
+    "reason": "Pipeline extracts numbers; it does not implement numeric regression."
+  },
+  "ocr": {
+    "status": "measured",
+    "samples": [
+      {
+        "id": "contract_vi",
+        "reference": "Điều 1. Thanh toán\nBên A thanh toán 120.000.000 đồng trong vòng 30 ngày.\nHồ sơ gồm hóa đơn và biên bản nghiệm thu.",
+        "prediction": "Điều 1. Thanh toán\nBên A thanh toán 120.000.000 đồng trong vòng 30 ngày.\nHồ sơ gồm hóa đơn và biên bản nghiệm thu.",
+        "seconds": 2.121,
+        "character_errors": 0,
+        "reference_characters": 114,
+        "word_errors": 0,
+        "reference_words": 24
+      },
+      {
+        "id": "technical_vi",
+        "reference": "Sơ đồ tủ điện\nCầu dao QF1 cấp nguồn cho động cơ M1.\nĐiện áp: 380 V. Mô men siết M8: 25 Nm.",
+        "prediction": "Sơ đồ tử điện\nCầu dao QF1 cấp nguồn cho động cơ M1.\nĐiện áp: 380 V. Mô men siết M8: 25 Nm.",
+        "seconds": 1.701,
+        "character_errors": 1,
+        "reference_characters": 90,
+        "word_errors": 1,
+        "reference_words": 23
+      },
+      {
+        "id": "technical_en_scan",
+        "reference": "Maintenance procedure\nDisconnect power before servicing.\nMotor M1: 380 V. Bolt M8: 25 Nm.",
+        "prediction": "Maintenance procedure\nDisconnect power before servicing.\nMotor M1: 380 V. Bolt M8: 25 Nm.",
+        "seconds": 1.674,
+        "character_errors": 0,
+        "reference_characters": 89,
+        "word_errors": 0,
+        "reference_words": 14
+      }
+    ],
+    "summary": {
+      "samples": 3,
+      "cer": 0.0034129692832764505,
+      "wer": 0.01639344262295082,
+      "reference_characters": 293,
+      "reference_words": 61
+    }
+  },
+  "retrieval": {
+    "status": "measured",
+    "corpus_size": 12,
+    "queries": 6,
+    "corpus": [
+      {
+        "document_id": "payment",
+        "chunk_id": "payment",
+        "text": "Bên A thanh toán 120.000.000 đồng trong vòng 30 ngày kể từ ngày nhận đủ hóa đơn và biên bản nghiệm thu.",
+        "original_name": "",
+        "heading_path": []
+      },
+      {
+        "document_id": "safety",
+        "chunk_id": "safety",
+        "text": "Trước khi bảo trì tủ điện, kỹ thuật viên phải ngắt nguồn điện và khóa cầu dao.",
+        "original_name": "",
+        "heading_path": []
+      },
+      {
+        "document_id": "duration",
+        "chunk_id": "duration",
+        "text": "Hợp đồng có hiệu lực 12 tháng kể từ ngày ký.",
+        "original_name": "",
+        "heading_path": []
+      },
+      {
+        "document_id": "motor",
+        "chunk_id": "motor",
+        "text": "Động cơ M1 được cấp nguồn qua cầu dao QF1. Điện áp định mức là 380 V.",
+        "original_name": "",
+        "heading_path": []
+      },
+      {
+        "document_id": "temperature",
+        "chunk_id": "temperature",
+        "text": "Nhiệt độ vận hành cho phép của cảm biến PT100 là từ -20 đến 80 độ C.",
+        "original_name": "",
+        "heading_path": []
+      },
+      {
+        "document_id": "bearing",
+        "chunk_id": "bearing",
+        "text": "Kiểm tra vòng bi và bổ sung dầu bôi trơn sau mỗi 6 tháng.",
+        "original_name": "",
+        "heading_path": []
+      },
+      {
+        "document_id": "delivery",
+        "chunk_id": "delivery",
+        "text": "Bên bán giao hàng tại kho Hà Nội trong 10 ngày kể từ ngày nhận đơn đặt hàng.",
+        "original_name": "",
+        "heading_path": []
+      },
+      {
+        "document_id": "warranty",
+        "chunk_id": "warranty",
+        "text": "Thiết bị được bảo hành 24 tháng. Lỗi do vận hành sai không thuộc phạm vi bảo hành.",
+        "original_name": "",
+        "heading_path": []
+      },
+      {
+        "document_id": "force",
+        "chunk_id": "force",
+        "text": "Sự kiện bất khả kháng phải được thông báo trong vòng 5 ngày.",
+        "original_name": "",
+        "heading_path": []
+      },
+      {
+        "document_id": "torque",
+        "chunk_id": "torque",
+        "text": "Siết bu lông M8 với mô men 25 Nm. Sử dụng cờ lê lực đã hiệu chuẩn.",
+        "original_name": "",
+        "heading_path": []
+      },
+      {
+        "document_id": "invoice",
+        "chunk_id": "invoice",
+        "text": "Hồ sơ đề nghị thanh toán gồm hóa đơn hợp lệ và biên bản nghiệm thu có chữ ký.",
+        "original_name": "",
+        "heading_path": []
+      },
+      {
+        "document_id": "lockout",
+        "chunk_id": "lockout",
+        "text": "Cô lập nguồn năng lượng và áp dụng khóa an toàn trước khi sửa chữa thiết bị điện.",
+        "original_name": "",
+        "heading_path": []
+      }
+    ],
+    "samples": [
+      {
+        "id": "pay",
+        "query": "Bao lâu phải trả tiền và cần chứng từ nào?",
+        "relevant_ids": [
+          "payment",
+          "invoice"
+        ],
+        "rankings": {
+          "bm25": [
+            "safety",
+            "force",
+            "payment",
+            "duration",
+            "temperature",
+            "delivery",
+            "bearing",
+            "lockout",
+            "invoice"
+          ],
+          "bge": [
+            "invoice",
+            "payment",
+            "force",
+            "duration",
+            "delivery",
+            "bearing",
+            "warranty",
+            "safety",
+            "lockout",
+            "torque",
+            "motor",
+            "temperature"
+          ],
+          "rrf_rerank": [
+            "payment",
+            "invoice",
+            "duration",
+            "warranty",
+            "delivery",
+            "force",
+            "bearing",
+            "torque",
+            "motor",
+            "temperature",
+            "lockout",
+            "safety"
+          ]
+        },
+        "metrics": {
+          "bm25": {
+            "1": {
+              "recall": 0.0,
+              "reciprocal_rank": 0,
+              "ndcg": 0.0
+            },
+            "3": {
+              "recall": 0.5,
+              "reciprocal_rank": 0.3333333333333333,
+              "ndcg": 0.3065735963827292
+            },
+            "5": {
+              "recall": 0.5,
+              "reciprocal_rank": 0.3333333333333333,
+              "ndcg": 0.3065735963827292
+            }
+          },
+          "bge": {
+            "1": {
+              "recall": 0.5,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          },
+          "rrf_rerank": {
+            "1": {
+              "recall": 0.5,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          }
+        },
+        "reranking_seconds": 7.492
+      },
+      {
+        "id": "safe",
+        "query": "Cần cô lập năng lượng như thế nào trước khi sửa tủ điện?",
+        "relevant_ids": [
+          "safety",
+          "lockout"
+        ],
+        "rankings": {
+          "bm25": [
+            "lockout",
+            "safety",
+            "motor"
+          ],
+          "bge": [
+            "lockout",
+            "safety",
+            "warranty",
+            "torque",
+            "invoice",
+            "motor",
+            "force",
+            "temperature",
+            "bearing",
+            "payment",
+            "delivery",
+            "duration"
+          ],
+          "rrf_rerank": [
+            "lockout",
+            "safety",
+            "warranty",
+            "torque",
+            "bearing",
+            "force",
+            "invoice",
+            "motor",
+            "duration",
+            "temperature",
+            "delivery",
+            "payment"
+          ]
+        },
+        "metrics": {
+          "bm25": {
+            "1": {
+              "recall": 0.5,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          },
+          "bge": {
+            "1": {
+              "recall": 0.5,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          },
+          "rrf_rerank": {
+            "1": {
+              "recall": 0.5,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          }
+        },
+        "reranking_seconds": 2.704
+      },
+      {
+        "id": "voltage",
+        "query": "M1 dùng điện áp bao nhiêu và nối qua thiết bị nào?",
+        "relevant_ids": [
+          "motor"
+        ],
+        "rankings": {
+          "bm25": [
+            "motor",
+            "lockout",
+            "warranty",
+            "safety",
+            "bearing",
+            "invoice",
+            "payment"
+          ],
+          "bge": [
+            "motor",
+            "torque",
+            "lockout",
+            "safety",
+            "temperature",
+            "warranty",
+            "bearing",
+            "duration",
+            "invoice",
+            "payment",
+            "force",
+            "delivery"
+          ],
+          "rrf_rerank": [
+            "motor",
+            "torque",
+            "warranty",
+            "lockout",
+            "temperature",
+            "safety",
+            "duration",
+            "delivery",
+            "payment",
+            "bearing",
+            "force",
+            "invoice"
+          ]
+        },
+        "metrics": {
+          "bm25": {
+            "1": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          },
+          "bge": {
+            "1": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          },
+          "rrf_rerank": {
+            "1": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          }
+        },
+        "reranking_seconds": 2.69
+      },
+      {
+        "id": "heat",
+        "query": "PT100 chịu được dải nhiệt độ nào?",
+        "relevant_ids": [
+          "temperature"
+        ],
+        "rankings": {
+          "bm25": [
+            "temperature",
+            "force",
+            "motor",
+            "warranty"
+          ],
+          "bge": [
+            "temperature",
+            "warranty",
+            "motor",
+            "delivery",
+            "lockout",
+            "force",
+            "invoice",
+            "safety",
+            "duration",
+            "payment",
+            "torque",
+            "bearing"
+          ],
+          "rrf_rerank": [
+            "temperature",
+            "motor",
+            "warranty",
+            "delivery",
+            "torque",
+            "lockout",
+            "safety",
+            "bearing",
+            "force",
+            "duration",
+            "payment",
+            "invoice"
+          ]
+        },
+        "metrics": {
+          "bm25": {
+            "1": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          },
+          "bge": {
+            "1": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          },
+          "rrf_rerank": {
+            "1": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          }
+        },
+        "reranking_seconds": 2.502
+      },
+      {
+        "id": "tighten",
+        "query": "Lực siết bu lông M8 là bao nhiêu?",
+        "relevant_ids": [
+          "torque"
+        ],
+        "rankings": {
+          "bm25": [
+            "torque",
+            "duration",
+            "motor",
+            "temperature"
+          ],
+          "bge": [
+            "torque",
+            "motor",
+            "bearing",
+            "temperature",
+            "warranty",
+            "duration",
+            "lockout",
+            "force",
+            "payment",
+            "safety",
+            "invoice",
+            "delivery"
+          ],
+          "rrf_rerank": [
+            "torque",
+            "motor",
+            "bearing",
+            "warranty",
+            "delivery",
+            "temperature",
+            "duration",
+            "lockout",
+            "payment",
+            "force",
+            "safety",
+            "invoice"
+          ]
+        },
+        "metrics": {
+          "bm25": {
+            "1": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          },
+          "bge": {
+            "1": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          },
+          "rrf_rerank": {
+            "1": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          }
+        },
+        "reranking_seconds": 2.696
+      },
+      {
+        "id": "cover",
+        "query": "Nhà cung cấp bảo hành thiết bị trong bao lâu?",
+        "relevant_ids": [
+          "warranty"
+        ],
+        "rankings": {
+          "bm25": [
+            "warranty",
+            "lockout",
+            "motor",
+            "safety",
+            "temperature",
+            "force",
+            "delivery",
+            "payment"
+          ],
+          "bge": [
+            "warranty",
+            "duration",
+            "delivery",
+            "safety",
+            "payment",
+            "bearing",
+            "lockout",
+            "force",
+            "invoice",
+            "motor",
+            "torque",
+            "temperature"
+          ],
+          "rrf_rerank": [
+            "warranty",
+            "duration",
+            "delivery",
+            "force",
+            "payment",
+            "bearing",
+            "lockout",
+            "safety",
+            "invoice",
+            "torque",
+            "temperature",
+            "motor"
+          ]
+        },
+        "metrics": {
+          "bm25": {
+            "1": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          },
+          "bge": {
+            "1": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          },
+          "rrf_rerank": {
+            "1": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "3": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            },
+            "5": {
+              "recall": 1.0,
+              "reciprocal_rank": 1.0,
+              "ndcg": 1.0
+            }
+          }
+        },
+        "reranking_seconds": 2.428
+      }
+    ],
+    "summary": {
+      "bm25": {
+        "1": {
+          "recall": 0.75,
+          "reciprocal_rank": 0.8333333333333334,
+          "ndcg": 0.8333333333333334
+        },
+        "3": {
+          "recall": 0.9166666666666666,
+          "reciprocal_rank": 0.8888888888888888,
+          "ndcg": 0.8844289327304549
+        },
+        "5": {
+          "recall": 0.9166666666666666,
+          "reciprocal_rank": 0.8888888888888888,
+          "ndcg": 0.8844289327304549
+        }
+      },
+      "bge": {
+        "1": {
+          "recall": 0.8333333333333334,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0
+        }
+      },
+      "rrf_rerank": {
+        "1": {
+          "recall": 0.8333333333333334,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0
+        }
+      }
+    },
+    "scope": "text_only_BM25_BGE_equal_RRF_reranker; no_Qdrant_ColPali_graph_or_context_expansion",
+    "relevance": "manually_defined_binary_document_ids; no_weight_tuning_or_train_test_split"
+  },
+  "entities": {
+    "status": "measured",
+    "samples": [
+      {
+        "id": "payment",
+        "source": "Bên A thanh toán 120.000.000 đồng trong vòng 30 ngày kể từ ngày nhận đủ hóa đơn và biên bản nghiệm thu.",
+        "rows": [
+          {
+            "field": "COMPANY_NAME",
+            "expected": "",
+            "predicted": "",
+            "exact_match": true
+          },
+          {
+            "field": "CONTRACT_VALUE",
+            "expected": "120.000.000",
+            "predicted": "120.000.000",
+            "exact_match": true
+          },
+          {
+            "field": "DATE_EFFECTIVE",
+            "expected": "",
+            "predicted": "",
+            "exact_match": true
+          },
+          {
+            "field": "DATE_EXPIRE",
+            "expected": "",
+            "predicted": "",
+            "exact_match": true
+          },
+          {
+            "field": "DURATION",
+            "expected": "30 ngày",
+            "predicted": "30 ngày",
+            "exact_match": true
+          },
+          {
+            "field": "OBLIGATION",
+            "expected": "",
+            "predicted": "",
+            "exact_match": true
+          },
+          {
+            "field": "PAYMENT_TERM",
+            "expected": "30 ngày kể từ ngày nhận đủ hóa đơn và biên bản nghiệm thu",
+            "predicted": "30 ngày kể từ ngày nhận đủ hóa đơn và biên bản nghiệm thu",
+            "exact_match": true
+          },
+          {
+            "field": "PENALTY",
+            "expected": "",
+            "predicted": "",
+            "exact_match": true
+          },
+          {
+            "field": "TAX_CODE",
+            "expected": "",
+            "predicted": "",
+            "exact_match": true
+          }
+        ],
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "exact_match": 1.0
+      },
+      {
+        "id": "duration",
+        "source": "Hợp đồng có hiệu lực 12 tháng kể từ ngày ký.",
+        "rows": [
+          {
+            "field": "COMPANY_NAME",
+            "expected": "",
+            "predicted": "",
+            "exact_match": true
+          },
+          {
+            "field": "CONTRACT_VALUE",
+            "expected": "",
+            "predicted": "",
+            "exact_match": true
+          },
+          {
+            "field": "DATE_EFFECTIVE",
+            "expected": "",
+            "predicted": "",
+            "exact_match": true
+          },
+          {
+            "field": "DATE_EXPIRE",
+            "expected": "",
+            "predicted": "",
+            "exact_match": true
+          },
+          {
+            "field": "DURATION",
+            "expected": "12 tháng kể từ ngày ký",
+            "predicted": "12 tháng kể từ ngày ký",
+            "exact_match": true
+          },
+          {
+            "field": "OBLIGATION",
+            "expected": "",
+            "predicted": "",
+            "exact_match": true
+          },
+          {
+            "field": "PAYMENT_TERM",
+            "expected": "",
+            "predicted": "",
+            "exact_match": true
+          },
+          {
+            "field": "PENALTY",
+            "expected": "",
+            "predicted": "",
+            "exact_match": true
+          },
+          {
+            "field": "TAX_CODE",
+            "expected": "",
+            "predicted": "",
+            "exact_match": true
+          }
+        ],
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "exact_match": 1.0
+      }
+    ],
+    "summary": {
+      "samples": 2,
+      "positive_fields": 4,
+      "positive_field_exact_match": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0
+    },
+    "scope": "strict_value_exact_match; empty fields excluded from positive EM, hallucinated extra values count FP"
+  },
+  "web_qa": {
+    "status": "historical_web_fixture",
+    "source_file": "scratch/live_pdf_flow_results.json",
+    "samples": [
+      {
+        "id": "payment",
+        "answerable": true,
+        "generated": true,
+        "fixture_values_present": true,
+        "answer": "Thời hạn thanh toán là 30 ngày, và cần những hồ sơ là hóa đơn và biên bản nghiệm thu. [E1]",
+        "diagnostics": {
+          "state": "generated",
+          "failures": []
+        },
+        "retrieval_ms": 11015.28
+      },
+      {
+        "id": "maintenance",
+        "answerable": true,
+        "generated": false,
+        "fixture_values_present": false,
+        "answer": "Chưa thể xác minh câu trả lời tổng hợp. Các đoạn nguồn để đối chiếu:\n\n[E1] SMOKE-d1440c86da — Hợp đồng bảo trì thiết bị mẫu — Phiên bản 1, trang 1\nTrước khi bảo trì tủ điện, kỹ thuật viên phải ngắt nguồn điện và khóa cầu dao. Chu kỳ bảo trì là 6 tháng.\n\n[E2] SMOKE-d1440c86da — Hợp đồng bảo trì thiết bị mẫu — Phiên bản 1, trang 1\nHợp đồng có hiệu lực 12 tháng kể từ ngày ký.\n\n[E3] SMOKE-d1440c86da — Hợp đồng bảo trì thiết bị mẫu — Phiên bản 1, trang 1\nĐiều 2. Bảo trì và an toàn\n\n[E4] SMOKE-d1440c86da — Hợp đồng bảo trì thiết bị mẫu — Phiên bản 1, trang 1\nBên A thanh toán 120.000.000 đồng trong vòng 30 ngày kể từ ngày nhận đủ hóa đơn và biên bản nghiệm thu.",
+        "diagnostics": {
+          "state": "citation_validation_failed",
+          "failures": [
+            "uncited_claim"
+          ]
+        },
+        "retrieval_ms": 13058.2
+      },
+      {
+        "id": "penalty_absent",
+        "answerable": false,
+        "generated": false,
+        "fixture_values_present": null,
+        "answer": "Chưa thể xác minh câu trả lời tổng hợp. Các đoạn nguồn để đối chiếu:\n\n[E1] SMOKE-d1440c86da — Hợp đồng bảo trì thiết bị mẫu — Phiên bản 1, trang 1\nBên A thanh toán 120.000.000 đồng trong vòng 30 ngày kể từ ngày nhận đủ hóa đơn và biên bản nghiệm thu.\n\n[E2] SMOKE-d1440c86da — Hợp đồng bảo trì thiết bị mẫu — Phiên bản 1, trang 1\nHợp đồng có hiệu lực 12 tháng kể từ ngày ký.\n\n[E3] SMOKE-d1440c86da — Hợp đồng bảo trì thiết bị mẫu — Phiên bản 1, trang 1\nĐiều 1. Thanh toán\n\n[E4] SMOKE-d1440c86da — Hợp đồng bảo trì thiết bị mẫu — Phiên bản 1, trang 1\nĐiều 3. Thời hạn",
+        "diagnostics": {
+          "state": "citation_validation_failed",
+          "failures": [
+            "model_rejected_unsupported_claim"
+          ]
+        },
+        "retrieval_ms": 13469.81
+      },
+      {
+        "id": "diagram_left",
+        "answerable": true,
+        "generated": true,
+        "fixture_values_present": true,
+        "answer": "Trong sơ đồ, QF1 ở phía trái so với M1. [E1]",
+        "diagnostics": {
+          "state": "generated",
+          "failures": []
+        },
+        "retrieval_ms": 13440.74
+      }
+    ],
+    "summary": {
+      "questions": 4,
+      "answerable": 3,
+      "generated": 2,
+      "complete_generated_answers": 2,
+      "answerable_completion_rate": 0.6666666666666666,
+      "unsupported_blocked": 1
+    },
+    "faithfulness": "not_measured_as_general_rate",
+    "completeness": "required fixture values only; no full human semantic audit",
+    "structure": {
+      "success": true,
+      "run_id": 1,
+      "status": "COMPLETED",
+      "total_pages": 1,
+      "total_blocks": 9,
+      "dense_index_status": "COMPLETED",
+      "dense_points_count": 8,
+      "colpali_index_status": "COMPLETED",
+      "colpali_points_count": 1,
+      "structure_status": "model_partial",
+      "structure_analysis": {
+        "provider": "granite",
+        "model": "ibm-granite/granite-docling-258M",
+        "pages_attempted": 1,
+        "pages_total": 1,
+        "pages_not_attempted": 0,
+        "pages_failed": [],
+        "aligned_units": 8,
+        "unclassified_ids": [
+          "u8"
+        ],
+        "relation_status": "not_inferred",
+        "visual_pages": [
+          {
+            "page_number": 1,
+            "image_path": "extracted_images/pdf_page_contract_run_1_p1.png",
+            "items": [
+              {
+                "id": "#/texts/0",
+                "kind": "section_header",
+                "text": "Hop dong bao tri thiết bị",
+                "level": 1,
+                "bbox": [
+                  42.0,
+                  34.0,
+                  316.0,
+                  60.0
+                ]
+              },
+              {
+                "id": "#/texts/1",
+                "kind": "section_header",
+                "text": "Điều 1. Thanh toán",
+                "level": 1,
+                "bbox": [
+                  40.0,
+                  72.0,
+                  256.0,
+                  96.0
+                ]
+              },
+              {
+                "id": "#/texts/2",
+                "kind": "text",
+                "text": "Bên A thanh toán 120.000.000 dong trong vòng 30 ngày kể từ ngày nhận đủ hóa đơn và biên bản nghiêm thu.",
+                "level": null,
+                "bbox": [
+                  40.0,
+                  110.0,
+                  710.0,
+                  154.0
+                ]
+              },
+              {
+                "id": "#/texts/3",
+                "kind": "section_header",
+                "text": "Điều 2. Bao tri và an toàn",
+                "level": 1,
+                "bbox": [
+                  40.0,
+                  174.0,
+                  326.0,
+                  198.0
+                ]
+              },
+              {
+                "id": "#/texts/4",
+                "kind": "text",
+                "text": "Trước khi bao tri tư điện, kỹ thuật viên phải ngắt nguồn điện và khóa cầu dao. Chu kỹ bao tri là 6 tháng.",
+                "level": null,
+                "bbox": [
+                  40.0,
+                  214.0,
+                  646.0,
+                  260.0
+                ]
+              },
+              {
+                "id": "#/texts/5",
+                "kind": "section_header",
+                "text": "Điều 3. Thời hạn",
+                "level": 1,
+                "bbox": [
+                  40.0,
+                  278.0,
+                  229.99999999999997,
+                  302.0
+                ]
+              },
+              {
+                "id": "#/texts/6",
+                "kind": "text",
+                "text": "Hop đồng có hiệu lực 12 tháng kể từ ngày kỹ.",
+                "level": null,
+                "bbox": [
+                  40.0,
+                  318.0,
+                  424.0,
+                  338.0
+                ]
+              },
+              {
+                "id": "#/pictures/0",
+                "kind": "picture",
+                "text": "",
+                "level": null,
+                "bbox": [
+                  106.0,
+                  686.0,
+                  853.9999999999999,
+                  852.0
+                ]
+              }
+            ]
+          }
+        ],
+        "validation_scope": "source_text_alignment_and_heading_levels_not_semantic_accuracy",
+        "cross_page_method": "continue_last_heading_until_next_predicted_heading"
+      },
+      "graph_index": {
+        "status": "ready",
+        "fingerprint": "1e23aadc1adb0593ccd1e3555d6775e032f561b86e176a5531105f854792aba7",
+        "nodes": 28,
+        "edges": 74
+      },
+      "knowledge_status": "complete"
+    },
+    "frontend_job": {
+      "status": "COMPLETED",
+      "answer": "Chưa thể xác minh câu trả lời tổng hợp. Các đoạn nguồn để đối chiếu:\n\n[E1] SMOKE-d1440c86da — Hợp đồng bảo trì thiết bị mẫu — Phiên bản 1, trang 1\nTrước khi bảo trì tủ điện, kỹ thuật viên phải ngắt nguồn điện và khóa cầu dao. Chu kỳ bảo trì là 6 tháng.\n\n[E2] SMOKE-d1440c86da — Hợp đồng bảo trì thiết bị mẫu — Phiên bản 1, trang 1\nHợp đồng có hiệu lực 12 tháng kể từ ngày ký.\n\n[E3] SMOKE-d1440c86da — Hợp đồng bảo trì thiết bị mẫu — Phiên bản 1, trang 1\nĐiều 2. Bảo trì và an toàn\n\n[E4] SMOKE-d1440c86da — Hợp đồng bảo trì thiết bị mẫu — Phiên bản 1, trang 1\nBên A thanh toán 120.000.000 đồng trong vòng 30 ngày kể từ ngày nhận đủ hóa đơn và biên bản nghiệm thu.",
+      "generation_status": "source_excerpt",
+      "generation_diagnostics": {
+        "state": "citation_validation_failed",
+        "failures": [
+          "uncited_claim"
+        ]
+      }
+    },
+    "pages": {
+      "/ai-extract/": 200,
+      "/ai-extract/contracts/1219431112/": 200,
+      "/newidea/contracts/1219431112/": 200
+    }
+  },
+  "elapsed_seconds": 39.24
+}

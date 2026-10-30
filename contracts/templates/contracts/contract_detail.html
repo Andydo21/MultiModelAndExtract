@@ -1,0 +1,436 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Detail - {{ contract.title }}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{% static 'contracts/css/contract_detail.css' %}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation -->
+        <header>
+            <div class="logo-section">
+                <a href="{% url 'dashboard' %}" class="btn-back">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                </a>
+                <div class="divider"></div>
+                <div class="logo-text">Contract Guard AI</div>
+            </div>
+            <div class="contract-header-info" style="display: flex; align-items: center; gap: 16px;">
+                <!-- Version Selector Dropdown -->
+                <div class="version-selector-container">
+                    <label for="version-select" class="version-label"><i class="fa-solid fa-code-branch"></i> Version:</label>
+                    <select id="version-select" class="version-select-dropdown">
+                        {% for v in contract.versions %}
+                            <option value="{{ v.id }}" {% if v.id == contract.active_version_id %}selected{% endif %}>
+                                v{{ v.version_number }} - {{ v.change_summary|truncatechars:20 }} ({% if v.overall_score %}{{ v.overall_score|floatformat:0 }}%{% else %}Pending{% endif %})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <button class="btn btn-upload-version" id="btn-upload-new-version" style="padding: 8px 16px; font-size: 13px; font-family: 'Outfit', sans-serif; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-circle-plus"></i> New Version
+                </button>
+                
+                <span class="status-badge status-{{ contract.status|lower }}">{{ contract.status }}</span>
+            </div>
+        </header>
+
+        <!-- Main Workspace Split Screen -->
+        <a href="{% url 'ai_extract_contract' contract.id %}?version_id={{ contract.active_version_id }}" class="btn" style="display:inline-block;margin:12px 0;text-decoration:none;">A3 — Trích xuất hợp đồng</a>
+        <a href="{% url 'contract_intelligence_detail' contract.id %}" class="btn" style="display:inline-block;margin:12px 0;text-decoration:none;">Tra cứu bằng chứng và kinh nghiệm hợp đồng A2/A3</a>
+        <a href="{% url 'newidea_contract' contract.id %}" class="btn" style="display:inline-block;margin:12px 0;text-decoration:none;">A2 — Hỏi đáp tài liệu này</a>
+        <a href="{% url 'contract_ledger' %}?version_id={{ contract.active_version_id }}" class="btn">Ký và kiểm chứng hợp đồng</a>
+        <div class="detail-grid">
+            
+            <!-- Left Side: Full Document Reader -->
+            <div class="doc-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i class="fa-solid fa-file-lines"></i> Original Contract Document</h3>
+                    {% if contract.file_path %}
+                    <a href="{{ contract.file_path }}" target="_blank" download class="btn-download">
+                        <i class="fa-solid fa-file-pdf"></i> Download PDF
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="doc-reader-body">
+                    <pre class="doc-content-pre">{{ contract.raw_content }}</pre>
+                </div>
+            </div>
+
+            <!-- Right Side: Analysis & Expert Review Panel -->
+            <div class="analysis-panel">
+                <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 class="panel-title" style="margin: 0;"><i class="fa-solid fa-chart-line"></i> Risk Analysis & Actions</h3>
+                    <button class="btn" id="btn-detail-reanalyze" data-contract-id="{{ contract.id }}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 8px; margin: 0; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #ffffff; border: none; font-weight: 600; display: flex; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(99,102,241,0.3);">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Run AI Analysis
+                    </button>
+                </div>
+                
+                <div class="panel-body">
+                    <!-- Active Version Info -->
+                    <div class="active-version-info-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 12px; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-family: 'Outfit', sans-serif; font-weight: 700; color: #ffffff; font-size: 14px; display: flex; align-items: center; gap: 6px;">
+                                <i class="fa-solid fa-code-branch" style="color: var(--accent-primary);"></i> Viewing Version {{ contract.active_version_number }}
+                            </span>
+                            <span style="font-size: 11.5px; color: var(--text-muted);">
+                                Status: {{ contract.status }}
+                            </span>
+                        </div>
+                        {% if contract.active_version_change_summary %}
+                        <div style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.4; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 8px; padding-top: 8px;">
+                            <strong style="color: var(--accent-primary);">Change Log:</strong> {{ contract.active_version_change_summary }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Metadata Section -->
+                    <div class="meta-section">
+                        <div class="meta-card">
+                            <div class="meta-icon"><i class="fa-solid fa-barcode"></i></div>
+                            <div class="meta-info">
+                                <span class="meta-label">Code</span>
+                                <span class="meta-val">{{ contract.contract_code }}</span>
+                            </div>
+                        </div>
+                        <div class="meta-card">
+                            <div class="meta-icon"><i class="fa-solid fa-tag"></i></div>
+                            <div class="meta-info">
+                                <span class="meta-label">Type</span>
+                                <span class="meta-val">{{ contract.contract_type|default:"N/A" }}</span>
+                            </div>
+                        </div>
+                        <div class="meta-card">
+                            <div class="meta-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+                            <div class="meta-info">
+                                <span class="meta-label">Value</span>
+                                <span class="meta-val">${{ contract.contract_value|floatformat:2|default:"0" }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel Tabs Switcher -->
+                    <div class="panel-tabs" style="display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
+                        <button type="button" class="panel-tab-btn active" data-target="analysis-tab" style="background: none; border: none; color: #ffffff; padding: 8px 16px; font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 600; cursor: pointer; border-radius: 6px; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-chart-line"></i> Risk Analysis
+                        </button>
+                        <button type="button" class="panel-tab-btn" data-target="clauses-tab" style="background: none; border: none; color: var(--text-muted); padding: 8px 16px; font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 600; cursor: pointer; border-radius: 6px; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-file-contract"></i> Clauses & Entities
+                        </button>
+                        <button type="button" class="panel-tab-btn" data-target="summary-tab" style="background: none; border: none; color: var(--text-muted); padding: 8px 16px; font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 600; cursor: pointer; border-radius: 6px; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-align-left"></i> Summary
+                        </button>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div class="tab-content-wrapper">
+                        <!-- Tab 1: Risk Analysis -->
+                        <div class="tab-pane active" id="analysis-tab" style="display: block;">
+                            <!-- 1. AI Analysis Section (Pending, Progress, or Results) -->
+                            {% if contract.status == 'ANALYZING' %}
+                            <div style="text-align: center; color: var(--text-muted); padding: 32px 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 24px;">
+                                <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 36px; color: var(--accent-primary);"></i>
+                                <h3 style="color: #ffffff; font-family: 'Outfit', sans-serif; font-size: 16px; margin: 0;">AI Scanning in Progress</h3>
+                                <p style="max-width: 320px; font-size: 13px; color: var(--text-secondary); margin: 0;">Extracting agreement clauses and analyzing legal language...</p>
+                            </div>
+                            {% elif contract.analysis and contract.analysis.model_name != 'N/A' %}
+                            <!-- Circular Gauge -->
+                            <div class="gauge-area">
+                                <div class="gauge-circle">
+                                    <svg>
+                                        <circle class="bg-circle" cx="40" cy="40" r="36"></circle>
+                                        <circle class="val-circle" id="gauge-val" cx="40" cy="40" r="36" data-score="{{ contract.analysis.overall_score }}"></circle>
+                                    </svg>
+                                    <div class="gauge-text">{{ contract.analysis.overall_score|floatformat:0 }}%</div>
+                                </div>
+                                <div class="gauge-desc">
+                                    <div class="gauge-label">Threat Level</div>
+                                    <div class="gauge-status" id="gauge-status">Calculating...</div>
+                                </div>
+                            </div>
+
+                            <!-- AI Summary -->
+                            <div class="summary-box">
+                                {{ contract.analysis.summary }}
+                            </div>
+
+                            <!-- Findings -->
+                            <h4 class="section-title"><i class="fa-solid fa-magnifying-glass-warning"></i> Detected Risks</h4>
+                            <div class="findings-list" style="margin-bottom: 24px;">
+                                {% for f in contract.findings %}
+                                <div class="finding-item">
+                                    <div class="finding-header" onclick="toggleFinding(this)">
+                                        <div class="finding-left">
+                                            <span class="risk-badge badge-{{ f.risk_level|lower }}">{{ f.risk_level }}</span>
+                                            <span>{{ f.risk_name }}</span>
+                                        </div>
+                                        <i class="fa-solid fa-chevron-down" style="color: var(--text-muted); font-size: 12px; transition: transform 0.2s;"></i>
+                                    </div>
+                                    <div class="finding-body" style="display: none;">
+                                        <div class="finding-block">
+                                            <div class="block-label">Violated Clause</div>
+                                            <div class="block-text" style="font-weight: 500; color: #ffffff;">{{ f.clause_title }}</div>
+                                        </div>
+                                        <div class="finding-block">
+                                            <div class="block-label">Risk Explanation</div>
+                                            <div class="block-text">{{ f.explanation }}</div>
+                                        </div>
+                                        {% if f.disadvantaged_party %}
+                                        <div class="finding-block" style="margin-top: 8px;">
+                                            <div class="block-label" style="color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Bên gặp bất lợi / Disadvantaged Party</div>
+                                            <div class="block-text" style="font-weight: 600; color: #f87171;">{{ f.disadvantaged_party }}</div>
+                                        </div>
+                                        {% endif %}
+                                        {% if f.recommendation %}
+                                        <div class="rec-box">
+                                            <div class="block-label" style="color: var(--risk-low);"><i class="fa-solid fa-lightbulb"></i> AI Recommendation</div>
+                                            <div class="block-text">{{ f.recommendation }}</div>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <p style="color: var(--text-muted); font-style: italic;">No specific risks identified.</p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div style="text-align: center; color: var(--text-muted); padding: 32px 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 24px;">
+                                <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 36px; color: var(--accent-primary);"></i>
+                                <h3 style="color: #ffffff; font-family: 'Outfit', sans-serif; font-size: 16px; margin: 0;">Run AI Risk Scanner</h3>
+                                <p style="max-width: 320px; font-size: 13px; line-height: 1.4; color: var(--text-secondary); margin: 0;">Click below to run the AI risk scanner to extract clauses and detect risk violations for this version.</p>
+                                <button class="btn" id="btn-detail-trigger-analysis" data-contract-id="{{ contract.id }}" style="margin-top: 8px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border: none;">
+                                    <i class="fa-solid fa-play"></i> Run AI Analysis
+                                </button>
+                            </div>
+                            {% endif %}
+
+                            <!-- 2. Legal Expert Review Section (Always shown at the bottom) -->
+                            <div class="reviews-section">
+                                <h4 class="section-title"><i class="fa-solid fa-user-shield"></i> Legal Expert Review</h4>
+                                {% for r in contract.reviews %}
+                                <div class="review-card">
+                                    <div class="review-header">
+                                        <div class="reviewer-info">
+                                            <i class="fa-solid fa-user-tie" style="color: var(--accent-primary);"></i>
+                                            <span>{{ r.reviewer }}</span>
+                                        </div>
+                                        <span class="risk-badge badge-{{ r.final_risk_level|lower }}">{{ r.final_risk_level }} Decision</span>
+                                    </div>
+                                    <div class="review-comment">"{{ r.comment }}"</div>
+                                </div>
+                                {% endfor %}
+
+                                {% if not contract.reviews and contract.status != 'APPROVED' %}
+                                <form class="review-form" id="detail-review-form" data-analysis-id="{{ contract.analysis.id }}">
+                                    <div class="form-group">
+                                        <label class="form-label">Review Verdict *</label>
+                                        <select class="form-control" name="final_risk_level" required>
+                                            <option value="LOW">LOW RISK - Approved</option>
+                                            <option value="MEDIUM" selected>MEDIUM RISK - Mitigation Required</option>
+                                            <option value="HIGH">HIGH RISK - Rejection/Renegotiate</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Expert Commentary *</label>
+                                        <textarea class="form-control" name="comment" placeholder="Provide legal reasoning and next action steps..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn" style="align-self: flex-end; margin-top: 8px;">
+                                        <i class="fa-solid fa-signature"></i> Sign & Submit Review
+                                    </button>
+                                </form>
+                                {% elif contract.reviews or contract.status == 'APPROVED' %}
+                                <div style="display: flex; gap: 8px; align-items: center; color: var(--risk-low); font-size: 13.5px; background: rgba(16,185,129,0.05); padding: 12px; border-radius: 8px; border: 1px dashed rgba(16,185,129,0.2); margin-top: 12px;">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span>Expert review has been successfully submitted and the contract status has been marked as <strong>Approved</strong>.</span>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Push to Workflow -->
+                            <div class="workflow-push-section" id="workflow-push-container" style="margin-top: 24px; padding: 20px; background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.2); border-radius: 14px; {% if contract.has_workflow %}display: none;{% endif %}">
+                                <h4 class="section-title" style="margin-bottom: 12px;"><i class="fa-solid fa-diagram-project"></i> Approval Workflow</h4>
+                                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5;">
+                                    Hợp đồng đã sẵn sàng. Đẩy lên hệ thống workflow để khởi động quy trình ký kết và lưu trữ chính thức.
+                                </p>
+                                <button class="btn" id="btn-push-workflow" data-contract-id="{{ contract.id }}" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); border: none; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa-solid fa-paper-plane"></i> Push to Workflow
+                                </button>
+                            </div>
+
+                            <!-- Workflow Status Display -->
+                            <div class="workflow-status-section" id="workflow-status-container" style="margin-top: 24px; padding: 20px; background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.2); border-radius: 14px; {% if not contract.has_workflow %}display: none;{% endif %}">
+                                <h4 class="section-title" style="margin-bottom: 16px;"><i class="fa-solid fa-diagram-project"></i> Workflow Status</h4>
+                                <div id="workflow-steps-container" data-contract-id="{{ contract.id }}">
+                                    <p style="color: var(--text-muted); font-size: 13px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading workflow...</p>
+                                </div>
+                                <div style="margin-top: 16px; border-top: 1px solid rgba(99,102,241,0.15); padding-top: 16px; display: flex; justify-content: flex-end;">
+                                    <button class="btn" id="btn-repush-workflow" data-contract-id="{{ contract.id }}" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #f87171; font-size: 12.5px; font-weight: 600; padding: 8px 16px; border-radius: 8px; display: flex; align-items: center; gap: 6px; cursor: pointer; transition: all 0.2s;">
+                                        <i class="fa-solid fa-arrows-rotate"></i> Re-push to Workflow
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Tab 2: Clauses & Entities -->
+                        <div class="tab-pane" id="clauses-tab" style="display: none;">
+                            <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+                                <button class="btn btn-secondary" id="btn-manual-extract" data-contract-id="{{ contract.id }}" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #ffffff;">
+                                    <i class="fa-solid fa-gears"></i> Trích xuất Thủ công
+                                </button>
+                                <button class="btn" id="btn-ai-extract" data-contract-id="{{ contract.id }}" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border: none;">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Trích xuất AI
+                                </button>
+                            </div>
+
+                            <div class="clauses-list" style="display: flex; flex-direction: column; gap: 12px;">
+                                {% for cl in contract.clauses %}
+                                <div class="clause-item-container" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; transition: all 0.2s;">
+                                    <div class="clause-item-header" style="padding: 12px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleClause(this)">
+                                        <span style="font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 14px; color: #ffffff;">{{ cl.title }}</span>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span style="font-size: 11px; background: rgba(99,102,241,0.15); color: #818cf8; padding: 2px 8px; border-radius: 12px;">{{ cl.entities|length }} entities</span>
+                                            <i class="fa-solid fa-chevron-down" style="color: var(--text-muted); font-size: 12px; transition: transform 0.2s;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="clause-item-body" style="display: none; padding: 16px; border-top: 1px solid rgba(255,255,255,0.04); background: rgba(0,0,0,0.15);">
+                                        <p style="font-size: 13px; line-height: 1.6; color: var(--text-secondary); white-space: pre-wrap; margin-top: 0; margin-bottom: 16px;">{{ cl.content }}</p>
+                                        
+                                        {% if cl.entities %}
+                                        <div style="border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 12px;">
+                                            <h5 style="margin: 0 0 10px 0; font-family: 'Outfit', sans-serif; font-size: 11px; text-transform: uppercase; color: var(--accent-primary); letter-spacing: 0.5px;">Extracted Entities</h5>
+                                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                                {% for ee in cl.entities %}
+                                                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.04);">
+                                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                                        <span class="entity-type-badge entity-type-{{ ee.entity_type|lower }}">{{ ee.entity_type }}</span>
+                                                        <span style="font-size: 12.5px; color: #ffffff; font-weight: 500;">{{ ee.entity_value }}</span>
+                                                    </div>
+                                                    <span style="font-size: 11px; color: var(--text-muted);">Conf: {{ ee.confidence_score|floatformat:2 }}</span>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <p style="font-size: 12px; color: var(--text-muted); font-style: italic; margin: 0;">No entities extracted for this clause.</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px 0;">No clauses extracted yet.</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Tab 3: Summary -->
+                        <div class="tab-pane" id="summary-tab" style="display: none;">
+                            {% if contract.ai_summary %}
+                                <div class="summary-box" style="margin-top: 10px; background: rgba(99, 102, 241, 0.02); border-left: 4px solid var(--accent-primary); padding: 20px; border-radius: 8px; line-height: 1.8;">
+                                    <h4 style="font-family: 'Outfit', sans-serif; font-size: 16px; color: #ffffff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; margin-top: 0;">
+                                        <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--accent-primary);"></i> AI Executive Summary
+                                    </h4>
+                                    <div id="ai-summary-text" style="color: var(--text-secondary); font-size: 14px; white-space: pre-wrap;">{{ contract.ai_summary.summary }}</div>
+                                    <div style="font-size: 11px; color: var(--text-muted); margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;">
+                                        Model: <span style="font-family: monospace;">{{ contract.ai_summary.model_id }}</span> · Generated: {{ contract.ai_summary.created_at }}
+                                    </div>
+                                    <button class="btn btn-secondary" id="btn-generate-summary" data-contract-id="{{ contract.id }}" style="margin-top: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #ffffff; display: flex; align-items: center; gap: 8px; font-size: 12.5px;">
+                                        <i class="fa-solid fa-rotate"></i> Re-generate Summary
+                                    </button>
+                                </div>
+                            {% else %}
+                                <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+                                    <i class="fa-solid fa-align-left" style="font-size: 48px; margin-bottom: 12px; color: var(--accent-primary);"></i>
+                                    <p style="margin-bottom: 16px;">No executive summary available for this contract version.</p>
+                                    <button class="btn" id="btn-generate-summary" data-contract-id="{{ contract.id }}" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); border: none; display: inline-flex; align-items: center; gap: 8px;">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i> Generate AI Summary
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Scanner Loading Overlay -->
+            <div class="scanner-overlay" id="scanner-loader">
+                <div class="scanner-circle"></div>
+                <div class="scanner-laser"></div>
+                <div class="scanner-text">AI SCANNER RUNNING...</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Upload New Version Modal -->
+    <div class="modal-overlay" id="upload-version-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa-solid fa-file-arrow-up"></i> Upload New Contract Version</h3>
+                <button class="modal-close-btn" id="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="upload-version-form" data-contract-id="{{ contract.id }}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label class="form-label" for="version_change_summary" style="display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px;">Change Summary *</label>
+                        <input type="text" class="form-control" id="version_change_summary" name="change_summary" placeholder="e.g. Added clause 5 regarding confidentiality, updated pricing..." required style="width: 100%; box-sizing: border-box;">
+                    </div>
+                    
+                    <!-- Content Source Switcher -->
+                    <div class="modal-tabs" style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
+                        <button type="button" class="modal-tab-btn active" data-tab="file-tab" style="background: none; border: none; color: #ffffff; padding: 6px 12px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 4px;">
+                            <i class="fa-solid fa-file-arrow-up"></i> Upload Document File
+                        </button>
+                        <button type="button" class="modal-tab-btn" data-tab="text-tab" style="background: none; border: none; color: var(--text-muted); padding: 6px 12px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 4px;">
+                            <i class="fa-solid fa-pen-to-square"></i> Paste Plain Text
+                        </button>
+                    </div>
+                    
+                    <!-- File Tab -->
+                    <div class="tab-pane active" id="file-tab">
+                        <label class="file-upload-zone" id="file-upload-zone" for="version_file_input" style="display: block; border: 2px dashed rgba(99, 102, 241, 0.3); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s; background: rgba(99, 102, 241, 0.02);">
+                            <i class="fa-solid fa-cloud-arrow-up" style="font-size: 32px; color: var(--accent-primary); margin-bottom: 8px;"></i>
+                            <p style="font-weight: 500; font-size: 13.5px; margin: 0; color: #ffffff;">Click to select file or drag & drop</p>
+                            <p style="font-size: 11.5px; color: var(--text-muted); margin: 4px 0 0 0;">Supports .pdf, .txt, .docx (Max 10MB)</p>
+                            <input type="file" id="version_file_input" name="file" style="display: none;" accept=".pdf,.txt,.docx,.doc">
+                            <div class="selected-file-name" id="selected-file-name" style="margin-top: 12px; font-weight: 600; color: #10b981; display: none;"></div>
+                        </label>
+                    </div>
+                    
+                    <!-- Text Tab -->
+                    <div class="tab-pane" id="text-tab" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label" for="version_raw_content" style="display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px;">Contract Text Content</label>
+                            <textarea class="form-control" id="version_raw_content" name="raw_content" rows="8" placeholder="Paste the updated contract text here..." style="width: 100%; box-sizing: border-box; resize: vertical; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: #ffffff; border-radius: 8px; padding: 10px; font-family: 'Inter', sans-serif; font-size: 13px;"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer" style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;">
+                        <button type="button" class="btn btn-secondary" id="btn-cancel-upload" style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: var(--text-secondary);">Cancel</button>
+                        <button type="submit" class="btn" id="btn-submit-version">
+                            <i class="fa-solid fa-play"></i> Upload & Start AI Scan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JS -->
+    <script src="{% static 'contracts/js/contract_detail.js' %}?v=1.0.8"></script>
+</body>
+</html>

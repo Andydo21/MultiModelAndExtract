@@ -1,0 +1,1 @@
+2026-10-30 17:15 local: runs restarted with repetition-major ordering (rep 0 for all questions/variants first); records already written kept; schedule in manifest.json is the original shuffled draw.

@@ -1,0 +1,17 @@
+﻿question_id,input,label,leaked_claims,claims
+P013,F,correct,0,4
+P013,K,correct,0,4
+P013,O,correct,0,4
+P013,S,correct,0,4
+P028,F,correct,0,1
+P028,K,wrong,0,1
+P028,O,correct,0,1
+P028,S,correct,0,1
+P039,F,partial,0,2
+P039,K,no_answer,0,2
+P039,O,correct,0,3
+P039,S,correct,0,3
+P040,F,wrong,2,2
+P040,K,wrong,1,2
+P040,O,wrong,1,2
+P040,S,wrong,1,2

@@ -1,0 +1,58 @@
+{% extends 'ai_extract/base.html' %}
+{% block title %}Ký và kiểm chứng hợp đồng{% endblock %}
+{% block content %}
+<style>
+.ledger-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}.ledger-card{padding:22px;border:1px solid #334155;border-radius:14px;background:#0f172a;color:#e2e8f0}.ledger-card label{display:block;margin:12px 0 6px}.ledger-card input,.ledger-card select,.ledger-card textarea{width:100%;box-sizing:border-box;background:#1e293b;color:#e2e8f0;padding:10px;border:1px solid #475569;border-radius:8px}.ledger-card button{margin:10px 8px 0 0;padding:10px 14px;border:0;border-radius:8px;background:#4f46e5;color:white;cursor:pointer}.ledger-card button:disabled{opacity:.5}.ledger-note{color:#94a3b8;font-size:14px;line-height:1.6}.ledger-row{padding:12px 0;border-bottom:1px solid #334155;overflow-wrap:anywhere}.ledger-result{white-space:pre-wrap}.ledger-header{margin:20px 0}.ledger-card h2{font-size:20px}
+</style>
+<div class="ledger-header"><h1>Ký và kiểm chứng hợp đồng</h1><p>Kiểm tra riêng tính nguyên vẹn của file, chữ ký RSA và bằng chứng Fabric.</p></div>
+{% csrf_token %}
+{{ request.user.id|json_script:'ledger-user' }}
+<label>Hợp đồng / phiên bản <select id="version">{% for v in versions %}<option value="{{ v.pk }}" {% if selected.pk == v.pk %}selected{% endif %}>{{ v.contract.contract_code }} — {{ v.contract.title }} — v{{ v.version_number }}</option>{% endfor %}</select></label>
+<p id="message" role="status" aria-live="polite"></p>
+<div class="ledger-grid">
+ <section class="ledger-card"><h2>1. Khóa ký cá nhân</h2>
+  <p class="ledger-note">Khóa riêng được tạo và dùng trên trình duyệt. Hãy cất file khóa riêng an toàn; web không lưu hoặc nhận file này. Public key cần người quản lý khác trong công ty duyệt.</p>
+  {% if can_sign %}<button id="generate">Tạo RSA 3072 và tải khóa riêng</button>
+  <label>Public key PEM<textarea id="public-key" rows="5" placeholder="-----BEGIN PUBLIC KEY-----"></textarea></label><button id="enroll">Đăng ký public key</button>{% endif %}
+  <div id="keys"></div>
+  <p class="ledger-note">Đây là khóa được tài khoản quản lý phê duyệt trong ứng dụng; chưa phải chứng thư chữ ký số do CA độc lập cấp.</p>
+ </section>
+ <section class="ledger-card"><h2>2. Ký đúng phiên bản</h2>
+  {% if can_sign %}<label>Public key đã duyệt<select id="credential"></select></label>
+  <label>Khóa riêng PKCS#8 (chỉ xử lý trong trình duyệt)<input id="private-key" type="file" accept=".pem"></label>
+  <label>Bước ký workflow (có thể ký riêng hợp đồng)<select id="step"><option value="0">Ký riêng phiên bản hợp đồng</option></select></label>
+  <button id="sign">Ký và gửi vào hàng đợi</button><button id="anchor">Ghi hash phiên bản vào ledger</button>{% endif %}
+  <p class="ledger-note">Yêu cầu lặp lại dùng cùng mã thao tác. CONFIRMED chỉ xuất hiện sau khi Fabric commit. Thay đổi file cần tạo phiên bản mới.</p>
+ </section>
+ <section class="ledger-card"><h2>3. Kiểm chứng file</h2>
+  <label>File gốc cần đối chiếu<input id="verify-file" type="file"></label>
+  <label>File ID (chỉ cần khi phiên bản có nhiều file)<input id="file-id" type="number" min="1"></label>
+  <button id="verify">Kiểm chứng</button><div id="verification" class="ledger-result"></div>
+ </section>
+ <section class="ledger-card"><h2>4. Trạng thái giao dịch</h2><button id="refresh">Làm mới</button><div id="operations"></div></section>
+</div>
+<script>
+const uid=JSON.parse(document.getElementById('ledger-user').textContent);
+const csrf=document.querySelector('[name=csrfmiddlewaretoken]').value;
+const version=document.getElementById('version');
+function message(value){document.getElementById('message').textContent=value;}
+async function api(url,data){const options={headers:{'X-CSRFToken':csrf}};if(data!==undefined){options.method='POST';if(data instanceof FormData){options.body=data;}else{options.headers['Content-Type']='application/json';options.body=JSON.stringify(data);}}const r=await fetch(url,options);const j=await r.json();if(!r.ok)throw Error(j.error||'Yêu cầu thất bại');return j;}
+function row(parent,text){const node=document.createElement('div');node.className='ledger-row';node.textContent=text;parent.append(node);return node;}
+function button(parent,text,fn){const b=document.createElement('button');b.textContent=text;b.onclick=()=>run(b,fn);parent.append(b);}
+async function run(button,fn){button.disabled=true;try{await fn();}catch(e){message(e.message);}finally{button.disabled=false;}}
+function bytes(pem){const raw=atob(pem.replace(/-----[^-]+-----/g,'').replace(/\s/g,''));return Uint8Array.from(raw,c=>c.charCodeAt(0));}
+function base64(buffer){return btoa(String.fromCharCode(...new Uint8Array(buffer)));}
+function pem(buffer,label){return '-----BEGIN '+label+'-----\n'+base64(buffer).match(/.{1,64}/g).join('\n')+'\n-----END '+label+'-----\n';}
+async function keys(){const j=await api('/api/ledger/credentials/');const box=document.getElementById('keys');box.replaceChildren();const select=document.getElementById('credential');if(select)select.replaceChildren();for(const k of j.keys){const node=row(box,k.owner+' · '+k.status+' · '+k.fingerprint);if(k.can_approve)button(node,'Duyệt khóa',async()=>{await api('/api/ledger/credentials/'+k.id+'/',{action:'approve'});await keys();});if(k.status!=='REVOKED'&&(k.owner_id===uid||{{ can_manage|yesno:'true,false' }}))button(node,'Thu hồi',async()=>{await api('/api/ledger/credentials/'+k.id+'/',{action:'revoke'});await keys();});if(select&&k.owner_id===uid&&k.status==='ACTIVE'){const option=document.createElement('option');option.value=k.id;option.textContent=k.fingerprint;select.append(option);}}}
+async function operations(){if(!version.value)return;const j=await api('/api/ledger/operations/?version_id='+version.value);const box=document.getElementById('operations');box.replaceChildren();for(const op of j.operations){const node=row(box,op.kind+' · '+op.state+(op.accepted?'':' · chưa gửi chữ ký')+' · '+op.actor+'\nMã: '+op.id+'\nTx: '+(op.tx_id||'chưa commit')+'\n'+(op.last_error||''));if(op.state==='FAILED')button(node,'Thử lại',async()=>{await api('/api/ledger/operations/'+op.id+'/',{action:'retry'});await operations();});const details=document.createElement('details');const summary=document.createElement('summary');summary.textContent='Manifest đã ký';const pre=document.createElement('pre');pre.style.whiteSpace='pre-wrap';pre.textContent=op.manifest;details.append(summary,pre);node.append(details);}}
+version.onchange=()=>{location.href='/contract-ledger/?version_id='+version.value;};
+const generate=document.getElementById('generate');if(generate)generate.onclick=()=>run(generate,async()=>{const key=await crypto.subtle.generateKey({name:'RSASSA-PKCS1-v1_5',modulusLength:3072,publicExponent:new Uint8Array([1,0,1]),hash:'SHA-256'},true,['sign','verify']);document.getElementById('public-key').value=pem(await crypto.subtle.exportKey('spki',key.publicKey),'PUBLIC KEY');const blob=new Blob([pem(await crypto.subtle.exportKey('pkcs8',key.privateKey),'PRIVATE KEY')],{type:'text/plain'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='contract-signing-private-key.pem';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);message('Đã tạo khóa. Lưu khóa riêng, đăng ký public key và nhờ người quản lý khác duyệt.');});
+const enroll=document.getElementById('enroll');if(enroll)enroll.onclick=()=>run(enroll,async()=>{const pem=document.getElementById('public-key').value;if(pem.includes('PRIVATE KEY'))throw Error('Chỉ đăng ký public key; không gửi khóa riêng.');await api('/api/ledger/credentials/',{public_key_pem:pem});await keys();message('Public key đã đăng ký; đang chờ duyệt.');});
+const sign=document.getElementById('sign');if(sign)sign.onclick=()=>run(sign,async()=>{const file=document.getElementById('private-key').files[0];const id=document.getElementById('credential').value;if(!file||!id)throw Error('Cần khóa đã duyệt và file khóa riêng.');const key=await crypto.subtle.importKey('pkcs8',bytes(await file.text()),{name:'RSASSA-PKCS1-v1_5',hash:'SHA-256'},false,['sign']);const op=await api('/api/ledger/operations/',{kind:'SIGN',version_id:Number(version.value),credential_id:Number(id),step_id:Number(document.getElementById('step').value||0)});const signature=base64(await crypto.subtle.sign('RSASSA-PKCS1-v1_5',key,new TextEncoder().encode(op.manifest)));await api('/api/ledger/operations/'+op.id+'/',{signature});await operations();message('Chữ ký hợp lệ. Yêu cầu đã được lưu vào hàng đợi.');});
+if(document.getElementById('step')&&version.value)api('/api/ledger/workflow-steps/?version_id='+version.value).then(j=>{for(const step of j.steps){const option=document.createElement('option');option.value=step.id;option.textContent=step.name+' · '+step.status;document.getElementById('step').append(option);}}).catch(e=>message('Không tải được bước workflow: '+e.message));
+const anchor=document.getElementById('anchor');if(anchor)anchor.onclick=()=>run(anchor,async()=>{await api('/api/ledger/operations/',{kind:'ANCHOR',version_id:Number(version.value)});await operations();message('Đã xếp hàng ghi hash phiên bản.');});
+document.getElementById('verify').onclick=()=>run(document.getElementById('verify'),async()=>{const data=new FormData();data.append('version_id',version.value);const f=document.getElementById('verify-file').files[0];if(f)data.append('file',f);if(document.getElementById('file-id').value)data.append('file_id',document.getElementById('file-id').value);const result=await api('/api/ledger/verify/',data);const box=document.getElementById('verification');box.replaceChildren();const status=v=>v===null?'Chưa kiểm tra':v?'Khớp / hợp lệ':'Không khớp';if(!result.results.length)row(box,'Phiên bản chưa có yêu cầu đã gửi để đối chiếu.');for(const r of result.results)row(box,'Mã '+r.operation_id+'\nFile đang lưu: '+status(r.file_integrity)+'\nFile tải lên: '+status(r.uploaded_file_matches)+'\nChữ ký RSA: '+status(r.signature_valid)+'\nLedger: '+status(r.ledger_verified)+'\nKhóa đang còn hiệu lực: '+status(r.credential_currently_active)+'\nTx: '+(r.tx_id||'chưa xác nhận'));});
+document.getElementById('refresh').onclick=()=>run(document.getElementById('refresh'),operations);
+Promise.all([keys(),operations()]).catch(e=>message(e.message));setInterval(()=>operations().catch(()=>{}),15000);
+</script>
+{% endblock %}

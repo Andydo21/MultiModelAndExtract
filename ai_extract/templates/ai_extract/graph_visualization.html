@@ -1,0 +1,30 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'ai_extract/css/graph_visualization.css' %}?v=2">
+<section id="neo4j-graph" class="neo4j-panel">
+  <h2>Quan hệ trong Neo4j{% if graph_page_fixed %} · trang {{ page.page_number }}{% endif %}</h2>
+  <p>Dữ liệu đọc trực tiếp từ Neo4j · phiên bản {{ version.id }} · lượt #{{ run.id|default:'—' }}. Bấm node hoặc cạnh để xem nguồn và cách tạo.</p>
+  <form class="graph-filters" method="get" action="#neo4j-graph">
+    <input type="hidden" name="version_id" value="{{ version.id }}">
+    {% if graph_visualization.focus_key %}<input type="hidden" name="graph_node" value="{{ graph_visualization.focus_key }}">{% endif %}
+    {% if graph_page_fixed %}<span>Chỉ các phần tử của trang {{ page.page_number }} và mục cấu trúc liên quan.</span>{% else %}<label>Trang <select name="graph_page"><option value="">Toàn tài liệu</option>{% for page in pages %}<option value="{{ page.page_number }}" {% if graph_visualization.page == page.page_number %}selected{% endif %}>Trang {{ page.page_number }}</option>{% endfor %}</select></label>{% endif %}
+    <label>Quan hệ <select name="graph_relation"><option value="structure" {% if graph_visualization.relation == 'structure' %}selected{% endif %}>Cấu trúc và nguồn</option><option value="all" {% if graph_visualization.relation == 'all' %}selected{% endif %}>Tất cả loại</option>{% for kind in graph_visualization.relation_options %}<option {% if graph_visualization.relation == kind %}selected{% endif %}>{{ kind }}</option>{% endfor %}</select></label>
+    <button type="submit" class="primary-button">Xem graph</button>
+    {% if graph_visualization.offset %}<button name="graph_offset" value="{{ graph_visualization.previous_offset }}">← Nhóm trước</button>{% endif %}
+    {% if graph_visualization.has_next %}<button name="graph_offset" value="{{ graph_visualization.next_offset }}">Nhóm tiếp →</button>{% endif %}
+  </form>
+  {% if graph_visualization.focus_key %}<p>Đang xem các cạnh nối trực tiếp với node đã chọn trong trang. <a href="?version_id={{ version.id }}{% if not graph_page_fixed and graph_visualization.page %}&amp;graph_page={{ graph_visualization.page }}{% endif %}#neo4j-graph">Xem lại toàn trang →</a></p>{% endif %}
+  {% if graph_visualization.status == 'ready' %}
+    <p>{% if graph_visualization.page %}<strong>Trang {{ graph_visualization.page }} · {{ graph_visualization.page_nodes }} node liên quan</strong>.{% else %}<strong>{{ graph_visualization.total_nodes }} node · {{ graph_visualization.total_edges }} cạnh</strong> trong toàn lượt trích xuất.{% endif %} Bộ lọc khớp {{ graph_visualization.matched_edges }} cạnh; đang hiển thị {{ graph_visualization.edges|length }} cạnh, từ vị trí {{ graph_visualization.offset }}.</p>
+    <p class="graph-note">Graph chỉ vẽ phần khớp bộ lọc; mặc định gồm cấu trúc và MENTIONS của GLiNER. Loại thực thể là nhãn của node, không phải tên cạnh. Cây đề mục có thể chứa các mục cha dùng chung cho nhiều trang.</p>
+    <p class="graph-note">Bấm tên loại bên dưới để xem riêng các cạnh của loại đó trên trang, bỏ bộ lọc node đang chọn.</p>
+    <div class="graph-counts">{% if graph_visualization.page %}{% for kind,count in graph_visualization.page_counts.items %}{% include 'ai_extract/graph_relation_chip.html' %}{% endfor %}{% else %}{% for kind,count in graph_visualization.counts.items %}{% include 'ai_extract/graph_relation_chip.html' %}{% endfor %}{% endif %}</div>
+    <p class="graph-note">Đề mục → HAS_EVIDENCE → đoạn nội dung; block → NEXT → block kế tiếp trong thứ tự đọc đã lưu. CONTAINS thể hiện quan hệ cha–con, không phải thứ tự đọc. Nếu chưa thấy cạnh nội dung, bấm đề mục rồi chọn “Xem các liên kết của node này”. Mỗi nhóm chỉ hiển thị tối đa 60 cạnh.</p>
+    <p class="graph-note">ABOVE / LEFT_OF / NEAR chỉ thể hiện vị trí từ bbox. Quan hệ bảng do model đề xuất giữ trạng thái chưa duyệt; không đồng nghĩa đã xác minh nội dung.</p>
+    <div class="graph-toolbar"><button type="button" id="graph-fit">Vừa khung</button><button type="button" id="graph-clear">Bỏ chọn</button><label><input type="checkbox" id="graph-labels" {% if graph_visualization.relation != 'structure' and graph_visualization.relation != 'all' %}checked{% endif %}> Tên tất cả cạnh</label><span>Cuộn để zoom · kéo nền để di chuyển · kéo node để sắp xếp</span></div>
+    <div class="graph-workspace"><div class="graph-canvas"><svg id="neo4j-svg" role="img" aria-label="Graph quan hệ Neo4j có hướng" tabindex="0"></svg></div><aside id="graph-details" aria-live="polite">Chọn một node hoặc cạnh để xem chi tiết.</aside></div>
+    <p class="graph-note">MENTIONS: đoạn nguồn nhắc đến thực thể. APPLIES_TO, HAS_DEADLINE, DEPENDS_ON… là các quan hệ ngữ nghĩa do GLiNER đề xuất, có nguồn để đối chiếu; số quan hệ không phải số vùng OCR đã xử lý.</p>
+    <div id="graph-legend" class="graph-counts"></div>
+  {% elif graph_visualization.status == 'unavailable' %}<p>Chưa đọc được Neo4j. Nội dung trích xuất vẫn có thể xem bên dưới; kiểm tra kết nối graph rồi tải lại.</p>
+  {% else %}<p>Chưa có snapshot Neo4j khớp phiên bản và lượt trích xuất này.</p>{% endif %}
+  {{ graph_visualization|json_script:'neo4j-data' }}
+</section>

@@ -1,0 +1,2 @@
+# Install in the existing CUDA inference runtime with installed torch/transformers pinned.
+gliner==0.2.29

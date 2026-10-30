@@ -1,0 +1,69 @@
+% Worked examples from research_evaluation_20261030/KET_QUA_20261030/{E1,E2,E4}_examples.csv (one run per cell).
+% Examples are the pilot questions for which every configuration had completed; not selected by outcome.
+\begin{table}[t]
+\centering\footnotesize
+\caption{E2 graph expansion on four worked examples (top-3 retrieved seeds, 6{,}000-token ceiling). +N: sources added; Rej.: candidates rejected (scope boundary, token budget, empty, duplicate); R/P@10: evidence recall/precision at 10; Graph ms includes tokenizer calls for the budget.}
+\label{tab:e2}
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}llcccccc@{}}
+\toprule
+Q & Mode & +N & Rej. & R@10 & P@10 & Tokens & Graph ms \\
+\midrule
+\multirow{4}{*}{P003} & A none & 0 & 0 & 1.00 & 0.33 & 1054 & 6 \\
+ & B prev/next & 5 & 1 & 1.00 & 0.14 & 1934 & 38 \\
+ & C structural & 22 & 1 & 1.00 & 0.10 & 5483 & 207 \\
+ & D scope-aware & 6 & 17 & 1.00 & 0.12 & 2079 & 24 \\
+\midrule
+\multirow{4}{*}{P007} & A none & 0 & 0 & \textbf{0.50} & 0.33 & 810 & 5 \\
+ & B prev/next & 3 & 3 & \textbf{1.00} & 0.33 & 1339 & 16 \\
+ & C structural & 28 & 16 & 1.00 & 0.20 & 5895 & 345 \\
+ & D scope-aware & 15 & 29 & 1.00 & 0.20 & 3468 & 98 \\
+\midrule
+\multirow{4}{*}{P022} & A none & 0 & 0 & 1.00 & 0.33 & 2181 & 7 \\
+ & B prev/next & 4 & 0 & 1.00 & 0.14 & 3033 & 32 \\
+ & C structural & 13 & 14 & 1.00 & 0.10 & 5965 & 308 \\
+ & D scope-aware & 6 & 21 & 1.00 & 0.11 & 3739 & 52 \\
+\midrule
+\multirow{4}{*}{P027} & A none & 0 & 0 & 1.00 & 0.33 & 880 & 5 \\
+ & B prev/next & 6 & 0 & 1.00 & 0.11 & 2158 & 36 \\
+ & C structural & 24 & 86 & 1.00 & 0.10 & 5858 & 462 \\
+ & D scope-aware & 14 & 96 & 1.00 & 0.10 & 3840 & 90 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering\footnotesize
+\caption{E4 visual input on four table/figure questions (P013, P028, P039, P040; gold evidence). Acc.: manual answer accuracy (partial 0.5); ALR: attribute leakage rate over claims; Cit.\ R: gold regions cited; tokens are means over questions. KV mem.: GPU KV-cache memory held by the prompt, computed as prompt tokens $\times$ 56\,KiB (Qwen2.5-VL-7B: 28 layers, 4 KV heads, head size 128, FP16); vision-encoder activations are not included. Offline extraction cost is shared by all inputs (median 19\,s per page for the whole A3 pipeline).}
+\label{tab:e4}
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+Generator input & Acc. & ALR$\downarrow$ & Cit.\ R & Vis.\ tok. & Prompt tok. & KV mem. \\
+\midrule
+Full-page image (VLM) & 0.63 & 0.22 & 1.00 & 2760 & 2934 & 160\,MiB \\
+Region crops (VLM) & 0.25 & 0.11 & 0.50 & 241 & 411 & 22\,MiB \\
+OCR text only & \textbf{0.75} & \textbf{0.10} & 1.00 & 0 & 510 & 28\,MiB \\
+OCR + caption pods (ours) & \textbf{0.75} & \textbf{0.10} & 1.00 & 0 & 616 & 34\,MiB \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering\footnotesize
+\caption{E1 evidence format on four worked examples (P002, P018, P023, P029; mean over questions, one run). All cited sources were gold in every cell (citation precision 1.00). These four are text questions without tables, so formats differ mainly in length.}
+\label{tab:e1}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+ & \multicolumn{2}{c}{Gold evidence} & \multicolumn{2}{c}{Retrieved (top-5)} \\
+Format & Cit.\ R & Tokens & Cit.\ R & Tokens \\
+\midrule
+A flat text & 0.88 & 222 & 0.88 & 468 \\
+B JSON & 0.75 & 240 & 0.88 & 531 \\
+C Markdown table & 0.88 & 222 & 0.88 & 475 \\
+D + breadcrumb & \textbf{1.00} & 265 & 0.88 & 617 \\
+E full pods & 0.88 & 414 & 0.88 & 1088 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,52 @@
+{% extends 'ai_extract/base.html' %}
+{% load static %}
+{% block title %}Trang {{ page.page_number }} · {{ contract.contract_code }}{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="{% static 'ai_extract/css/structure_visualization.css' %}"><link rel="stylesheet" href="{% static 'ai_extract/css/page_inspector.css' %}?v=10">{% endblock %}
+{% block content %}
+<div class="inspector-head">
+    <div>
+        <a class="back-link" href="/ai-extract/contracts/{{ contract.id }}/">← {{ contract.contract_code }}</a>
+        <h1>Page {{ page.page_number }}</h1>
+    </div>
+    <div class="pager">
+        {% if previous_page %}<a href="../{{ previous_page }}/?version_id={{ version.id }}&run_id={{ run.id }}">← Page {{ previous_page }}</a>{% endif %}
+        <span>{{ page.blocks.count }} layout blocks</span>
+        {% if next_page %}<a href="../{{ next_page }}/?version_id={{ version.id }}&run_id={{ run.id }}">Page {{ next_page }} →</a>{% endif %}
+    </div>
+</div>
+
+<section class="inspector-grid">
+    <div class="visual-panel">
+        <div class="panel-title">Đối chiếu nguồn chữ và Granite</div>
+        <div class="overlay-controls"><label><input type="checkbox" id="show-surya" checked> Nguồn PDF/Surya (nét liền)</label><label{% if run.structure.analysis.provider == 'layoutlmv3' or run.structure.analysis.provider == 'source' %} hidden{% endif %}><input type="checkbox" id="show-granite" checked> Granite (nét đứt xanh)</label><label><input type="checkbox" id="show-visual" checked> Đối tượng model đề xuất</label><label><input type="checkbox" id="only-uncertain"> Chỉ nguồn chưa phân loại</label></div>
+        <p class="table-legend">Rê chuột vào khung để xem nội dung bên dưới; bấm để chọn block bên cạnh. {% if run.structure.analysis.provider == 'source' %}Surya cung cấp nhãn bố cục và chữ; GLiNER tách thực thể trong chữ. Vàng nét đứt: chưa xác định mục chứa.{% elif run.structure.analysis.provider == 'layoutlmv3' %}Nhãn từ Surya; LayoutLMv3 base chưa fine-tune nên chưa tạo nhãn riêng. Vàng nét đứt: chưa xác định mục chứa.{% else %}Vàng nét đứt: chưa đối chiếu đầy đủ với Granite, không đồng nghĩa OCR lỗi.{% endif %} Khung đổi vàng khi rê chuột: vùng đang xem.</p>
+        <p id="selected-source" class="selected-source" role="status" aria-live="polite">Chưa chọn vùng. Bấm một khung trên ảnh để xem model tạo ra vùng đó.</p>
+        <div id="selected-content" class="selected-content" hidden></div>
+        <div class="document-canvas">
+            <div class="page-surface">
+                {% if page.preview_url %}<img src="{{ page.preview_url }}" alt="Document page {{ page.page_number }}">{% endif %}
+                {% if page.preview_url %}{% for block in page.blocks.all %}<button class="bbox bbox-{{ block.layout_type }}" style="{{ block.box_style }}" data-block="block-{{ block.id }}" data-layer="surya" data-kind="{{ block.layout_type }}" title="{% if block.structure_metadata.text_source == 'pdf_text_layer' %}PDF{% elif block.structure_metadata.text_source == 'office_parser' %}Office{% else %}Surya{% endif %} · {{ block.layout_type }} · block {{ block.block_order }}" aria-label="{% if block.layout_type == 'table' %}Bảng trong nguồn tài liệu{% else %}Block {{ block.block_order }}{% endif %}"><span class="source-box-label">{% if block.structure_metadata.text_source == 'pdf_text_layer' %}PDF{% elif block.structure_metadata.text_source == 'office_parser' %}Office{% else %}Surya{% endif %} · {% if block.layout_type == 'table' %}Bảng{% elif block.layout_type == 'title' %}Tiêu đề{% elif block.layout_type == 'paragraph' %}Văn bản{% else %}{{ block.layout_type }}{% endif %}</span></button>{% endfor %}{% else %}<p>Không có ảnh render toàn trang; xem các block nguồn ở bên cạnh.</p>{% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="blocks-panel">
+        <div class="panel-title">Block nguồn và nội dung đọc được</div>
+        <div class="block-list" id="source-blocks">
+            {% for block in page.blocks.all %}
+            <article class="block-card" id="block-{{ block.id }}">
+                <div class="block-top"><span>{% if block.structure_metadata.text_source == 'pdf_text_layer' %}PDF{% elif block.structure_metadata.text_source == 'office_parser' %}Office{% else %}Surya{% endif %} · #{{ block.block_order }} · {% if block.layout_type == 'table' %}BẢNG{% else %}{{ block.layout_type }}{% endif %}</span><span>{{ block.confidence|floatformat:2 }}</span></div>
+                <p>{% if block.text %}{{ block.text }}{% elif block.structure_metadata.chunk_policy == 'surya_layout_region' and block.layout_type == 'figure' %}<em>Khung ảnh cha. Chữ nằm trong các chunk con riêng.</em>{% else %}<em>Chưa có nội dung chữ được lưu cho vùng này.</em>{% endif %}</p>
+                {% if block.structure_metadata.surya_parent_region_id %}<p>Vùng con của ảnh {{ block.structure_metadata.surya_parent_region_id }} · một vùng Surya = một chunk.</p>{% endif %}
+                {% if block.structure_metadata.visual_ocr_status %}<p>OCR bên trong ảnh: {{ block.structure_metadata.visual_ocr_status }}.</p>{% endif %}
+                <p class="source-origin">{% if block.structure_metadata.text_source == 'pdf_text_layer' %}Chữ từ lớp text PDF; vùng từ tọa độ PDF. Granite phân tích cấu trúc riêng.{% elif block.structure_metadata.text_source == 'office_parser' %}Chữ từ parser Office/text.{% else %}Chữ OCR từ Surya.{% if block.structure_metadata.ocr_cache_hit %} Đã dùng lại cache OCR của trang.{% endif %}{% endif %}</p>
+                <code>{{ block.bbox }}</code>
+            </article>
+            {% empty %}<div class="empty-state">Không có block trên trang này.</div>{% endfor %}
+        </div>
+        <div id="granite-observations" class="observation-list"></div>
+        <div id="visual-relations" class="observation-list"></div>
+    </div>
+</section>
+{% include 'ai_extract/graph_visualization.html' %}
+{% endblock %}
+{% block page_js %}{{ page_visualization|json_script:'page-visualization' }}<script src="{% static 'ai_extract/js/page_inspector.js' %}?v=14"></script><script src="{% static 'ai_extract/js/graph_visualization.js' %}?v=4"></script>{% endblock %}

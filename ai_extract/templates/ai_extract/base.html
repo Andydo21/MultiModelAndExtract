@@ -1,0 +1,30 @@
+{% load static %}
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}PlanA Extract{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'ai_extract/css/base.css' %}">
+    {% block page_css %}{% endblock %}
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="/ai-extract/"><span class="brand-mark">◈</span><span>A3 Trích xuất</span></a>
+        <nav>
+            <a href="/">Contract Portal</a>
+            <a class="active" href="/ai-extract/">Vision Pipeline</a>
+            <a href="/analyses/">Analyses</a>
+            <a href="/contract-intelligence/">A2/A3 Hợp đồng</a>
+            <a href="{% url 'newidea_workspace' %}">NewIdea — Tri thức</a>
+            <a href="/contract-ledger/">Ký và kiểm chứng</a>
+        </nav>
+        <div class="pipeline-chip"><span></span>Surya OCR</div>
+    </header>
+    <main class="page-shell">{% block content %}{% endblock %}</main>
+    {% block page_js %}{% endblock %}
+</body>
+</html>

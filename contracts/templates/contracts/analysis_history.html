@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Analysis History | Contract Guard AI</title>
+    <meta name="description" content="Full audit trail of all AI contract analysis runs — scores, findings, and contract links.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'contracts/css/analysis_history.css' %}">
+</head>
+<body>
+<div class="app-container">
+
+    <!-- Header -->
+    <header>
+        <div class="logo-section">
+            <a href="/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
+            <div class="divider"></div>
+            <span class="logo-text">Contract <span style="color: var(--accent-primary);">Guard</span> AI</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="header-stat">
+                <span class="header-stat-label">Total Analyses</span>
+                <span class="header-stat-val" id="stat-total">—</span>
+            </div>
+            <div class="header-stat">
+                <span class="header-stat-label">High Risk</span>
+                <span class="header-stat-val" id="stat-high" style="color: var(--risk-high);">—</span>
+            </div>
+            <div class="header-stat">
+                <span class="header-stat-label">Avg Score</span>
+                <span class="header-stat-val" id="stat-avg" style="color: var(--accent-primary);">—</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Body -->
+    <div class="page-body">
+
+        <!-- Sidebar Filters -->
+        <aside class="filter-sidebar">
+            <h3 class="sidebar-title"><i class="fa-solid fa-sliders"></i> Filters</h3>
+
+            <div class="filter-group">
+                <label class="filter-label">Search Contract</label>
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="filter-search" placeholder="Code or title..." autocomplete="off">
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Risk Level</label>
+                <div class="filter-chips" id="filter-risk">
+                    <button class="chip active" data-val="ALL">All</button>
+                    <button class="chip chip-high" data-val="HIGH">High</button>
+                    <button class="chip chip-medium" data-val="MEDIUM">Medium</button>
+                    <button class="chip chip-low" data-val="LOW">Low</button>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Sort By</label>
+                <select class="filter-select" id="filter-sort">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="score-desc">Highest Score</option>
+                    <option value="score-asc">Lowest Score</option>
+                </select>
+            </div>
+
+            <button class="btn btn-reset" id="btn-reset-filters">
+                <i class="fa-solid fa-rotate-left"></i> Reset Filters
+            </button>
+        </aside>
+
+        <!-- Main Analysis List -->
+        <main class="history-main">
+            <div class="history-header">
+                <h1 class="page-title"><i class="fa-solid fa-clock-rotate-left"></i> AI Analysis History</h1>
+                <span class="result-count" id="result-count">Loading...</span>
+            </div>
+            <div class="analyses-list" id="analyses-list">
+                <div class="loading-placeholder">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i>
+                    <p>Loading analysis history...</p>
+                </div>
+            </div>
+        </main>
+
+    </div>
+</div>
+
+<script src="{% static 'contracts/js/analysis_history.js' %}"></script>
+</body>
+</html>

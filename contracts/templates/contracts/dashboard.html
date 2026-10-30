@@ -1,0 +1,252 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Guard AI - Dashboard</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{% static 'contracts/css/dashboard.css' %}?v=1.0.1">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header>
+            <div class="logo-section">
+                <i class="fa-solid fa-shield-halved logo-icon"></i>
+                <div class="logo-text">
+                    Contract Guard AI
+                    <div style="font-size: 11px; font-weight: normal; opacity: 0.7; color: var(--text-muted); margin-top: 2px;">
+                        {{ user.company.company_name|default:"No Company" }}
+                    </div>
+                </div>
+            </div>
+            <div class="stats-summary">
+                <a href="{% url 'contract_intelligence' %}" class="btn" style="text-decoration:none;">A2/A3 Hợp đồng</a>
+                <a href="{% url 'newidea_workspace' %}" class="btn" style="text-decoration:none;">A2 — Hỏi đáp kho kiến thức</a>
+                <div class="stat-item">
+                    <div class="stat-label">Total Contracts</div>
+                    <div class="stat-value" id="stat-total">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">High Risk Found</div>
+                    <div class="stat-value text-red" id="stat-high-risk" style="color: var(--risk-high)">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Pending Review</div>
+                    <div class="stat-value" id="stat-pending" style="color: var(--badge-analyzed)">0</div>
+                </div>
+                <a href="/analyses/" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: all 0.2s ease;" id="btn-goto-history">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Analysis History
+                </a>
+                <a href="{% url 'ai_extract_pipeline' %}" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: all 0.2s ease;" id="btn-goto-ai-extract">
+                    <i class="fa-solid fa-layer-group"></i> A3 — Trích xuất hợp đồng
+                </a>
+                <a href="/identity/" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: all 0.2s ease;" id="btn-goto-identity">
+                    <i class="fa-solid fa-building-shield"></i> Identity Registry
+                </a>
+                <a href="/board/" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: all 0.2s ease;" id="btn-goto-workflows">
+                    <i class="fa-solid fa-diagram-project"></i> Workflow Board
+                </a>
+                {% if user.is_superuser or user.role.role_name.upper == 'MANAGER' or user.role.role_name.upper == 'ADMIN' %}
+                <a href="/admin-dashboard/" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: all 0.2s ease;" id="btn-goto-admin">
+                    <i class="fa-solid fa-user-gear"></i> Admin Control
+                </a>
+                {% endif %}
+
+                <div style="display: flex; align-items: center; gap: 12px; margin-left: 12px; padding-left: 12px; border-left: 1px solid rgba(255,255,255,0.1);">
+                    <div style="text-align: right;">
+                        <div style="font-size: 13px; font-weight: 600; color: var(--text-main);">{{ user.username }}</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">{{ user.role.role_name|default:"Staff" }}</div>
+                    </div>
+                    <a href="/logout/" style="color: #fda4af; font-size: 16px; transition: color 0.2s;" title="Log Out">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Grid -->
+        <div class="workspace-grid">
+            
+            <!-- Left Panel: Contract List -->
+            <div class="contracts-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title">Contracts Registry</h3>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn" id="btn-open-risks-mgmt" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); box-shadow: none;">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Master Risks
+                        </button>
+                        <button class="btn" id="btn-open-upload">
+                            <i class="fa-solid fa-plus"></i> Upload Contract
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <input type="text" id="contract-search-input" class="search-input" placeholder="Search by code, title, status...">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <button id="btn-clear-search" class="search-clear-btn" title="Clear search">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="contracts-list" id="contracts-list-container">
+                    <div style="text-align: center; padding: 40px 0; color: var(--text-muted)">
+                        <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 24px; margin-bottom: 12px;"></i>
+                        <p>Loading contracts registry...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Analysis Details -->
+            <div class="analysis-panel" id="analysis-detail-panel">
+                <!-- Empty state shown initially -->
+                <div class="empty-state">
+                    <i class="fa-solid fa-file-contract empty-icon"></i>
+                    <h2>No Contract Selected</h2>
+                    <p>Choose an uploaded contract from the list to display its metadata, AI risk assessments, clauses, and expert reviews.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Master Risks Modal -->
+    <div class="modal-overlay" id="risks-modal">
+        <div class="modal-content" style="position: relative; max-width: 800px; width: 90%;">
+            <div class="modal-header">
+                <h3 class="panel-title"><i class="fa-solid fa-triangle-exclamation"></i> Master Risk Categories</h3>
+                <button class="modal-close" id="btn-close-risks"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="risks-modal-grid" style="display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 24px; margin-top: 16px;">
+                <!-- Left: List of current Master Risks -->
+                <div class="risks-list-column" style="display: flex; flex-direction: column; gap: 12px; max-height: 420px; overflow-y: auto; padding-right: 8px;">
+                    <h4 style="font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">Active Risk Definitions</h4>
+                    <div id="modal-risks-container" style="display: flex; flex-direction: column; gap: 10px;">
+                        <!-- Loaded dynamically via JS -->
+                    </div>
+                </div>
+                
+                <!-- Right: Form to add new Risk -->
+                <div class="risks-form-column" style="border-left: 1px solid var(--panel-border); padding-left: 20px;">
+                    <h4 style="font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">Add New Risk Category</h4>
+                    <form id="add-risk-form">
+                        <div class="form-group" style="margin-bottom: 16px;">
+                            <label class="form-label">Risk Name *</label>
+                            <input type="text" name="risk_name" class="form-control" placeholder="e.g. Intellectual Property" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 16px;">
+                            <label class="form-label">Severity Level *</label>
+                            <select name="severity_level" class="form-control" required style="background-color: #0d1117;">
+                                <option value="LOW">LOW</option>
+                                <option value="MEDIUM" selected>MEDIUM</option>
+                                <option value="HIGH">HIGH</option>
+                                <option value="CRITICAL">CRITICAL</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label class="form-label">Description *</label>
+                            <textarea name="description" class="form-control" style="min-height: 100px;" placeholder="Describe the risk conditions..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%;">
+                            <i class="fa-solid fa-plus"></i> Create Risk
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="modal-overlay" id="upload-modal">
+        <div class="modal-content" style="position: relative;">
+            
+            <!-- Scanning Loader Overlay -->
+            <div class="scanner-overlay" id="scanner-loader">
+                <div class="scanner-circle"></div>
+                <div class="scanner-laser"></div>
+                <div class="scanner-text">AI Scanning & Analyzing Contract...</div>
+            </div>
+
+            <div class="modal-header">
+                <h3 class="panel-title">Upload New Contract</h3>
+                <button class="modal-close" id="btn-close-upload"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <form id="upload-form">
+                <div class="form-row" style="margin-bottom: 16px;">
+                    <div class="form-group">
+                        <label class="form-label">Contract Code *</label>
+                        <input type="text" name="contract_code" class="form-control" placeholder="e.g. HD-2026-099" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contract Title *</label>
+                        <input type="text" name="title" class="form-control" placeholder="e.g. Service Level Agreement" required>
+                    </div>
+                </div>
+
+                <div class="form-row" style="margin-bottom: 16px;">
+                    <div class="form-group">
+                        <label class="form-label">Contract Type</label>
+                        <input type="text" name="contract_type" class="form-control" placeholder="e.g. Service, NDAs, Software">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contract Value ($)</label>
+                        <input type="number" step="0.01" name="contract_value" class="form-control" placeholder="0.00">
+                    </div>
+                </div>
+
+                <div class="form-row" style="margin-bottom: 16px;">
+                    <div class="form-group">
+                        <label class="form-label">Start Date</label>
+                        <input type="date" name="start_date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">End Date</label>
+                        <input type="date" name="end_date" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label class="form-label">Paste Raw Contract Text (Alternative to File Upload)</label>
+                    <textarea name="raw_content" class="form-control" style="min-height: 100px;" placeholder="Paste your contract text, clauses, or agreement content here..."></textarea>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 24px;">
+                    <label class="form-label">Or Upload Contract File (PDF, DOCX, TXT)</label>
+                    <div class="file-drop-area" id="file-drop-zone">
+                        <label for="file-input" style="display: block; cursor: pointer; width: 100%; height: 100%;">
+                            <i class="fa-solid fa-cloud-arrow-up file-icon"></i>
+                            <p id="file-drop-text">Drag and drop file here, or click to choose file</p>
+                            <input type="file" name="file" id="file-input" style="display: none;">
+                        </label>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 12px;">
+                    <button type="button" class="btn" id="btn-cancel-upload" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); box-shadow: none;">Cancel</button>
+                    <button type="submit" class="btn">Tải hợp đồng lên</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="{% static 'contracts/js/dashboard.js' %}?v=1.1.8"></script>
+</body>
+</html>

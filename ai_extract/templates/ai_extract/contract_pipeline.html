@@ -1,0 +1,98 @@
+{% extends 'ai_extract/base.html' %}
+{% load static %}
+{% block title %}{{ contract.contract_code }} · PlanA Extract{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="{% static 'ai_extract/css/structure_visualization.css' %}"><link rel="stylesheet" href="{% static 'ai_extract/css/contract_pipeline.css' %}?v=2">{% endblock %}
+{% block content %}
+<a class="back-link" href="/ai-extract/">← Tất cả hợp đồng</a>
+<section class="contract-hero">
+    <div>
+        <p class="eyebrow">{{ contract.contract_code }} · VERSION {{ version.version_number|default:'—' }}</p>
+        <h1>{{ contract.title }}</h1>
+<p>A3 · Surya OCR → cấu trúc nguồn và GLiNER → BGE và Neo4j · ColPali bổ sung vector ảnh sau trích xuất</p>
+        {% if version %}<a class="back-link" href="{% url 'newidea_contract' contract.id %}?version_id={{ version.id }}">Hỏi tài liệu này bằng A2 →</a>{% endif %}
+    </div>
+    <form id="extract-form" data-endpoint="/api/ai/contracts/{{ contract.id }}/layout-extract/">
+        {% csrf_token %}
+        <button type="submit" class="primary-button" {% if not can_extract or run.status == 'RUNNING' %}disabled{% endif %}>
+            <span class="button-label">{% if run.status == 'RUNNING' %}Đang trích xuất{% elif run %}Chạy lại trích xuất{% else %}Chạy trích xuất{% endif %}</span>
+        </button>
+    </form>
+</section>
+{% if version and not can_extract %}<p>Đang xem phiên bản cũ. <a href="/ai-extract/contracts/{{ contract.id }}/">Mở phiên bản mới nhất để chạy trích xuất →</a></p>{% endif %}
+
+<div id="pipeline-message" class="message" hidden></div>
+
+{% if run %}
+{% if run.structure.processing.failed_pages %}
+<section class="index-notices" role="alert">
+    <p><strong>Trích xuất chưa đầy đủ.</strong> Các trang xử lý được vẫn được giữ lại. Trang OCR lỗi:
+    {% for failure in run.structure.processing.failed_pages %}{{ failure.page_number }}{% if not forloop.last %}, {% endif %}{% endfor %}.
+    Bấm chạy lại để thử các trang lỗi; kết quả OCR đã hoàn tất được lấy từ cache.</p>
+</section>
+{% endif %}
+<section class="run-strip">
+    <div><span>STATUS</span><strong class="run-status">{{ run.status }}</strong></div>
+    <div><span>PAGES</span><strong>{{ run.total_pages }}</strong></div>
+    <div><span>BLOCKS</span><strong>{{ run.total_blocks }}</strong></div>
+    <div><span>PHÂN TÍCH CẤU TRÚC</span><strong>{% if run.structure.structure_status == 'model_complete' %}Model đã phân tích các đơn vị nguồn{% elif run.structure.structure_status == 'model_partial' %}Model mới phân tích một phần{% elif run.structure.structure_status == 'native_structure' %}Cấu trúc từ nguồn Office/text{% elif run.structure.structure_status == 'model_unavailable' %}Model chưa phân tích được{% else %}Cần chạy phân tích bằng model{% endif %}</strong></div>
+    <div><span>DENSE · denso_document_vectors</span><strong class="index-{{ run.dense_index_status|lower }}">{{ run.dense_index_status }} · {{ run.dense_points_count }} points</strong></div>
+    <div><span>COLPALI · denso_colpali_visual_patches</span><strong class="index-{{ run.colpali_index_status|lower }}">{{ run.colpali_index_status }} · {{ run.colpali_points_count }} ảnh</strong></div>
+    <div><span>LƯỢT TRÍCH XUẤT</span><strong>#{{ run.id }}</strong></div>
+</section>
+{% if run.structure.analysis.provider == 'layoutlmv3' %}
+<p>LayoutLMv3 base: đã xử lý {{ run.structure.analysis.pages_processed }} trang; {{ run.structure.analysis.pages_failed|length }} trang gặp lỗi. Chưa fine-tune: nhãn và cây mục vẫn lấy từ Surya cùng quy tắc nguồn. LayoutLMv3 chưa dự đoán quan hệ.</p>
+{% elif run.structure.analysis.provider == 'source' %}
+<p>Cấu trúc từ Surya và quy tắc nguồn.</p>
+{% elif run.structure.analysis %}
+<p>{% if run.structure.structure_method == 'granite_observations_with_source_layout' %}Granite Docling: {{ run.structure.analysis.aligned_blocks }}/{{ run.total_blocks }} block đã đối chiếu nguồn. Đã gửi phân tích {{ run.structure.analysis.visual_pages|length }} trang; {{ run.structure.analysis.pages_failed|length }} trang gặp lỗi. Quan hệ cấu trúc lấy từ nguồn; quan hệ vị trí tính từ bbox.{% elif run.structure.analysis.provider == 'granite' %}Granite đã xử lý {{ run.structure.analysis.pages_attempted }}/{{ run.structure.analysis.pages_total }} ảnh trang; {{ run.structure.analysis.aligned_units }} đơn vị đã đối chiếu nguồn. Dẫn chiếu ngữ nghĩa xa chưa được suy luận.{% else %}Đã phân tích {{ run.structure.analysis.windows_succeeded }}/{{ run.structure.analysis.windows_total }} nhóm nguồn.{% endif %}
+{% if run.structure.analysis.unclassified_ids %}Còn {{ run.structure.analysis.unclassified_ids|length }} đơn vị chưa phân loại.{% endif %}
+{% if run.structure.analysis.reading_order_provider %}Đã dùng thứ tự đọc Granite gắn với nguồn để nhóm nội dung.{% endif %}
+{% if run.structure.analysis.reading_order_unresolved %}{{ run.structure.analysis.reading_order_unresolved }} block chưa xác định chắc thứ tự đọc được giữ ở gốc tài liệu, chưa gán vào đề mục.{% endif %}
+{% if run.structure.analysis.image_units_unavailable %}Có {{ run.structure.analysis.image_units_unavailable|length }} đơn vị thiếu ảnh đầu vào.{% endif %}
+Kết quả đã kiểm tra liên kết nguồn; chưa bảo đảm mọi quan hệ ngữ nghĩa đều đúng.</p>
+{% endif %}
+{% if run.structure.knowledge_graph.provider == 'gliner' %}
+{% if run.structure.knowledge_graph.source_coverage %}<p>GLiNER đã xử lý {{ run.structure.knowledge_graph.source_coverage.completed_ids|length }}/{{ run.structure.knowledge_graph.source_coverage.eligible_ids|length }} vùng chữ hợp lệ; {{ run.structure.knowledge_graph.source_coverage.without_entity_ids|length }} vùng không có thực thể khớp bộ nhãn.</p>{% endif %}
+<p>GLiNER: {{ run.structure.knowledge_graph.entities|length }} thực thể; {{ run.structure.knowledge_graph.relations|length }} quan hệ ngữ nghĩa; trạng thái {{ run.structure.knowledge_graph.status }}. MENTIONS / HAS_EVIDENCE: liên kết nguồn. RELATED: loại quan hệ cụ thể và bằng chứng. Đề xuất chưa được chuyên gia duyệt.</p>
+{% endif %}
+{% if run.dense_index_error or run.colpali_index_error %}
+<section class="index-notices">
+    {% if run.dense_index_error %}<p><strong>Dense:</strong> {{ run.dense_index_error }}</p>{% endif %}
+    {% if run.colpali_index_error %}<p><strong>ColPali:</strong> {{ run.colpali_index_error }}</p>{% endif %}
+</section>
+{% endif %}
+{% endif %}
+
+{% include 'ai_extract/graph_visualization.html' %}
+<section id="extraction-results" class="structure-panel"><h2>Cây tài liệu và nhóm nội dung</h2><div data-structure-json="pipeline-structure"></div></section>
+{{ structure_visualization|json_script:'pipeline-structure' }}
+<section class="extracted-content-panel">
+    <h2>Nội dung đã trích xuất</h2>
+    <p>Mở từng trang để đọc toàn bộ nội dung đã lưu; bấm xem ảnh để đối chiếu các vùng nhận diện với tài liệu gốc.</p>
+    {% for page in pages %}
+    <details class="extracted-page" {% if forloop.first %}open{% endif %}>
+        <summary>Trang {{ page.page_number }} · {{ page.blocks.count }} khối nội dung</summary>
+        <a class="back-link" href="/ai-extract/contracts/{{ contract.id }}/pages/{{ page.page_number }}/?version_id={{ version.id }}&run_id={{ run.id }}">Xem ảnh và vùng nhận diện →</a>
+        <pre class="extracted-page-text">{% if page.extracted_text %}{{ page.extracted_text }}{% else %}Trang này chưa có văn bản trích xuất. Mở ảnh và vùng nhận diện để kiểm tra nội dung hình ảnh.{% endif %}</pre>
+    </details>
+    {% empty %}
+    <p>Chưa có nội dung trích xuất. Tải file chỉ lưu tài liệu; hãy bấm Chạy trích xuất ở trên để xử lý.</p>
+    {% endfor %}
+</section>
+<h2>Ảnh trang và vùng nhận diện</h2>
+<section class="page-grid">
+    {% for page in pages %}
+    <a class="page-card" href="/ai-extract/contracts/{{ contract.id }}/pages/{{ page.page_number }}/?version_id={{ version.id }}&run_id={{ run.id }}">
+        <div class="preview-frame">
+            {% if page.preview_url %}<img src="{{ page.preview_url }}" alt="Trang {{ page.page_number }}">{% else %}<div class="text-preview">{{ page.extracted_text|truncatechars:260 }}</div>{% endif %}
+            <span class="page-number">PAGE {{ page.page_number }}</span>
+        </div>
+        <div class="page-meta"><strong>{{ page.blocks.count }} blocks</strong><span>{{ page.extracted_text|length }} ký tự</span></div>
+        <p class="page-inspect-label">Xem ảnh và vùng nhận diện →</p>
+    </a>
+    {% empty %}
+    <div class="empty-state">Chưa có dữ liệu trang. Chạy trích xuất để tạo page inspector.</div>
+    {% endfor %}
+</section>
+{% endblock %}
+{% block page_js %}<script src="{% static 'ai_extract/js/structure_visualization.js' %}?v=reading-streams-1"></script><script src="{% static 'ai_extract/js/graph_visualization.js' %}?v=4"></script><script src="{% static 'ai_extract/js/contract_pipeline.js' %}?v=4"></script>{% endblock %}

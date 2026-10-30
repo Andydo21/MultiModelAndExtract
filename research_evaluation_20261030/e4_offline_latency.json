@@ -1,0 +1,145 @@
+{
+  "scope": "A3 LayoutExtractionRun completed_at-started_at; whole pipeline (Surya OCR/layout, GLiNER, Neo4j, BGE/ColPali indexing), may include queue/retry time; not OCR alone",
+  "runs": [
+    {
+      "version_id": 1000000,
+      "run_id": 1000023,
+      "pages": 2,
+      "run_wall_s": 39.719948,
+      "wall_per_page_s": 19.859974
+    },
+    {
+      "version_id": 1000001,
+      "run_id": 1000024,
+      "pages": 2,
+      "run_wall_s": 33.389796,
+      "wall_per_page_s": 16.694898
+    },
+    {
+      "version_id": 1000013,
+      "run_id": 1000022,
+      "pages": 1,
+      "run_wall_s": 412.065356,
+      "wall_per_page_s": 412.065356
+    },
+    {
+      "version_id": 1000011,
+      "run_id": 1000025,
+      "pages": 2,
+      "run_wall_s": 40.46501,
+      "wall_per_page_s": 20.232505
+    },
+    {
+      "version_id": 1000009,
+      "run_id": 1000040,
+      "pages": 5,
+      "run_wall_s": 72.316667,
+      "wall_per_page_s": 14.4633334
+    },
+    {
+      "version_id": 1000018,
+      "run_id": 1000031,
+      "pages": 2,
+      "run_wall_s": 39.74312,
+      "wall_per_page_s": 19.87156
+    },
+    {
+      "version_id": 1000003,
+      "run_id": 1000036,
+      "pages": 5,
+      "run_wall_s": 74.82141,
+      "wall_per_page_s": 14.964282
+    },
+    {
+      "version_id": 1000002,
+      "run_id": 1000035,
+      "pages": 5,
+      "run_wall_s": 71.97285,
+      "wall_per_page_s": 14.394569999999998
+    },
+    {
+      "version_id": 1000006,
+      "run_id": 1000032,
+      "pages": 4,
+      "run_wall_s": 52.161187,
+      "wall_per_page_s": 13.04029675
+    },
+    {
+      "version_id": 1000007,
+      "run_id": 1000039,
+      "pages": 5,
+      "run_wall_s": 72.063975,
+      "wall_per_page_s": 14.412795
+    },
+    {
+      "version_id": 1000010,
+      "run_id": 1000076,
+      "pages": 4,
+      "run_wall_s": 53.656778,
+      "wall_per_page_s": 13.4141945
+    },
+    {
+      "version_id": 1000008,
+      "run_id": 1000075,
+      "pages": 4,
+      "run_wall_s": 75.901277,
+      "wall_per_page_s": 18.97531925
+    },
+    {
+      "version_id": 1000005,
+      "run_id": 1000038,
+      "pages": 5,
+      "run_wall_s": 122.341528,
+      "wall_per_page_s": 24.4683056
+    },
+    {
+      "version_id": 1000016,
+      "run_id": 1000029,
+      "pages": 2,
+      "run_wall_s": 38.255164,
+      "wall_per_page_s": 19.127582
+    },
+    {
+      "version_id": 1000004,
+      "run_id": 1000037,
+      "pages": 5,
+      "run_wall_s": 123.571619,
+      "wall_per_page_s": 24.7143238
+    },
+    {
+      "version_id": 1000015,
+      "run_id": 1000028,
+      "pages": 2,
+      "run_wall_s": 34.541616,
+      "wall_per_page_s": 17.270808
+    },
+    {
+      "version_id": 1000012,
+      "run_id": 1000026,
+      "pages": 2,
+      "run_wall_s": 38.598228,
+      "wall_per_page_s": 19.299114
+    },
+    {
+      "version_id": 1000019,
+      "run_id": 1000041,
+      "pages": 5,
+      "run_wall_s": 88.502207,
+      "wall_per_page_s": 17.7004414
+    },
+    {
+      "version_id": 1000014,
+      "run_id": 1000084,
+      "pages": 2,
+      "run_wall_s": 368.844156,
+      "wall_per_page_s": 184.422078
+    },
+    {
+      "version_id": 1000017,
+      "run_id": 1000081,
+      "pages": 2,
+      "run_wall_s": 361.801406,
+      "wall_per_page_s": 180.900703
+    }
+  ]
+}

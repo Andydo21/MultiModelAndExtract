@@ -1,0 +1,17 @@
+﻿question_id,mode,seeds,added_nodes,admitted,rejected,rejection_reasons,evidence_recall_at_10,evidence_precision_at_10,required_evidence_recall,input_tokens,graph_latency_ms,key_value_recall,answer
+P003,A,3,0,0,0,{},1.0,0.3333333333333333,1.0,1054,6.2,,realvirtual.io Professional là phần bổ sung cho nền tảng Unity.
+P003,B,3,5,5,1,"{""no_text"": 1}",1.0,0.14285714285714285,1.0,1934,37.5,,realvirtual.io Professional là phần bổ sung cho nền tảng Unity.
+P003,C,3,22,22,1,"{""no_text"": 1}",1.0,0.1,1.0,5483,207.0,,realvirtual.io Professional là phần bổ sung cho nền tảng Unity Industry.
+P003,D,3,6,6,17,"{""no_text"": 1, ""scope_boundary"": 16}",1.0,0.125,1.0,2079,24.1,,realvirtual.io Professional là phần bổ sung cho nền tảng Unity.
+P007,A,3,0,0,0,{},0.5,0.3333333333333333,0.5,810,5.1,,Dụng cụ không được chạm vào các bộ phận như điện cực trung tâm Iridium hoặc gốm trung tâm.
+P007,B,3,3,3,3,"{""no_text"": 3}",1.0,0.3333333333333333,1.0,1339,15.8,,Dụng cụ không được chạm vào Iridium Center Electrode hoặc Porcelain Center.
+P007,C,3,28,28,16,"{""no_text"": 3, ""already_selected"": 9, ""token_budget"": 4}",1.0,0.2,1.0,5895,344.6,,Dụng cụ không được chạm vào Iridium Center Electrode hoặc Porcelain.
+P007,D,3,15,15,29,"{""no_text"": 3, ""scope_boundary"": 22, ""already_selected"": 4}",1.0,0.2,1.0,3468,98.3,,Dụng cụ không được chạm vào các bộ phận sau khi điều chỉnh khe hở bugi Iridium Power: Iridium Center Electrode hoặc Porcelain Center.
+P022,A,3,0,0,0,{},1.0,0.3333333333333333,1.0,2181,6.6,,Vòng hãm có mép vát phải quay về phía ngoài khi lắp vào máy nén.
+P022,B,3,4,4,0,{},1.0,0.14285714285714285,1.0,3033,32.0,,Vòng hãm có mép vát phải quay về phía sau khi lắp vào máy nén.
+P022,C,3,13,13,14,"{""no_text"": 2, ""token_budget"": 12}",1.0,0.1,1.0,5965,307.8,,"Vòng hãm có mép vát phải quay về phía sau khi lắp vào máy nén, và phải bảo đảm rằng vòng hãm được hoàn toàn đặt và giữ stator và rotor chắc chắn."
+P022,D,3,6,6,21,"{""scope_boundary"": 19, ""no_text"": 2}",1.0,0.1111111111111111,1.0,3739,51.7,,Vòng hãm có mép vát phải quay về phía sau khi lắp vào máy nén.
+P027,A,3,0,0,0,{},1.0,0.3333333333333333,1.0,880,4.8,,"Khi lắp công tắc nhiệt độ nước A/C, tài liệu cho phép dùng dụng cụ chỉ có dụng cụ tay với ốc đeo sâu và cấm sử dụng khí nén vì động cơ ratchet cao tốc có thể gây hại cho công tắc. Không được để rơi hoặc đánh công tắc trong quá trình lắp đặt."
+P027,B,3,6,6,0,{},1.0,0.1111111111111111,1.0,2158,36.2,,"Khi lắp công tắc nhiệt độ nước A/C, tài liệu cho phép dùng dụng cụ là chỉ sử dụng các công cụ tay với đầu ốc sâu và cấm sử dụng các công cụ khí vì động tác nhanh chóng của chúng có thể gây hại cho công tắc. Không được sử dụng băng keo密封胶."
+P027,C,3,24,24,86,"{""token_budget"": 36, ""already_selected"": 50}",1.0,0.1,1.0,5858,461.5,,"Khi lắp công tắc nhiệt độ nước A/C, tài liệu cho phép dùng dụng cụ là chỉ có thể sử dụng các công cụ tay với đầu ốc vít sâu. Không được sử dụng khí nén vì động tác chích nhanh của máy khí nén có thể gây hư hỏng cho công tắc. Cần cẩn thận không để rơi hoặc đánh vào công tắc trong quá trình lắp đặt. Không được sử dụng băng keo."
+P027,D,3,14,14,96,"{""scope_boundary"": 82, ""already_selected"": 14}",1.0,0.1,1.0,3840,90.1,,"Khi lắp công tắc nhiệt độ nước A/C, tài liệu cho phép dùng dụng cụ là chỉ sử dụng các công cụ tay với đầu ốc vít sâu và cấm sử dụng các công cụ khí vì động tác nhanh chóng của máy ratchet có thể gây hại cho công tắc. Không được để rơi hoặc đánh công tắc trong quá trình lắp đặt."
