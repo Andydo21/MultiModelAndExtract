@@ -4,6 +4,7 @@ Automatically attaches an admin/manager user to unauthenticated requests
 so external evaluators can test contract extraction and AI intelligence without logging in.
 """
 from django.contrib.auth import get_user_model
+from django.middleware.csrf import get_token
 
 
 class AutoDemoLoginMiddleware:
@@ -34,5 +35,7 @@ class AutoDemoLoginMiddleware:
                 )
                 request.jwt_company_id = demo_user.company_id
                 request.jwt_is_superuser = demo_user.is_superuser
+                # The login page normally sets the CSRF cookie; without it, every JS POST gets a 403.
+                get_token(request)
 
         return self.get_response(request)
