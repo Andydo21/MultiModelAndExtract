@@ -1,6 +1,6 @@
 {% extends 'ai_extract/base.html' %}
 {% load static %}
-{% block title %}{{ contract.contract_code }} · PlanA Extract{% endblock %}
+{% block title %}{{ contract.contract_code }} · Evidence Pods{% endblock %}
 {% block page_css %}<link rel="stylesheet" href="{% static 'ai_extract/css/structure_visualization.css' %}"><link rel="stylesheet" href="{% static 'ai_extract/css/contract_pipeline.css' %}?v=2">{% endblock %}
 {% block content %}
 <a class="back-link" href="/ai-extract/">← Tất cả hợp đồng</a>
@@ -8,8 +8,8 @@
     <div>
         <p class="eyebrow">{{ contract.contract_code }} · VERSION {{ version.version_number|default:'—' }}</p>
         <h1>{{ contract.title }}</h1>
-<p>A3 · Surya OCR → cấu trúc nguồn và GLiNER → BGE và Neo4j · ColPali bổ sung vector ảnh sau trích xuất</p>
-        {% if version %}<a class="back-link" href="{% url 'newidea_contract' contract.id %}?version_id={{ version.id }}">Hỏi tài liệu này bằng A2 →</a>{% endif %}
+<p>Surya OCR → cấu trúc nguồn và GLiNER → BGE và Neo4j · ColPali bổ sung vector ảnh sau trích xuất</p>
+        {% if version %}<a class="back-link" href="{% url 'newidea_contract' contract.id %}?version_id={{ version.id }}">Hỏi tài liệu này →</a>{% endif %}
     </div>
     <form id="extract-form" data-endpoint="/api/ai/contracts/{{ contract.id }}/layout-extract/">
         {% csrf_token %}

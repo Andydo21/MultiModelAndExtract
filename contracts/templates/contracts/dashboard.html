@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contract Guard AI - Dashboard</title>
+    <title>Evidence Pods - Dashboard</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,15 +26,15 @@
             <div class="logo-section">
                 <i class="fa-solid fa-shield-halved logo-icon"></i>
                 <div class="logo-text">
-                    Contract Guard AI
+                    Evidence Pods
                     <div style="font-size: 11px; font-weight: normal; opacity: 0.7; color: var(--text-muted); margin-top: 2px;">
                         {{ user.company.company_name|default:"No Company" }}
                     </div>
                 </div>
             </div>
             <div class="stats-summary">
-                <a href="{% url 'contract_intelligence' %}" class="btn" style="text-decoration:none;">A2/A3 Hợp đồng</a>
-                <a href="{% url 'newidea_workspace' %}" class="btn" style="text-decoration:none;">A2 — Hỏi đáp kho kiến thức</a>
+                <a href="{% url 'contract_intelligence' %}" class="btn" style="text-decoration:none;">Tri thức tài liệu</a>
+                <a href="{% url 'newidea_workspace' %}" class="btn" style="text-decoration:none;">Hỏi đáp kho kiến thức</a>
                 <div class="stat-item">
                     <div class="stat-label">Total Contracts</div>
                     <div class="stat-value" id="stat-total">0</div>
@@ -51,13 +51,10 @@
                     <i class="fa-solid fa-clock-rotate-left"></i> Analysis History
                 </a>
                 <a href="{% url 'ai_extract_pipeline' %}" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: all 0.2s ease;" id="btn-goto-ai-extract">
-                    <i class="fa-solid fa-layer-group"></i> A3 — Trích xuất hợp đồng
+                    <i class="fa-solid fa-layer-group"></i> Trích xuất tài liệu
                 </a>
                 <a href="/identity/" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: all 0.2s ease;" id="btn-goto-identity">
                     <i class="fa-solid fa-building-shield"></i> Identity Registry
-                </a>
-                <a href="/board/" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: all 0.2s ease;" id="btn-goto-workflows">
-                    <i class="fa-solid fa-diagram-project"></i> Workflow Board
                 </a>
                 {% if user.is_superuser or user.role.role_name.upper == 'MANAGER' or user.role.role_name.upper == 'ADMIN' %}
                 <a href="/admin-dashboard/" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: all 0.2s ease;" id="btn-goto-admin">

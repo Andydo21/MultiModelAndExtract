@@ -1,6 +1,6 @@
 {% extends 'ai_extract/base.html' %}
 {% load static %}
-{% block title %}{% if newidea_mode %}A2 — Hỏi đáp kho kiến thức{% else %}Contract Guard AI — Tri thức và bằng chứng hợp đồng{% endif %}{% endblock %}
+{% block title %}{% if newidea_mode %}Hỏi đáp kho kiến thức{% else %}Evidence Pods — Tri thức và bằng chứng{% endif %}{% endblock %}
 {% block page_css %}<link rel="stylesheet" href="{% static 'ai_extract/css/structure_visualization.css' %}">
 <style>
 .intelligence-grid{display:grid;grid-template-columns:1fr;gap:16px;margin:16px 0}
@@ -25,7 +25,7 @@
 {% endblock %}
 {% block content %}
 <div class="a2-workspace">
-<h1>A2 — Hỏi kho tri thức</h1>
+<h1>Hỏi kho tri thức</h1>
 <p class="a2-intro">Hỏi từ tài liệu đã lưu và kinh nghiệm chuyên gia đã duyệt.</p>
 <div id="intelligence-status" role="status" aria-live="polite"></div>
 {% if newidea_mode %}
@@ -33,7 +33,7 @@
   <h2>Bạn muốn biết điều gì?</h2>
   <p class="a2-intro">Tìm trên toàn bộ kho tài liệu được phép truy cập và tổng hợp câu trả lời từ các nguồn phù hợp.</p>
   {% if request.user.is_superuser %}<p>Tài khoản quản trị đang tìm trong kho của tất cả công ty.</p>{% endif %}
-  <form id="company-search-form"><label for="company-query">Câu hỏi</label><textarea id="company-query" rows="3" required maxlength="2000" placeholder="Ví dụ: Chuyên gia khuyến nghị xử lý điều khoản thanh toán như thế nào?"></textarea><button>Hỏi A2</button><details class="a2-options"><summary>Tùy chọn trả lời</summary><label><input type="checkbox" id="company-generate" checked style="width:auto"> Tổng hợp câu trả lời từ nguồn tìm được</label></details></form>
+  <form id="company-search-form"><label for="company-query">Câu hỏi</label><textarea id="company-query" rows="3" required maxlength="2000" placeholder="Ví dụ: Chuyên gia khuyến nghị xử lý điều khoản thanh toán như thế nào?"></textarea><button>Hỏi</button><details class="a2-options"><summary>Tùy chọn trả lời</summary><label><input type="checkbox" id="company-generate" checked style="width:auto"> Tổng hợp câu trả lời từ nguồn tìm được</label></details></form>
   <div id="company-latency-bar" class="latency-metric-container" role="status"></div>
   <div id="company-answer" style="white-space:pre-wrap" aria-live="polite"></div>
   <details class="a2-sources"><summary>Nguồn và nội dung tìm được</summary><p id="company-coverage"></p><div id="company-nodes"></div><div id="company-results"></div></details>
@@ -57,7 +57,7 @@
       <label><input type="checkbox" id="generate-answer" style="width:auto"> Trả lời từ tài liệu đã lưu</label>
       <label for="qa-mode">Phạm vi</label>
       <select id="qa-mode"><option value="structural">Tra cứu điều khoản và dẫn chiếu</option><option value="whole_contract">Rà soát toàn bộ nguồn đã trích xuất</option></select>
-      <button type="submit">Hỏi A2</button>
+      <button type="submit">Hỏi</button>
     </form>
     <div id="qa-latency-bar" class="latency-metric-container" role="status"></div>
     <p>Điểm tìm kiếm dùng để xếp hạng. Citation hợp lệ chưa tự chứng minh mọi nhận định là đúng.</p>
@@ -70,7 +70,7 @@
   <details class="a2-tool" id="expert-tools"><summary>Bổ sung và quản lý ý kiến chuyên gia</summary>
   <section class="intelligence-panel">
     <h2 id="expert-submission">Câu hỏi và kiến thức của chuyên gia</h2>
-    <p>Nhập nội dung; Qwen tách các ý và điều khoản theo ngữ nghĩa. Tài liệu đính kèm được trích xuất bằng A3 rồi nối với câu hỏi và bằng chứng nguồn.</p>
+    <p>Nhập nội dung; Qwen tách các ý và điều khoản theo ngữ nghĩa. Tài liệu đính kèm được trích xuất rồi nối với câu hỏi và bằng chứng nguồn.</p>
     <form id="expert-submission-form">
       <label for="expert-question">Câu hỏi / vấn đề cần phân tích</label><textarea id="expert-question" rows="3" required maxlength="2000" placeholder="Ví dụ: Điều kiện nghiệm thu này có ảnh hưởng thời hạn thanh toán không?"></textarea>
       <button type="button" id="expert-ask">Hỏi kho kiến thức</button>
@@ -96,7 +96,7 @@
       <label for="resolution">Cách xử lý / nội dung sửa đổi</label><textarea id="resolution" name="resolution" rows="3"></textarea>
       <label for="verification">Kết quả xác minh sau xử lý</label><textarea id="verification" name="verification" rows="2"></textarea>
       <label for="applicability">Điều kiện áp dụng và ngoại lệ</label><textarea id="applicability" name="applicability" rows="2"></textarea>
-      <label for="source_reference">Bằng chứng tài liệu trong phiên bản đã chọn</label><select id="source_reference" name="source_reference"><option value="">Hỏi A2 để tải danh sách nguồn</option></select>
+      <label for="source_reference">Bằng chứng tài liệu trong phiên bản đã chọn</label><select id="source_reference" name="source_reference"><option value="">Đặt câu hỏi để tải danh sách nguồn</option></select>
       <button type="submit">Lưu nháp / revision mới</button><button type="reset">Case mới</button>
     </form>
     <h2 style="margin-top:28px">Thư viện case công ty</h2>
@@ -138,11 +138,11 @@
       const response=await fetch('/api/newidea/expert-submissions/',{method:'POST',headers:{'X-CSRFToken':document.querySelector('[name=csrfmiddlewaretoken]').value},body:payload});const queued=await response.json();if(!response.ok)throw new Error(queued.error||'Không tạo được yêu cầu.');
       for(let attempt=0;attempt<900;attempt++){
         await new Promise(resolve=>setTimeout(resolve,2000));const job=await api(`/api/newidea/jobs/?id=${queued.search_id}`);
-        const progress=job.result?.progress;parent.textContent=`Yêu cầu #${queued.search_id}: ${progress?.stage==='a3_extraction'?'A3 đang trích xuất tài liệu đính kèm':progress?.stage==='qwen_semantic_extraction'?`Qwen đang tách ngữ nghĩa · lô ${progress.batch}/${progress.batches}`:'Đang chờ xử lý'}.`;
+        const progress=job.result?.progress;parent.textContent=`Yêu cầu #${queued.search_id}: ${progress?.stage==='a3_extraction'?'Đang trích xuất tài liệu đính kèm':progress?.stage==='qwen_semantic_extraction'?`Qwen đang tách ngữ nghĩa · lô ${progress.batch}/${progress.batches}`:'Đang chờ xử lý'}.`;
         if(job.status==='FAILED')throw new Error(job.result.error||'Xử lý không hoàn tất.');
         if(job.status==='COMPLETED'){
           const result=job.result.response;parent.replaceChildren();text(parent,'p',`Phân tích: ${result.analysis_status} · ${result.units.length} đơn vị ngữ nghĩa · Neo4j: ${result.graph.status}. Các quan hệ là đề xuất nháp, cần kiểm tra.`);
-          result.documents.forEach(doc=>{const link=text(parent,'a',`Mở kết quả A3: ${doc.title} · `);link.href=doc.source_url;link.target='_blank';link.rel='noopener';});
+          result.documents.forEach(doc=>{const link=text(parent,'a',`Mở kết quả trích xuất: ${doc.title} · `);link.href=doc.source_url;link.target='_blank';link.rel='noopener';});
           renderQwenJson(parent,result);const names=new Map(result.units.map(u=>[u.id,u.title]));names.set('question','Câu hỏi chuyên gia');names.set('answer','Câu trả lời chuyên gia');
           result.units.forEach(unit=>{const row=text(parent,'article','');row.className='evidence-record';text(row,'h3',`${unit.title} · ${unit.kind}`);text(row,'p',unit.quote);(unit.concepts||[]).forEach(c=>text(row,'p',`${c.relation}: ${c.value}`));if(unit.source_url){const link=text(row,'a','Mở bằng chứng nguồn');link.href=unit.source_url;link.target='_blank';link.rel='noopener';}});
           result.relations.forEach(relation=>text(parent,'p',`${names.get(relation.from_id)} → ${relation.kind} → ${names.get(relation.to_id)}`));

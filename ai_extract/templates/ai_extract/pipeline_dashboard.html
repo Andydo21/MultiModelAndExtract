@@ -1,13 +1,13 @@
 {% extends 'ai_extract/base.html' %}
 {% load static %}
-{% block title %}Vision Pipeline · PlanA Extract{% endblock %}
+{% block title %}Trích xuất tài liệu · Evidence Pods{% endblock %}
 {% block page_css %}<link rel="stylesheet" href="{% static 'ai_extract/css/pipeline_dashboard.css' %}">{% endblock %}
 {% block content %}
 <section class="hero">
     <div>
         <p class="eyebrow">DOCUMENT INTELLIGENCE</p>
-        <h1>A3 — Trích xuất tài liệu</h1>
-        <p class="lede">Tải hợp đồng lên, chọn phiên bản và chạy trích xuất để A2 có thể tìm kiếm và trả lời từ tài liệu đã lưu.</p>
+        <h1>Trích xuất tài liệu</h1>
+        <p class="lede">Tải hợp đồng lên, chọn phiên bản và chạy trích xuất để hệ thống có thể tìm kiếm và trả lời từ tài liệu đã lưu.</p>
         <a class="upload-link" href="{% url 'dashboard' %}?upload=1&amp;from=a3">Tải hợp đồng lên</a>
     </div>
     <div class="hero-metric"><strong>{{ cards|length }}</strong><span>contracts</span></div>
@@ -28,7 +28,7 @@
         </div>
         {% if card.run %}<p class="branch-status">Dense: {{ card.run.dense_index_status }} · ColPali: {{ card.run.colpali_index_status }}</p>{% endif %}
         <a class="card-link" href="/ai-extract/contracts/{{ card.contract.id }}/">Mở pipeline <span>→</span></a>
-        {% if card.version %}<a class="card-link" href="{% url 'newidea_contract' card.contract.id %}?version_id={{ card.version.id }}">Hỏi bằng A2 <span>→</span></a>{% endif %}
+        {% if card.version %}<a class="card-link" href="{% url 'newidea_contract' card.contract.id %}?version_id={{ card.version.id }}">Đặt câu hỏi <span>→</span></a>{% endif %}
     </article>
     {% empty %}
     <div class="empty-state">Chưa có hợp đồng để trích xuất.</div>

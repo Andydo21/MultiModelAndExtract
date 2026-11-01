@@ -26,7 +26,7 @@
                     <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
                 </a>
                 <div class="divider"></div>
-                <div class="logo-text">Contract Guard AI</div>
+                <div class="logo-text">Evidence Pods</div>
             </div>
             <div class="contract-header-info" style="display: flex; align-items: center; gap: 16px;">
                 <!-- Version Selector Dropdown -->
@@ -50,9 +50,9 @@
         </header>
 
         <!-- Main Workspace Split Screen -->
-        <a href="{% url 'ai_extract_contract' contract.id %}?version_id={{ contract.active_version_id }}" class="btn" style="display:inline-block;margin:12px 0;text-decoration:none;">A3 — Trích xuất hợp đồng</a>
-        <a href="{% url 'contract_intelligence_detail' contract.id %}" class="btn" style="display:inline-block;margin:12px 0;text-decoration:none;">Tra cứu bằng chứng và kinh nghiệm hợp đồng A2/A3</a>
-        <a href="{% url 'newidea_contract' contract.id %}" class="btn" style="display:inline-block;margin:12px 0;text-decoration:none;">A2 — Hỏi đáp tài liệu này</a>
+        <a href="{% url 'ai_extract_contract' contract.id %}?version_id={{ contract.active_version_id }}" class="btn" style="display:inline-block;margin:12px 0;text-decoration:none;">Trích xuất tài liệu</a>
+        <a href="{% url 'contract_intelligence_detail' contract.id %}" class="btn" style="display:inline-block;margin:12px 0;text-decoration:none;">Tra cứu bằng chứng và kinh nghiệm</a>
+        <a href="{% url 'newidea_contract' contract.id %}" class="btn" style="display:inline-block;margin:12px 0;text-decoration:none;">Hỏi đáp tài liệu này</a>
         <a href="{% url 'contract_ledger' %}?version_id={{ contract.active_version_id }}" class="btn">Ký và kiểm chứng hợp đồng</a>
         <div class="detail-grid">
             
