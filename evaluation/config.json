@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "corpus_dir": "documents",
+  "output_dir": "evaluation/artifacts",
+  "generator": {
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct-AWQ",
+    "checkpoint_revision": null,
+    "checkpoint_verified": false,
+    "hardware": null,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 2048,
+    "seed": 1729,
+    "timeout_s": 180,
+    "base_url_env": "VLLM_BASE_URL",
+    "api_key_env": "VLLM_API_KEY"
+  },
+  "retrieval": {
+    "lexical": "BM25",
+    "dense": "BAAI/bge-m3",
+    "sparse_bge_m3": false,
+    "reranker_expected": "BAAI/bge-reranker-v2-m3",
+    "reranker_actual": null,
+    "snapshot": null,
+    "note": "Expected names describe code, not verified runtime/checkpoint identity."
+  },
+  "experiment": {
+    "renderer": "canonical",
+    "e0_repeats": 5,
+    "e1_repeats": 3,
+    "e2_repeats": 3,
+    "max_input_tokens": 12000,
+    "max_variant_token_ratio": 1.25,
+    "graph_hops": 1,
+    "top_k": 10,
+    "schedule_seed": 1729
+  }
+}

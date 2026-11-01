@@ -1,3 +1,18 @@
+# Answer grading principles (English translation; the Vietnamese original follows)
+
+Grade by meaning and usability; an answer need not match the reference answer word for word. Accept different wording, synonyms, a different order, or a missing minor detail that does not affect the main point.
+
+- **Correct:** the main points asked are supported by evidence; numbers, units, subjects and important conditions are right. Equivalent notations are accepted.
+- **Partially correct:** the main information is right, but a requested part or an important condition is missing. Record what is missing so it can be counted under the agreed rule.
+- **Wrong:** a wrong subject-attribute-value binding, a wrong number, unit or important condition, a conclusion the evidence does not support, or an off-topic answer.
+- **Not assessed:** no answer, no verified gold, or the supporting source cannot be determined. Never counted as correct by default.
+
+Evidence and citations are checked by what the content actually supports, not only by ID. A nearby figure or caption is a candidate until the relation is established, not confirmed evidence. Each label needs a reviewer, a source and a reason; any change made after seeing the output must be recorded, to avoid adjusting the criteria to the results.
+
+Exploratory results with draft labels must not be reported as official scores; decide in advance how partially correct answers are scored, and report the number of assessable samples.
+
+---
+
 # Nguyên tắc đánh giá câu trả lời
 
 Đánh giá theo ý nghĩa và khả năng sử dụng, không yêu cầu câu trả lời giống nguyên văn đáp án mẫu. Chấp nhận cách diễn đạt khác, từ đồng nghĩa, thứ tự trình bày khác hoặc thiếu một chi tiết phụ không ảnh hưởng ý chính.
