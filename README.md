@@ -26,6 +26,7 @@ Inside `research_evaluation_20261030/`:
 | `frozen_20261030/` | The fixed inputs: 50 questions with gold evidence, the evidence texts, retrieval rankings and rendered pods |
 | `mainflow_20261030/` | Raw per-question logs of the full system on the 50 questions (`images_off` is the text-only run in the paper) |
 | `runs/` | Raw logs of the smaller experiments: E1 evidence format, E2 graph expansion, E4 visual input |
+| `documents/` | The test documents: the exact PDFs in the index. `pilot_20/` holds the 20 documents the questions ask about; `arxiv_180/` holds 180 arXiv papers that act as distractors. `DOCUMENT_INDEX.csv` maps all 201 indexed versions to a file, SHA-256 and source link (one version is a repeat upload of `DigitalTwinSoftware_en`) |
 | `KET_QUA_20261030/` | Final results ("kết quả" is Vietnamese for "results"): CSV and XLSX tables, grades, error cases and charts |
 
 ## Run
@@ -96,6 +97,10 @@ Main flow, text-only generator input, 50 questions:
 | Citation faithfulness | 0.888 (87/98 claims) |
 | Key-value recall | 0.826 (24 questions) |
 
+### Test documents
+
+The PDFs are publicly published documents and remain the property of their publishers and authors; each paper in `arxiv_180/` is under the licence shown on its arXiv page. They are included only so the evaluation can be checked. To request removal of a file, open an issue.
+
 ### Reading the evidence
 
 - Gold evidence: 73 question–region pairs over 65 distinct regions, including 21 question–table pairs over 16 distinct tables.
@@ -113,6 +118,6 @@ Main flow, text-only generator input, 50 questions:
 
 ### Not in this repository
 
-- Source documents, databases, extracted images, model weights and graph exports.
+- Databases, extracted images, model weights and graph exports.
 - Gateway host names and e-mail addresses found in third-party text are redacted in the logs, so the hash chain of the `runs/` logs only verifies against the originals.
 - The evaluation scripts, the paper source and a static results viewer are in commit [`43d5ff1`](https://github.com/Andydo21/MultiModelAndExtract/tree/43d5ff1). `SOURCE_COMMIT.txt` refers to the evaluation code at that commit.
