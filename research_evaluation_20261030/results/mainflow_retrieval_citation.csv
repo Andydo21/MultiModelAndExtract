@@ -45,7 +45,7 @@ P043,off,table|comparison,1,23,6,1.0,0.1,1.0,1.0,2,0.5,1.0
 P044,off,table|footnote|condition,2,20,6,1.0,0.2,1.0,1.0,1,1.0,0.5
 P045,off,text,1,60,9,1.0,0.1,1.0,1.0,5,0.2,1.0
 P046,off,figure_text|footnote,2,41,9,1.0,0.2,1.0,1.0,2,1.0,1.0
-P047,off,table|comparison,1,9,6,1.0,0.1,1.0,1.0,1,1.0,1.0
+P047,off,table|comparison,1,9,6,1.0,0.1111111111111111,1.0,1.0,1,1.0,1.0
 P048,off,table|identifier,2,13,6,1.0,0.2,1.0,1.0,1,0.0,0.0
 P049,off,multi_document|table|comparison|footnote|condition,4,29,7,0.75,0.3,0.75,0.75,2,1.0,0.5
 P050,off,multi_document|comparison|attribute_leakage,3,44,6,0.6666666666666666,0.2,1.0,1.0,3,0.3333333333333333,0.3333333333333333

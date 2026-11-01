@@ -1,6 +1,6 @@
 # Hierarchical Evidence Pods
 
-Code and evaluation evidence for *Hierarchical Evidence Pods: Structure-Preserving Hybrid Retrieval and Graph-Grounded Question Answering over Technical Documents* (Do Dang An; supervisor Dao Thi Thuy Quynh; Posts and Telecommunications Institute of Technology, PTIT).
+Code and evaluation evidence for *Hierarchical Evidence Pods: Structure-Preserving Hybrid Retrieval and Graph-Grounded Question Answering over Technical Documents* (Do Dang An; supervisor Dao Thi Thuy Quynh; Posts and Telecommunications Institute of Technology, PTIT). The paper is at [`paper/Hierarchical_Evidence_Pods.pdf`](paper/Hierarchical_Evidence_Pods.pdf).
 
 The system analyses document structure offline (layout, OCR, table grids, figures, a per-document graph). Online, it retrieves source regions with BM25, BGE-M3 and figure-level ColPali, expands them through the graph, and gives the generator scoped evidence as text, with stable citation IDs.
 
@@ -17,7 +17,8 @@ The folder names come from the project's history, so some do not describe their 
 | `config/` | **Django project settings:** environment variables, database connections, and the top-level URL routes | `settings.py`, `urls.py` |
 | `runtime/` | **Scripts for the GPU inference service** (the `a3-inference` container): one installs its Python environment and llama.cpp, the other starts it on port 8010 | `setup_a3_linux_runtime.sh`, `start_a3_linux_runtime.sh` |
 | `serving/` | **Notebook for the remote models.** Runs the generator (Qwen2.5-VL on vLLM) and ColPali on Kaggle behind one public gateway | `kaggle_vllm_qwen_colpali_gateway.ipynb` |
-| `evaluation/` | **Scripts that produced the paper's evidence:** freeze the inputs, run the main flow and the E1/E2/E4 experiments, compute the metrics, and write the results tables. Not needed to run the system | `runners/pilot_freeze.py`, `runners/pilot_mainflow.py`, `runners/pilot_run.py`, `runners/pilot_deliverables.py`, `metrics.py` |
+| `evaluation/` | **Scripts that produced the paper's evidence:** freeze the inputs, run the main flow and the E1/E2/E4 experiments, compute the metrics, and write the results tables. Not needed to run the system | `metrics.py`, `runners/pilot_metrics.py`, `runners/pilot_freeze.py`, `runners/pilot_mainflow.py`, `runners/pilot_run.py`, `runners/pilot_deliverables.py` |
+| `paper/` | **The paper as a PDF** | `Hierarchical_Evidence_Pods.pdf` |
 | `research_evaluation_20261030/` | **Evidence for the paper,** from the evaluation of 30–31 October 2026. Nothing here is needed to run the system | See below |
 
 Inside `research_evaluation_20261030/`:
@@ -117,11 +118,30 @@ Figures 1 and 3 and Algorithms 1 and 2 describe the method and have no data file
 | Visual bridge (text) | `mainflow_20261030/answers_images_off.jsonl` | Sources with `expansion_reason = visual_text_shared_entity_candidate` |
 | Repeated configurations (text) | `runs/E1/`, `runs/E2/`, `runs/E4/` | Non-failed outputs of the same question, format and variant |
 
-To rebuild the summary tables and charts from the stored results, without calling any model:
+### How each number is computed
+
+`evaluation/runners/pilot_metrics.py` computes every number below from the stored logs, without calling any model. It compares the result with the stored tables and lists any difference. `--write` saves the numbers, each with its numerator, denominator and source, to `results/paper_numbers.csv`.
 
 ```bash
-python -X utf8 -m evaluation.runners.pilot_deliverables research_evaluation_20261030
+python -X utf8 -m evaluation.runners.pilot_metrics research_evaluation_20261030 --write
+python -X utf8 -m evaluation.runners.pilot_deliverables research_evaluation_20261030   # summary tables and charts
 ```
+
+| Metric | Computation | Code |
+|---|---|---|
+| Hit@1, MRR | Position of the first gold region in the order the sources were sent: rank 1 for a hit; 1/rank for reciprocal rank, 0 if none was sent. Mean over 50 questions | `ranking_row` |
+| Evidence recall@10 | Gold regions in the first 10 unique sources ÷ gold regions. Mean over questions | `metrics.evidence_metrics` |
+| Evidence precision@10 | Gold regions in the first 10 unique sources ÷ those sources. The ceiling is 0.146 because a question has 1.46 gold regions on average | `metrics.evidence_metrics` |
+| Required-evidence recall | Required regions among all sources sent ÷ required regions. Mean over questions | `metrics.evidence_metrics` |
+| Citation precision, recall | Sources cited by the claims, compared with the gold regions. Mean over questions | `metrics.citation_id_overlap` |
+| Key-value recall | Share of the reference numbers and codes found in the answer after normalization. Mean over the 24 questions that have such values | `key_value_recall`, with `key_values` and `normalize` from `pilot_run.py` |
+| Answer accuracy, strict accuracy | (correct + 0.5 × partial) ÷ 50, and correct ÷ 50 | `paper_numbers` |
+| Attribute leakage rate | Claims with a leak ÷ all claims, pooled: 5/98 | `paper_numbers` |
+| Citation faithfulness | Claims supported by their citations ÷ all claims, pooled: 87/98 | `paper_numbers` |
+
+Regions are matched by `content_hash`, because the same document can be indexed more than once.
+
+The labels and the counts of leaked and unsupported claims are judgments, not calculations. They are inputs, stored in `results/mainflow_manual_grades.csv` and `E4_manual_grades.csv`. `summary_mean_sd.csv` gives per-question means, so its leakage (0.060) and faithfulness (0.890) differ from the pooled values in the paper.
 
 ### Test documents
 
@@ -135,6 +155,8 @@ The PDFs are publicly published documents and remain the property of their publi
 - The E1, E2 and E4 schedules were stopped part-way, so only questions that completed every configuration are compared.
 - Evidence Pods gave no gain over row-wise text on the five E1 table questions. This negative result is kept.
 - The image-input main-flow run (`answers_images_on.jsonl`) has 45 of 50 answers, was not rerun and is not used in the paper.
+- The paper states that the figure-to-text bridge added 52 passages in 10 questions. That count predates the five second-run answers; the reported run gives 60 passages in 11 questions (`results/paper_numbers.csv`).
+- `evidence_precision_at_10` of P047 was first stored as 0.1, using a denominator of 10 instead of its 9 unique sources, and was corrected to 0.111. The reported mean (0.126) and SD (0.060) do not change.
 - `mainflow_20261030/judgments.jsonl` (automatic judge) stopped at 14 of 100 answers and is not used, so it is not included.
 
 ### Missing logs
@@ -146,8 +168,12 @@ The PDFs are publicly published documents and remain the property of their publi
 
 - Databases, extracted images and model weights.
 - Gateway host names and e-mail addresses found in third-party text are redacted in the logs, so the hash chain of the `runs/` logs only verifies against the originals.
-- The paper source and a static results viewer are in commit [`43d5ff1`](https://github.com/Andydo21/MultiModelAndExtract/tree/43d5ff1).
+- An earlier copy of the paper source and a static results viewer are in commit [`43d5ff1`](https://github.com/Andydo21/MultiModelAndExtract/tree/43d5ff1).
 
 ### Renamed files
 
 `PILOT50_PROTOCOL.md` is sealed by `protocol_sha256.txt`, so it keeps the rubric's earlier name `RUBRIC_DANH_GIA.md`, which is now `GRADING_RUBRIC.md`. `results/` was earlier `KET_QUA_20261030/`, and `results/SUMMARY_TABLES.xlsx` was `BANG_TONG_HOP.xlsx`. The evidence commits before this rename used the earlier names, and their JSON logs under `mainflow_20261030/` and `results/` are not valid JSON because of a redaction error, fixed here.
+
+## License
+
+The code is under the [MIT License](LICENSE). It does not cover `paper/`, the PDFs in `research_evaluation_20261030/documents/`, or the models listed under Run, which keep their own terms.

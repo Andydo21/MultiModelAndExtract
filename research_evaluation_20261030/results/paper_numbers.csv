@@ -1,0 +1,57 @@
+﻿number,value,numerator,denominator,source
+questions answered,50,,50,mainflow_20261030/answers_images_off.jsonl
+Hit@1,0.8,40,50,mainflow_20261030/answers_images_off.jsonl
+MRR,0.869,,50,mainflow_20261030/answers_images_off.jsonl
+Evidence recall@10,0.905,,50,mainflow_20261030/answers_images_off.jsonl
+Evidence precision@10,0.126,,50,mainflow_20261030/answers_images_off.jsonl
+Required-evidence recall,0.955,,50,mainflow_20261030/answers_images_off.jsonl
+Citation precision,0.839,,50,mainflow_20261030/answers_images_off.jsonl
+Citation recall,0.81,,50,mainflow_20261030/answers_images_off.jsonl
+Precision@10 ceiling,0.146,,50,frozen_20261030/gold_questions.jsonl
+Answers labelled correct,33,,50,results/mainflow_manual_grades.csv
+Answers labelled partial,14,,50,results/mainflow_manual_grades.csv
+Answers labelled wrong,2,,50,results/mainflow_manual_grades.csv
+Answers labelled no_answer,1,,50,results/mainflow_manual_grades.csv
+Answer accuracy (partial = 0.5),0.8,40.0,50,results/mainflow_manual_grades.csv
+Strict accuracy,0.66,33,50,results/mainflow_manual_grades.csv
+Attribute leakage rate,0.051,5,98,results/mainflow_manual_grades.csv
+Citation faithfulness,0.888,87,98,results/mainflow_manual_grades.csv
+Key-value recall,0.826,,24,mainflow_20261030/answers_images_off.jsonl
+Key-value questions complete,18,,24,mainflow_20261030/answers_images_off.jsonl
+"Accuracy, table questions",0.833,,18,results/mainflow_manual_grades.csv
+"Required-evidence recall, table questions",0.958,,18,mainflow_20261030/answers_images_off.jsonl
+"Accuracy, footnote questions",0.636,,11,results/mainflow_manual_grades.csv
+"Required-evidence recall, footnote questions",0.795,,11,mainflow_20261030/answers_images_off.jsonl
+"Accuracy, condition questions",0.774,,31,results/mainflow_manual_grades.csv
+"Required-evidence recall, condition questions",0.927,,31,mainflow_20261030/answers_images_off.jsonl
+Gold question-region pairs,73,,,frozen_20261030/gold_questions.jsonl
+Gold distinct regions,65,,,frozen_20261030/gold_questions.jsonl
+Gold question-table pairs,21,,,frozen_20261030/evidence.jsonl
+Gold distinct tables,16,,,frozen_20261030/evidence.jsonl
+Gold table pairs that reached the generator,21,,21,mainflow_20261030/answers_images_off.jsonl
+ColPali-only sources in the first ten,111,,498,frozen_20261030/retrieval.json
+Questions with a ColPali-only source,35,,50,frozen_20261030/retrieval.json
+Visual bridge passages,60,,,mainflow_20261030/answers_images_off.jsonl
+Questions with a visual bridge passage,11,,50,mainflow_20261030/answers_images_off.jsonl
+Table 1 documents,20,,,frozen_20261030/graphs.json
+Table 1 nodes,6643,,,frozen_20261030/graphs.json
+Table 1 edges,13021,,,frozen_20261030/graphs.json
+Table 1 median nodes per document,345.0,,,frozen_20261030/graphs.json
+Table 1 median edges per document,676.0,,,frozen_20261030/graphs.json
+Table 1 entity nodes,780,,,frozen_20261030/graphs.json
+Table 1 CONTAINS,1007,,,frozen_20261030/graphs.json
+Table 1 HAS_EVIDENCE,3214,,,frozen_20261030/graphs.json
+Table 1 NEXT,1331,,,frozen_20261030/graphs.json
+Table 1 HAS_ROW,288,,,frozen_20261030/graphs.json
+Table 1 HAS_CELL,1046,,,frozen_20261030/graphs.json
+Table 1 HAS_FIGURE_TEXT,79,,,frozen_20261030/graphs.json
+Table 1 FIGURE_CAPTION_CANDIDATE,4,,,frozen_20261030/graphs.json
+Table 1 FIGURE_NEAR_TEXT_CANDIDATE,336,,,frozen_20261030/graphs.json
+Table 1 ABOVE,967,,,frozen_20261030/graphs.json
+Table 1 LEFT_OF,184,,,frozen_20261030/graphs.json
+Table 1 MENTIONS,726,,,frozen_20261030/graphs.json
+Table 1 RELATED_PASSAGE,372,,,frozen_20261030/graphs.json
+Table 1 HAS_VISUAL,1607,,,frozen_20261030/graphs.json
+Table 1 APPEARS_IN,1607,,,frozen_20261030/graphs.json
+Table 1 HAS_EMBEDDING,253,,,frozen_20261030/graphs.json
+Repeated configurations with identical output,62,,71,runs/E*/questions.jsonl
