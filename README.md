@@ -54,11 +54,15 @@ Requirements: Docker with an NVIDIA GPU for `a3-inference`, and a gateway servin
    docker compose build web
    docker compose up -d postgres qdrant neo4j
    docker compose run --rm --no-deps a3-inference sh /app/runtime/setup_a3_linux_runtime.sh   # first time only
-   docker compose up -d a3-inference web knowledge-worker entity-worker
+   docker compose up -d a3-inference web
    docker compose exec web python manage.py migrate
+   docker compose exec web python manage.py ensure_demo_user
+   docker compose up -d knowledge-worker entity-worker
    ```
 
 4. **Open** http://127.0.0.1:8000/
+
+   No login is needed: `ensure_demo_user` creates a local admin, and `AutoDemoLoginMiddleware` gives that account to every visitor. Compose publishes the site only on `127.0.0.1`. Do not expose it publicly in this state, because anyone who reaches it has admin rights; remove the middleware from `config/settings.py` first.
 
 | Page | URL |
 |---|---|
