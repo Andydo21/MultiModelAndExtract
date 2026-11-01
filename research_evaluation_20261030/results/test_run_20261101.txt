@@ -1,0 +1,2411 @@
+===== ai_extract =====
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+Found 560 test(s).
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+................2026-11-01 16:10:25,127 INFO A3 {"run": 8, "stage": "colpali_schema", "event": "started", "page": 1}
+2026-11-01 16:10:25,129 INFO A3 {"run": 8, "stage": "colpali_schema", "event": "completed", "elapsed_s": 0.0, "page": 1}
+2026-11-01 16:10:25,129 INFO A3 {"run": 8, "stage": "colpali_embed", "event": "started", "page": 1}
+2026-11-01 16:10:25,130 INFO A3 {"run": 8, "stage": "colpali_embed", "event": "completed", "elapsed_s": 0.0, "page": 1}
+2026-11-01 16:10:25,131 INFO A3 {"run": 8, "stage": "colpali_embed", "event": "started", "page": 1}
+2026-11-01 16:10:25,132 INFO A3 {"run": 8, "stage": "colpali_embed", "event": "completed", "elapsed_s": 0.0, "page": 1}
+2026-11-01 16:10:25,132 INFO A3 {"run": 8, "stage": "colpali_embed", "event": "started", "page": 1}
+2026-11-01 16:10:25,133 INFO A3 {"run": 8, "stage": "colpali_embed", "event": "completed", "elapsed_s": 0.0, "page": 1}
+2026-11-01 16:10:25,133 INFO A3 {"run": 8, "stage": "colpali_embed", "event": "started", "page": 1}
+2026-11-01 16:10:25,134 INFO A3 {"run": 8, "stage": "colpali_embed", "event": "completed", "elapsed_s": 0.0, "page": 1}
+2026-11-01 16:10:25,134 INFO A3 {"run": 8, "stage": "colpali_embed", "event": "started", "page": 1}
+2026-11-01 16:10:25,135 INFO A3 {"run": 8, "stage": "colpali_embed", "event": "completed", "elapsed_s": 0.0, "page": 1}
+2026-11-01 16:10:25,135 INFO A3 {"run": 8, "stage": "qdrant_colpali_write", "event": "started", "page": 1, "points": 5}
+2026-11-01 16:10:25,136 INFO A3 {"run": 8, "stage": "qdrant_colpali_write", "event": "completed", "elapsed_s": 0.0, "page": 1, "points": 5}
+2026-11-01 16:10:25,137 INFO A3 {"run": 8, "stage": "colpali_embed", "event": "started", "page": 1}
+2026-11-01 16:10:25,139 INFO A3 {"run": 8, "stage": "colpali_embed", "event": "completed", "elapsed_s": 0.0, "page": 1}
+2026-11-01 16:10:25,139 INFO A3 {"run": 8, "stage": "qdrant_colpali_write", "event": "started", "page": 1, "points": 1}
+2026-11-01 16:10:25,140 ERROR A3 {"run": 8, "stage": "qdrant_colpali_write", "event": "failed", "elapsed_s": 0.0, "error_type": "RuntimeError", "page": 1, "points": 1}
+........2026-11-01 16:10:25,359 INFO A3 {"run": 7, "stage": "pregraph_source_reading", "event": "started", "pages": 2}
+2026-11-01 16:10:25,360 INFO A3 {"run": 7, "stage": "pregraph_source_reading", "event": "completed", "elapsed_s": 0.0, "pages": 2, "status": "complete", "sources": 2, "source_order_preserved": true, "new_reading_edges": 0, "provider": "surya_source", "semantic_review": "disabled"}
+2026-11-01 16:10:25,360 INFO A3 {"run": 7, "stage": "whole_document_entities", "event": "started", "pages": 2, "provider": "gliner"}
+2026-11-01 16:10:25,370 ERROR A3 {"run": 7, "stage": "whole_document_entities", "event": "failed", "elapsed_s": 0.01, "error_type": "RuntimeError", "pages": 2, "provider": "gliner"}
+E{"event": "gliner_coverage", "eligible": 2, "completed": 0, "without_entity": 0, "excluded_ocr": 0, "mention_excluded": 0}
+E.2026-11-01 16:10:25,427 INFO A3 {"run": 7, "stage": "colpali_schema", "event": "started", "page": null}
+2026-11-01 16:10:25,428 INFO A3 {"run": 7, "stage": "colpali_schema", "event": "completed", "elapsed_s": 0.0, "page": null}
+2026-11-01 16:10:25,428 INFO A3 {"run": 7, "stage": "colpali_embed", "event": "started", "page": 1}
+2026-11-01 16:10:25,430 INFO A3 {"run": 7, "stage": "colpali_embed", "event": "completed", "elapsed_s": 0.0, "page": 1}
+2026-11-01 16:10:25,430 INFO A3 {"run": 7, "stage": "qdrant_colpali_write", "event": "started", "page": null, "points": 1}
+2026-11-01 16:10:25,431 INFO A3 {"run": 7, "stage": "qdrant_colpali_write", "event": "completed", "elapsed_s": 0.0, "page": null, "points": 1}
+2026-11-01 16:10:25,432 INFO A3 {"run": 7, "stage": "colpali_schema", "event": "started", "page": null}
+2026-11-01 16:10:25,433 INFO A3 {"run": 7, "stage": "colpali_schema", "event": "completed", "elapsed_s": 0.0, "page": null}
+2026-11-01 16:10:25,434 INFO A3 {"run": 7, "stage": "colpali_schema", "event": "started", "page": null}
+2026-11-01 16:10:25,435 INFO A3 {"run": 7, "stage": "colpali_schema", "event": "completed", "elapsed_s": 0.0, "page": null}
+2026-11-01 16:10:25,435 INFO A3 {"run": 7, "stage": "colpali_embed", "event": "started", "page": 1}
+2026-11-01 16:10:25,435 INFO A3 {"run": 7, "stage": "colpali_embed", "event": "completed", "elapsed_s": 0.0, "page": 1}
+2026-11-01 16:10:25,436 INFO A3 {"run": 7, "stage": "qdrant_colpali_write", "event": "started", "page": null, "points": 1}
+2026-11-01 16:10:25,436 INFO A3 {"run": 7, "stage": "qdrant_colpali_write", "event": "completed", "elapsed_s": 0.0, "page": null, "points": 1}
+..2026-11-01 16:10:25,446 INFO A3 {"run": 7, "stage": "colpali_backfill", "event": "started", "only_missing": true}
+2026-11-01 16:10:25,451 INFO A3 {"run": 7, "stage": "colpali_backfill", "event": "completed", "elapsed_s": 0.01, "only_missing": true, "status": "COMPLETED", "points": 1, "images": 1}
+2026-11-01 16:10:25,451 INFO A3 {"run": 7, "stage": "colpali_backfill", "event": "started", "only_missing": true}
+2026-11-01 16:10:25,453 INFO A3 {"run": 7, "stage": "colpali_backfill", "event": "completed", "elapsed_s": 0.0, "only_missing": true, "status": "PARTIAL", "points": 1, "images": 1}
+2026-11-01 16:10:25,454 INFO A3 {"run": 7, "stage": "colpali_backfill", "event": "started", "only_missing": true}
+2026-11-01 16:10:25,457 ERROR A3 {"run": 7, "stage": "colpali_backfill", "event": "completed", "elapsed_s": 0.0, "only_missing": true, "status": "FAILED", "points": 0, "images": 1}
+...[Surya OCR] Model unavailable: ModuleNotFoundError
+[Draw BBox Error] [Errno 2] No such file or directory: 'page.png'
+[Draw BBox Error] [Errno 2] No such file or directory: 'page.png'
+.2026-11-01 16:10:25,477 INFO A3 {"run": 7, "stage": "colpali_schema", "event": "started", "page": 1}
+2026-11-01 16:10:25,478 INFO A3 {"run": 7, "stage": "colpali_schema", "event": "completed", "elapsed_s": 0.0, "page": 1}
+......2026-11-01 16:10:25,498 INFO A3 {"run": 7, "stage": "colpali_schema", "event": "started", "page": 1}
+2026-11-01 16:10:25,499 INFO A3 {"run": 7, "stage": "colpali_schema", "event": "completed", "elapsed_s": 0.0, "page": 1}
+2026-11-01 16:10:25,500 INFO A3 {"run": 7, "stage": "colpali_embed", "event": "started", "page": 1}
+2026-11-01 16:10:25,501 INFO A3 {"run": 7, "stage": "colpali_embed", "event": "completed", "elapsed_s": 0.0, "page": 1}
+2026-11-01 16:10:25,501 INFO A3 {"run": 7, "stage": "qdrant_colpali_write", "event": "started", "page": 1, "points": 1}
+2026-11-01 16:10:25,501 INFO A3 {"run": 7, "stage": "qdrant_colpali_write", "event": "completed", "elapsed_s": 0.0, "page": 1, "points": 1}
+........................{"event": "gliner_coverage", "eligible": 2, "completed": 0, "without_entity": 0, "excluded_ocr": 0, "mention_excluded": 0}
+....{"event": "gliner_coverage", "eligible": 5, "completed": 0, "without_entity": 0, "excluded_ocr": 0, "mention_excluded": 0}
+..{"event": "gliner_coverage", "eligible": 2, "completed": 2, "without_entity": 1, "excluded_ocr": 0, "mention_excluded": 0}
+.......Neo4j graph publication failed for run None
+Traceback (most recent call last):
+  File "/app/ai_extract/services/document_graph_service.py", line 488, in sync_graph
+    repository.replace_snapshot(scope, nodes, edges)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1173, in _execute_mock_call
+    raise effect
+RuntimeError: secret details
+.ss........Neo4j graph publication failed temporarily; retry 1/2
+Traceback (most recent call last):
+  File "/app/ai_extract/services/document_graph_service.py", line 488, in sync_graph
+    repository.replace_snapshot(scope, nodes, edges)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1173, in _execute_mock_call
+    raise effect
+neo4j.exceptions.ServiceUnavailable: offline
+Neo4j graph publication failed temporarily; retry 2/2
+Traceback (most recent call last):
+  File "/app/ai_extract/services/document_graph_service.py", line 488, in sync_graph
+    repository.replace_snapshot(scope, nodes, edges)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1173, in _execute_mock_call
+    raise effect
+  File "/app/ai_extract/services/document_graph_service.py", line 488, in sync_graph
+    repository.replace_snapshot(scope, nodes, edges)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1173, in _execute_mock_call
+    raise effect
+neo4j.exceptions.ServiceUnavailable: offline
+Neo4j graph publication failed for run None
+Traceback (most recent call last):
+  File "/app/ai_extract/services/document_graph_service.py", line 488, in sync_graph
+    repository.replace_snapshot(scope, nodes, edges)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1173, in _execute_mock_call
+    raise effect
+  File "/app/ai_extract/services/document_graph_service.py", line 488, in sync_graph
+    repository.replace_snapshot(scope, nodes, edges)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1173, in _execute_mock_call
+    raise effect
+  File "/app/ai_extract/services/document_graph_service.py", line 488, in sync_graph
+    repository.replace_snapshot(scope, nodes, edges)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1173, in _execute_mock_call
+    raise effect
+neo4j.exceptions.ServiceUnavailable: offline
+.....Neo4j graph publication failed temporarily; retry 1/2
+Traceback (most recent call last):
+  File "/app/ai_extract/services/document_graph_service.py", line 488, in sync_graph
+    repository.replace_snapshot(scope, nodes, edges)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1177, in _execute_mock_call
+    raise result
+neo4j.exceptions.ServiceUnavailable: temporary
+.Neo4j graph publication failed for run None
+Traceback (most recent call last):
+  File "/app/ai_extract/services/document_graph_service.py", line 476, in sync_graph
+    validate_prepared(tree)
+  File "/app/ai_extract/services/document_graph_service.py", line 899, in validate_prepared
+    raise ValueError('Whole-document model analysis must finish before graph publication')
+ValueError: Whole-document model analysis must finish before graph publication
+....................E.{"event": "gliner_batch", "windows_completed": 2, "windows_total": 2, "entities": 2, "relations": 0}
+.{"event": "gliner_coverage", "eligible": 1, "completed": 0, "without_entity": 0, "excluded_ocr": 0, "mention_excluded": 0}
+.{"event": "gliner_batch", "windows_completed": 1, "windows_total": 1, "entities": 0, "relations": 0}
+.......{"event": "gliner_coverage", "eligible": 1, "completed": 1, "without_entity": 1, "excluded_ocr": 2, "mention_excluded": 0}
+..2026-11-01 16:10:25,892 INFO A3 {"run": 29, "stage": "neo4j_entities", "event": "started"}
+2026-11-01 16:10:25,893 INFO A3 {"run": 29, "stage": "neo4j_entities", "event": "completed", "elapsed_s": 0.0, "status": "ready", "nodes": null, "edges": null}
+..{"event": "gliner_coverage", "eligible": 1, "completed": 0, "without_entity": 0, "excluded_ocr": 0, "mention_excluded": 0}
+...........{"event": "gliner_coverage", "eligible": 130, "completed": 130, "without_entity": 130, "excluded_ocr": 0, "mention_excluded": 0}
+.....{"event": "gliner_coverage", "eligible": 1, "completed": 0, "without_entity": 0, "excluded_ocr": 0, "mention_excluded": 0}
+.{"event": "gliner_coverage", "eligible": 1, "completed": 1, "without_entity": 1, "excluded_ocr": 1, "mention_excluded": 0}
+.{"event": "gliner_coverage", "eligible": 1, "completed": 0, "without_entity": 0, "excluded_ocr": 0, "mention_excluded": 0}
+.{"event": "gliner_batch", "windows_completed": 1, "windows_total": 1, "entities": 0, "relations": 0}
+......{"event": "gliner_coverage", "eligible": 2, "completed": 0, "without_entity": 0, "excluded_ocr": 0, "mention_excluded": 0}
+.{"event": "gliner_coverage", "eligible": 1, "completed": 1, "without_entity": 0, "excluded_ocr": 0, "mention_excluded": 0}
+..{"event": "gliner_batch", "windows_completed": 1, "windows_total": 1, "entities": 1, "relations": 0}
+........{"event": "gliner_coverage", "eligible": 4, "completed": 4, "without_entity": 4, "excluded_ocr": 0, "mention_excluded": 2}
+..{"event": "gliner_coverage", "eligible": 40, "completed": 0, "without_entity": 0, "excluded_ocr": 0, "mention_excluded": 0}
+........2026-11-01 16:10:25,939 INFO A3 {"run": 7, "stage": "bge_batch", "event": "started", "batch": 1, "total_batches": 1, "chunks": 6, "chunks_total": 6}
+2026-11-01 16:10:25,940 INFO A3 {"run": 7, "stage": "bge_batch", "event": "completed", "elapsed_s": 0.0, "batch": 1, "total_batches": 1, "chunks": 6, "chunks_total": 6}
+2026-11-01 16:10:25,942 INFO A3 {"run": 7, "stage": "qdrant_dense_write", "event": "started", "points": 6}
+2026-11-01 16:10:25,943 INFO A3 {"run": 7, "stage": "qdrant_dense_write", "event": "completed", "elapsed_s": 0.0, "points": 6}
+....2026-11-01 16:10:25,953 INFO A3 {"run": 7, "stage": "bge_batch", "event": "started", "batch": 1, "total_batches": 1, "chunks": 6, "chunks_total": 6}
+2026-11-01 16:10:25,953 ERROR A3 {"run": 7, "stage": "bge_batch", "event": "failed", "elapsed_s": 0.0, "error_type": "RuntimeError", "batch": 1, "total_batches": 1, "chunks": 6, "chunks_total": 6}
+.....2026-11-01 16:10:25,958 INFO A3 {"run": 7, "stage": "bge_batch", "event": "started", "batch": 1, "total_batches": 1, "chunks": 1, "chunks_total": 1}
+2026-11-01 16:10:25,958 INFO A3 {"run": 7, "stage": "bge_batch", "event": "completed", "elapsed_s": 0.0, "batch": 1, "total_batches": 1, "chunks": 1, "chunks_total": 1}
+2026-11-01 16:10:25,959 INFO A3 {"run": 7, "stage": "bge_batch", "event": "started", "batch": 1, "total_batches": 1, "chunks": 1, "chunks_total": 1}
+2026-11-01 16:10:25,959 INFO A3 {"run": 7, "stage": "bge_batch", "event": "completed", "elapsed_s": 0.0, "batch": 1, "total_batches": 1, "chunks": 1, "chunks_total": 1}
+2026-11-01 16:10:25,960 INFO A3 {"run": 7, "stage": "bge_batch", "event": "started", "batch": 1, "total_batches": 1, "chunks": 1, "chunks_total": 1}
+2026-11-01 16:10:25,960 INFO A3 {"run": 7, "stage": "bge_batch", "event": "completed", "elapsed_s": 0.0, "batch": 1, "total_batches": 1, "chunks": 1, "chunks_total": 1}
+2026-11-01 16:10:25,961 INFO A3 {"run": 7, "stage": "bge_batch", "event": "started", "batch": 1, "total_batches": 1, "chunks": 1, "chunks_total": 1}
+2026-11-01 16:10:25,961 INFO A3 {"run": 7, "stage": "bge_batch", "event": "completed", "elapsed_s": 0.0, "batch": 1, "total_batches": 1, "chunks": 1, "chunks_total": 1}
+.....2026-11-01 16:10:25,977 INFO A3 {"run": 7, "stage": "bge_batch", "event": "started", "batch": 1, "total_batches": 1, "chunks": 6, "chunks_total": 6}
+2026-11-01 16:10:25,978 INFO A3 {"run": 7, "stage": "bge_batch", "event": "completed", "elapsed_s": 0.0, "batch": 1, "total_batches": 1, "chunks": 6, "chunks_total": 6}
+2026-11-01 16:10:25,980 INFO A3 {"run": 7, "stage": "qdrant_dense_write", "event": "started", "points": 6}
+2026-11-01 16:10:25,982 INFO A3 {"run": 7, "stage": "qdrant_dense_write", "event": "completed", "elapsed_s": 0.0, "points": 6}
+..2026-11-01 16:10:25,986 INFO A3 {"run": 7, "stage": "bge_batch", "event": "started", "batch": 1, "total_batches": 1, "chunks": 6, "chunks_total": 6}
+2026-11-01 16:10:25,987 INFO A3 {"run": 7, "stage": "bge_batch", "event": "completed", "elapsed_s": 0.0, "batch": 1, "total_batches": 1, "chunks": 6, "chunks_total": 6}
+2026-11-01 16:10:25,989 INFO A3 {"run": 7, "stage": "qdrant_dense_write", "event": "started", "points": 6}
+2026-11-01 16:10:25,990 INFO A3 {"run": 7, "stage": "qdrant_dense_write", "event": "completed", "elapsed_s": 0.0, "points": 6}
+...........................{"event": "text_model_load", "model": "BAAI/bge-m3", "status": "retry_streamed_checkpoint"}
+...............................EE....F...............................F...............2026-11-01 16:10:26,652 INFO A3 {"run": 7, "stage": "colpali_retry", "event": "started", "pages": [1], "max_attempts": 1}
+2026-11-01 16:10:26,652 INFO A3 {"run": 7, "stage": "colpali_retry_page", "event": "started", "page": 1, "attempt": 2}
+2026-11-01 16:10:26,653 INFO A3 {"run": 7, "stage": "colpali_retry_page", "event": "completed", "elapsed_s": 0.0, "page": 1, "attempt": 2, "status": "COMPLETED", "points": 1}
+2026-11-01 16:10:26,653 INFO A3 {"run": 7, "stage": "colpali_retry", "event": "completed", "pages": [1], "missing_pages": []}
+2026-11-01 16:10:26,653 INFO A3 {"run": 7, "stage": "pipeline", "event": "partial", "failed_pages": [{"page_number": 1, "stage": "surya", "error_type": "RuntimeError"}], "pages": 0}
+.2026-11-01 16:10:26,656 INFO A3 {"run": 7, "stage": "render", "event": "completed", "page": 1, "total_pages": null, "width": 100, "height": 200}
+F2026-11-01 16:10:26,671 INFO A3 {"run": 7, "stage": "colpali", "event": "started", "page": 1, "total_pages": null}
+2026-11-01 16:10:26,672 INFO A3 {"run": 7, "stage": "colpali", "event": "completed", "elapsed_s": 0.0, "page": 1, "total_pages": null, "status": "SKIPPED", "points": 0}
+..2026-11-01 16:10:26,678 INFO A3 {"run": 7, "stage": "dense_index", "event": "started", "pages": 0, "chunks": 0}
+2026-11-01 16:10:26,680 INFO A3 {"run": 7, "stage": "dense_index", "event": "completed", "elapsed_s": 0.0, "pages": 0, "chunks": 0, "status": "COMPLETED", "points": 0}
+2026-11-01 16:10:26,681 INFO A3 {"run": 7, "stage": "neo4j_final", "event": "started", "pages": 0, "chunks": 0}
+2026-11-01 16:10:26,682 INFO A3 {"run": 7, "stage": "neo4j_final", "event": "completed", "elapsed_s": 0.0, "pages": 0, "chunks": 0, "structure_review": {}, "status": "ready"}
+2026-11-01 16:10:26,683 INFO A3 {"run": 7, "stage": "neo4j_cleanup", "event": "started"}
+2026-11-01 16:10:26,683 INFO A3 {"run": 7, "stage": "neo4j_cleanup", "event": "completed", "elapsed_s": 0.0, "status": "failed", "error_type": "AttributeError"}
+2026-11-01 16:10:26,683 INFO A3 {"run": 7, "stage": "artifact_cleanup", "event": "started"}
+2026-11-01 16:10:26,686 INFO A3 {"run": 7, "stage": "artifact_cleanup", "event": "completed", "elapsed_s": 0.0, "status": "failed", "error_type": "DatabaseOperationForbidden"}
+2026-11-01 16:10:26,686 INFO A3 {"run": 7, "stage": "retrieval_index", "event": "started"}
+2026-11-01 16:10:26,687 INFO A3 {"run": 7, "stage": "retrieval_index", "event": "completed", "elapsed_s": 0.0}
+2026-11-01 16:10:26,687 INFO A3 {"run": 7, "stage": "pipeline", "event": "completed", "pages": 0, "blocks": 0, "indexes_ready": true, "dense": "COMPLETED", "colpali": "SKIPPED", "graph": "ready"}
+..2026-11-01 16:10:26,691 INFO A3 {"run": 7, "stage": "page", "event": "failed_continuing", "page": 1, "total_pages": 1, "error_type": "RuntimeError"}
+2026-11-01 16:10:26,691 INFO A3 {"run": 7, "stage": "pipeline", "event": "partial", "failed_pages": [{"page_number": 1, "stage": "surya", "error_type": "RuntimeError"}], "pages": 0}
+.F.2026-11-01 16:10:26,722 INFO A3 {"run": 7, "stage": "pipeline", "event": "partial", "failed_pages": [{"page_number": 2, "stage": "surya", "error_type": "RuntimeError"}], "graph": "not_published"}
+.E2026-11-01 16:10:26,731 INFO A3 {"run": 7, "stage": "colpali", "event": "started", "page": 14, "total_pages": null}
+2026-11-01 16:10:26,732 INFO A3 {"run": 7, "stage": "colpali", "event": "completed", "elapsed_s": 0.0, "page": 14, "total_pages": null, "status": "COMPLETED", "points": 1}
+.FF.......2026-11-01 16:10:26,816 INFO A3 {"run": 1, "stage": "table_cells", "event": "started", "page": 1}
+2026-11-01 16:10:26,820 INFO A3 {"run": 1, "stage": "table_cells", "event": "completed", "elapsed_s": 0.0, "page": 1, "status": "cell_aware", "rows": 1, "columns": 1, "cache_hit": false}
+.2026-11-01 16:10:26,823 INFO A3 {"run": 1, "stage": "pregraph_source_reading", "event": "started", "pages": 2}
+2026-11-01 16:10:26,824 INFO A3 {"run": 1, "stage": "pregraph_source_reading", "event": "completed", "elapsed_s": 0.0, "pages": 2, "status": "complete", "sources": 0, "source_order_preserved": true, "new_reading_edges": 0, "provider": "surya_source", "semantic_review": "disabled"}
+2026-11-01 16:10:26,824 INFO A3 {"run": 1, "stage": "whole_document_entities", "event": "started", "pages": 2, "provider": "gliner"}
+2026-11-01 16:10:26,824 INFO A3 {"run": 1, "stage": "whole_document_entities", "event": "completed", "elapsed_s": 0.0, "pages": 2, "provider": "gliner", "status": "complete", "entities": 0, "entity_relations": 0, "sources_completed": 0}
+2026-11-01 16:10:26,825 INFO A3 {"run": 1, "stage": "pregraph_identity", "event": "started", "pages": 2, "model": "fastino/gliner2-base-v1"}
+2026-11-01 16:10:26,826 INFO A3 {"run": 1, "stage": "pregraph_identity", "event": "completed", "elapsed_s": 0.0, "pages": 2, "model": "fastino/gliner2-base-v1", "status": "complete", "mentions": 0, "linked": 0, "unresolved": 0, "canonical_entities": 0}
+2026-11-01 16:10:26,826 INFO A3 {"run": 1, "stage": "related_passages", "event": "started", "pages": 2, "provider": "bge"}
+2026-11-01 16:10:26,827 INFO A3 {"run": 1, "stage": "related_passages", "event": "completed", "elapsed_s": 0.0, "pages": 2, "provider": "bge", "status": "empty", "links": 0}
+..2026-11-01 16:10:26,829 INFO A3 {"run": 1, "stage": "table_cells", "event": "started", "page": 1}
+2026-11-01 16:10:26,829 INFO A3 {"run": 1, "stage": "table_cells", "event": "completed", "elapsed_s": 0.0, "page": 1, "status": "unresolved", "error_type": "ValueError"}
+....2026-11-01 16:10:26,850 INFO A3 {"run": 1, "stage": "table_cells", "event": "started", "page": 1}
+2026-11-01 16:10:26,854 INFO A3 {"run": 1, "stage": "table_cells", "event": "completed", "elapsed_s": 0.0, "page": 1, "status": "cell_aware", "rows": 1, "columns": 1, "cache_hit": false}
+.2026-11-01 16:10:26,857 INFO A3 {"run": 1, "stage": "pregraph_source_reading", "event": "started", "pages": 1}
+2026-11-01 16:10:26,858 INFO A3 {"run": 1, "stage": "pregraph_source_reading", "event": "completed", "elapsed_s": 0.0, "pages": 1, "status": "complete", "sources": 0, "source_order_preserved": true, "new_reading_edges": 0, "provider": "surya_source", "semantic_review": "disabled"}
+2026-11-01 16:10:26,858 INFO A3 {"run": 1, "stage": "whole_document_entities", "event": "started", "pages": 1, "provider": "gliner"}
+2026-11-01 16:10:26,858 INFO A3 {"run": 1, "stage": "whole_document_entities", "event": "completed", "elapsed_s": 0.0, "pages": 1, "provider": "gliner", "status": "complete", "entities": 0, "entity_relations": 0, "sources_completed": 0}
+2026-11-01 16:10:26,859 INFO A3 {"run": 1, "stage": "pregraph_identity", "event": "started", "pages": 1, "model": "fastino/gliner2-base-v1"}
+2026-11-01 16:10:26,859 INFO A3 {"run": 1, "stage": "pregraph_identity", "event": "completed", "elapsed_s": 0.0, "pages": 1, "model": "fastino/gliner2-base-v1", "status": "complete", "mentions": 0, "linked": 0, "unresolved": 0, "canonical_entities": 0}
+2026-11-01 16:10:26,859 INFO A3 {"run": 1, "stage": "related_passages", "event": "started", "pages": 1, "provider": "bge"}
+2026-11-01 16:10:26,860 INFO A3 {"run": 1, "stage": "related_passages", "event": "completed", "elapsed_s": 0.0, "pages": 1, "provider": "bge", "status": "empty", "links": 0}
+..2026-11-01 16:10:28,314 INFO A3 {"run": 123, "stage": "surya", "event": "started", "page": 1, "total_pages": 2}
+2026-11-01 16:10:28,324 INFO A3 {"run": 123, "stage": "surya", "event": "completed", "elapsed_s": 0.01, "page": 1, "total_pages": 2, "blocks": 1, "cache_hit": false}
+2026-11-01 16:10:28,780 INFO A3 {"run": 123, "stage": "surya", "event": "started", "page": 2, "total_pages": 2}
+2026-11-01 16:10:28,782 INFO A3 {"run": 123, "stage": "surya", "event": "completed", "elapsed_s": 0.0, "page": 2, "total_pages": 2, "blocks": 1, "cache_hit": false}
+...2026-11-01 16:10:30,488 INFO A3 {"run": 123, "stage": "surya", "event": "started", "page": 1, "total_pages": 1}
+2026-11-01 16:10:30,489 ERROR A3 {"run": 123, "stage": "surya", "event": "failed", "elapsed_s": 0.0, "error_type": "RuntimeError", "page": 1, "total_pages": 1}
+Surya PDF extraction failed for 123
+Traceback (most recent call last):
+  File "/app/ai_extract/services/layout_extractor.py", line 300, in _extract_pdf_pure_surya_vision
+    page_chunks, chunk_counter = self._extract_logged_page(
+  File "/app/ai_extract/services/layout_extractor.py", line 239, in _extract_logged_page
+    records, counter = self._extract_chunks_from_page_image(**kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1173, in _execute_mock_call
+    raise effect
+RuntimeError: OCR unavailable
+..2026-11-01 16:10:31,080 INFO A3 {"run": "stream_test", "stage": "chunking", "event": "started", "page": 1}
+2026-11-01 16:10:31,081 INFO A3 {"run": "stream_test", "stage": "chunking", "event": "completed", "elapsed_s": 0.0, "page": 1, "blocks": 1}
+2026-11-01 16:10:31,335 INFO A3 {"run": "stream_test", "stage": "chunking", "event": "started", "page": 2}
+2026-11-01 16:10:31,335 INFO A3 {"run": "stream_test", "stage": "chunking", "event": "completed", "elapsed_s": 0.0, "page": 2, "blocks": 1}
+..{"event": "qwen_output", "timestamp": "2026-11-01T16:10:31.448318+00:00", "task": "summarize", "request_id": "two", "model": "Qwen-test", "usage": {"prompt_tokens": 20, "completion_tokens": 10, "total_tokens": 30}, "outputs": [{"index": 0, "finish_reason": "stop", "content": "two"}]}
+.{"event": "qwen_output", "timestamp": "2026-11-01T16:10:31.451200+00:00", "task": "verify_answer", "request_id": "request-one", "model": "Qwen-test", "usage": {"prompt_tokens": 20, "completion_tokens": 10, "total_tokens": 30}, "outputs": [{"index": 0, "finish_reason": "stop", "content": {"supported": true, "reason": "source supports it"}}]}
+.{"event": "qwen_output", "timestamp": "2026-11-01T16:10:31.452691+00:00", "task": "summarize", "request_id": null, "model": null, "usage": null, "outputs": {"summary": "Source summary"}}
+.F.{"event": "qwen_output", "timestamp": "2026-11-01T16:10:31.463213+00:00", "task": "contract_qa", "request_id": "request-one", "model": "Qwen-test", "usage": {"prompt_tokens": 20, "completion_tokens": 10, "total_tokens": 30}, "outputs": [{"index": 0, "finish_reason": "length", "content": "{\"claims\":["}]}
+F{"event": "qwen_output", "timestamp": "2026-11-01T16:10:31.467339+00:00", "task": "verify_answer", "request_id": "request-one", "model": "Qwen-test", "usage": {"prompt_tokens": 20, "completion_tokens": 10, "total_tokens": 30}, "outputs": [{"index": 0, "finish_reason": "stop", "content": "not valid model JSON"}]}
+.{"event": "gliner_batch", "windows_completed": 1, "windows_total": 1, "entities": 2, "relations": 1}
+...{"event": "gliner_batch", "windows_completed": 1, "windows_total": 1, "entities": 2, "relations": 1}
+.{"event": "gliner_batch", "windows_completed": 1, "windows_total": 1, "entities": 2, "relations": 1}
+.{"event": "gliner_batch", "windows_completed": 1, "windows_total": 1, "entities": 2, "relations": 1}
+.{"event": "gliner_batch", "windows_completed": 1, "windows_total": 1, "entities": 2, "relations": 1}
+...{"event": "gliner_batch", "windows_completed": 1, "windows_total": 1, "entities": 2, "relations": 1}
+.............2026-11-01 16:10:31,498 INFO A3 {"run": 1, "stage": "related_passages", "event": "started", "pages": 1, "provider": "bge"}
+2026-11-01 16:10:31,499 WARNING A3 {"run": 1, "stage": "related_passages", "event": "completed", "elapsed_s": 0.0, "pages": 1, "provider": "bge", "status": "unavailable", "links": 0}
+.......2026-11-01 16:10:31,523 INFO A3 {"run": 1, "stage": "pregraph_source_reading", "event": "started", "pages": 1}
+2026-11-01 16:10:31,524 INFO A3 {"run": 1, "stage": "pregraph_source_reading", "event": "completed", "elapsed_s": 0.0, "pages": 1, "status": "complete", "sources": 0, "source_order_preserved": true, "new_reading_edges": 0, "provider": "surya_source", "semantic_review": "disabled"}
+2026-11-01 16:10:31,525 INFO A3 {"run": 1, "stage": "whole_document_entities", "event": "started", "pages": 1, "provider": "gliner"}
+2026-11-01 16:10:31,525 INFO A3 {"run": 1, "stage": "whole_document_entities", "event": "completed", "elapsed_s": 0.0, "pages": 1, "provider": "gliner", "status": "complete", "entities": 0, "entity_relations": 0, "sources_completed": 0}
+2026-11-01 16:10:31,525 INFO A3 {"run": 1, "stage": "pregraph_identity", "event": "started", "pages": 1, "model": "fastino/gliner2-base-v1"}
+2026-11-01 16:10:31,525 INFO A3 {"run": 1, "stage": "pregraph_identity", "event": "completed", "elapsed_s": 0.0, "pages": 1, "model": "fastino/gliner2-base-v1", "status": "complete", "mentions": 0, "linked": 0, "unresolved": 0, "canonical_entities": 0}
+2026-11-01 16:10:31,526 INFO A3 {"run": 1, "stage": "related_passages", "event": "started", "pages": 1, "provider": "bge"}
+2026-11-01 16:10:31,526 INFO A3 {"run": 1, "stage": "related_passages", "event": "completed", "elapsed_s": 0.0, "pages": 1, "provider": "bge", "status": "complete", "links": 0}
+...............{"event": "gliner_coverage", "eligible": 1, "completed": 1, "without_entity": 0, "excluded_ocr": 0, "mention_excluded": 0}
+....................s...............E{"event": "surya_visual_layout", "depth": 1, "regions": 1}
+.......{"event": "surya_visual_ocr", "status": "gateway_failed", "error_type": "ReadTimeout", "regions": 1}
+.{"event": "surya_visual_layout", "depth": 1, "regions": 1}
+.{"event": "surya_visual_layout_retry", "regions": [1], "attempt": 1}
+....{"event": "surya_visual_layout", "depth": 1, "regions": 1}
+..{"event": "surya_visual_layout", "depth": 1, "regions": 1}
+..E.......F...E.{"event": "surya_visual_layout", "depth": 1, "regions": 1}
+.{"event": "surya_visual_layout", "depth": 1, "regions": 1}
+....F{"event": "surya_visual_layout", "depth": 1, "regions": 1}
+..{"event": "surya_visual_layout", "depth": 1, "regions": 1}
+...s...{"event": "surya_visual_layout", "depth": 1, "regions": 1}
+...{"event": "surya_visual_layout", "depth": 1, "regions": 1}
+.{"event": "surya_visual_layout", "depth": 1, "regions": 1}
+.{"event": "surya_visual_layout", "depth": 1, "regions": 1}
+...E.....{"event": "surya_backend", "status": "released"}
+..{"event": "surya_backend", "status": "starting", "pid": 2}
+....{"event": "surya_runtime", "prompt": "block", "status": "completed", "elapsed_s": 0.001, "output_tokens": null, "output_chars": 4, "retries": 0, "block_index": null, "max_new_tokens": 1640, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+..{"event": "surya_runtime", "prompt": "high_accuracy_bbox", "status": "completed", "elapsed_s": 0.001, "output_tokens": null, "output_chars": 6, "retries": 0, "block_index": null, "max_new_tokens": 12288, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+.{"event": "surya_runtime", "prompt": "block", "status": "APIConnectionError", "elapsed_s": 0.0, "output_tokens": null, "output_chars": 0, "retries": 0, "block_index": null, "max_new_tokens": 8192, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+.{"event": "surya_runtime", "prompt": "high_accuracy_bbox", "status": "TimeoutError", "elapsed_s": 0.0, "output_tokens": null, "output_chars": 0, "retries": 0, "block_index": null, "max_new_tokens": 12288, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+.{"event": "surya_runtime", "prompt": "block", "status": "whitespace_loop_cancelled", "elapsed_s": 0.001, "output_tokens": null, "output_chars": 300, "retries": 0, "block_index": null, "max_new_tokens": 8192, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+....{"event": "surya_runtime", "prompt": "block", "status": "token_budget_exceeded", "elapsed_s": 0.001, "output_tokens": null, "output_chars": 10, "retries": 0, "block_index": null, "max_new_tokens": 1024, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+.{"event": "surya_runtime", "prompt": "high_accuracy_bbox", "status": "TimeoutError", "elapsed_s": 0.001, "output_tokens": null, "output_chars": 0, "retries": 0, "block_index": null, "max_new_tokens": 12288, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+.{"event": "surya_runtime", "prompt": "high_accuracy_bbox", "status": "repetition_cancelled", "elapsed_s": 0.001, "output_tokens": null, "output_chars": 1120, "retries": 0, "block_index": null, "max_new_tokens": 12288, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+.{"event": "surya_runtime", "prompt": "block", "status": "APITimeoutError", "elapsed_s": 0.001, "output_tokens": null, "output_chars": 12, "retries": 0, "block_index": null, "max_new_tokens": 8192, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+.{"event": "surya_runtime", "prompt": "high_accuracy_bbox", "status": "completed", "elapsed_s": 0.001, "output_tokens": 8, "output_chars": 13, "retries": 0, "block_index": null, "max_new_tokens": 12288, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+.{"event": "surya_runtime", "prompt": "block", "status": "completed", "elapsed_s": 0.0, "output_tokens": null, "output_chars": 5, "retries": 0, "block_index": 0, "max_new_tokens": 8192, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+..{"event": "surya_runtime", "prompt": "block", "status": "APITimeoutError", "elapsed_s": 0.0, "output_tokens": null, "output_chars": 0, "retries": 0, "block_index": null, "max_new_tokens": 8192, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+.{"event": "surya_runtime", "prompt": "high_accuracy_bbox", "status": "token_budget_exceeded", "elapsed_s": 0.001, "output_tokens": null, "output_chars": 10, "retries": 0, "block_index": null, "max_new_tokens": 12288, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+.{"event": "surya_runtime", "prompt": "high_accuracy_bbox", "status": "completed", "elapsed_s": 0.002, "output_tokens": null, "output_chars": 6, "retries": 0, "block_index": 1, "max_new_tokens": 12288, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}{"event": "surya_runtime", "prompt": "high_accuracy_bbox", "status": "completed", "elapsed_s": 0.004, "output_tokens": null, "output_chars": 5, "retries": 0, "block_index": 0, "max_new_tokens": 12288, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+
+.{"event": "surya_runtime", "prompt": "block", "status": "repetition_cancelled", "elapsed_s": 0.001, "output_tokens": null, "output_chars": 1200, "retries": 0, "block_index": null, "max_new_tokens": 1024, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4], "visual_ocr": true}
+.{"event": "surya_runtime", "prompt": "block", "status": "repetition_cancelled", "elapsed_s": 0.002, "output_tokens": null, "output_chars": 450, "retries": 1, "block_index": null, "max_new_tokens": 1024, "retry_reason": "repetition_cancelled", "rescue": true, "region_index": null, "source_image_size": [4, 4], "input_image_size": [256, 128], "visual_ocr": true}
+.{"event": "surya_runtime", "prompt": "block", "status": "whitespace_loop_cancelled", "elapsed_s": 0.0, "output_tokens": null, "output_chars": 307, "retries": 0, "block_index": null, "max_new_tokens": 8192, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+.{"event": "surya_runtime", "prompt": "high_accuracy_bbox", "status": "completed", "elapsed_s": 0.001, "output_tokens": null, "output_chars": 18, "retries": 0, "block_index": null, "max_new_tokens": 12288, "retry_reason": null, "rescue": false, "region_index": null, "source_image_size": [4, 4], "input_image_size": [4, 4]}
+........{"event": "gliner_coverage", "eligible": 1, "completed": 0, "without_entity": 0, "excluded_ocr": 0, "mention_excluded": 0}
+..........................{"event": "pregraph_identity_batch", "run_id": 10, "model": "fastino/gliner2-base-v1", "completed_pairs": 1, "total_pairs": 1, "accepted_same": 1}
+.{"event": "pregraph_identity_batch", "run_id": 10, "model": "fastino/gliner2-base-v1", "completed_pairs": 1, "total_pairs": 1, "accepted_same": 1}
+..{"event": "pregraph_identity_batch", "run_id": 10, "model": "fastino/gliner2-base-v1", "completed_pairs": 1, "total_pairs": 1, "accepted_same": 0}
+..{"event": "pregraph_identity_batch", "run_id": 10, "model": "fastino/gliner2-base-v1", "completed_pairs": 3, "total_pairs": 3, "accepted_same": 2}
+.{"event": "pregraph_identity_batch", "run_id": 10, "model": "fastino/gliner2-base-v1", "completed_pairs": 1, "total_pairs": 1, "accepted_same": 0}
+..{"event": "pregraph_identity_batch", "run_id": 10, "model": "fastino/gliner2-base-v1", "completed_pairs": 1, "total_pairs": 1, "accepted_same": 0}
+.
+======================================================================
+ERROR: test_finish_never_calls_qwen_even_with_retired_setting (ai_extract.tests.test_a3_model_boundary.A3ModelBoundaryTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/test/utils.py", line 443, in inner
+    return func(*args, **kwargs)
+  File "/app/ai_extract/tests/test_a3_model_boundary.py", line 47, in test_finish_never_calls_qwen_even_with_retired_setting
+    session.finish()
+  File "/app/ai_extract/services/layout_service.py", line 603, in finish
+    prepare_document(run,self.progress,defer_related_passages=True)
+  File "/app/ai_extract/services/layout_service.py", line 758, in prepare_document
+    raise RuntimeError('Whole-document entity extraction incomplete: '+str(knowledge['errors']))
+RuntimeError: Whole-document entity extraction incomplete: [{'source_ids': ['a:1:0', 'b:1:0'], 'error_type': 'MissingSchema', 'reason': "Invalid URL '/rag/gliner_entities': No scheme supplied. Perhaps you meant https:///rag/gliner_entities?"}]
+
+======================================================================
+ERROR: test_graph_failure_preserves_sources_and_reports_incomplete_index (ai_extract.tests.test_a3_model_boundary.A3ModelBoundaryTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_a3_model_boundary.py", line 64, in test_graph_failure_preserves_sources_and_reports_incomplete_index
+    session.finish()
+  File "/app/ai_extract/services/layout_service.py", line 603, in finish
+    prepare_document(run,self.progress,defer_related_passages=True)
+  File "/app/ai_extract/services/layout_service.py", line 758, in prepare_document
+    raise RuntimeError('Whole-document entity extraction incomplete: '+str(knowledge['errors']))
+RuntimeError: Whole-document entity extraction incomplete: [{'source_ids': ['a:1:0', 'b:1:0'], 'error_type': 'MissingSchema', 'reason': "Invalid URL '/rag/gliner_entities': No scheme supplied. Perhaps you meant https:///rag/gliner_entities?"}]
+
+======================================================================
+ERROR: test_workbook_image_retains_cell_anchor (ai_extract.tests.test_generic_document_pipeline.GenericDocumentTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_generic_document_pipeline.py", line 123, in test_workbook_image_retains_cell_anchor
+    from openpyxl import Workbook
+ModuleNotFoundError: No module named 'openpyxl'
+
+======================================================================
+ERROR: test_context_limit_retries_with_smaller_output_and_preserves_sources (ai_extract.tests.test_live_flow_regressions.LiveFlowRegressionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_live_flow_regressions.py", line 580, in test_context_limit_retries_with_smaller_output_and_preserves_sources
+    self.assertEqual([r['max_tokens'] for r in requests],[8192,871])
+  File "/app/ai_extract/tests/test_live_flow_regressions.py", line 580, in <listcomp>
+    self.assertEqual([r['max_tokens'] for r in requests],[8192,871])
+KeyError: 'max_tokens'
+
+======================================================================
+ERROR: test_context_retry_handles_incremental_prompt_lower_bound (ai_extract.tests.test_live_flow_regressions.LiveFlowRegressionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/services/contract_pipeline_service.py", line 1540, in _chat
+    counted = _chat_token_budget(base_url, model, body['messages'])
+  File "/app/ai_extract/services/contract_pipeline_service.py", line 1505, in _chat_token_budget
+    response = requests.post(endpoint, json=dict(model=model,messages=messages,add_generation_prompt=True),
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1179, in _execute_mock_call
+    result = effect(*args, **kwargs)
+  File "/app/ai_extract/tests/test_live_flow_regressions.py", line 590, in post
+    if body['max_tokens']>2048:
+KeyError: 'max_tokens'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_live_flow_regressions.py", line 600, in test_context_retry_handles_incremental_prompt_lower_bound
+    self.assertEqual(_chat('http://unused',messages,max_tokens=8192),'complete')
+  File "/app/ai_extract/services/contract_pipeline_service.py", line 1616, in _chat
+    raise QwenGatewayError(f'Qwen /v1/chat/completions error: {exc}') from exc
+ai_extract.services.contract_pipeline_service.QwenGatewayError: Qwen /v1/chat/completions error: 'max_tokens'
+
+======================================================================
+ERROR: test_partial_retry_keeps_old_vectors_without_double_counting_or_looping (ai_extract.tests.test_page_pipeline.PagePipelineTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_page_pipeline.py", line 438, in test_partial_retry_keeps_old_vectors_without_double_counting_or_looping
+    session.finish()
+  File "/app/ai_extract/services/layout_service.py", line 603, in finish
+    prepare_document(run,self.progress,defer_related_passages=True)
+  File "/app/ai_extract/services/layout_service.py", line 738, in prepare_document
+    raise ValueError('Original whole-document source fingerprint is required')
+ValueError: Original whole-document source fingerprint is required
+
+======================================================================
+ERROR: test_cell_recovery_retains_disagreement_with_source_warning (ai_extract.tests.test_surya_ocr.SuryaOCRTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_surya_ocr.py", line 124, in test_cell_recovery_retains_disagreement_with_source_warning
+    self.assertEqual(result['table_structure_review']['missing_source_quotations'],['32 mm'])
+KeyError: 'missing_source_quotations'
+
+======================================================================
+ERROR: test_large_aligned_table_reuses_source_ocr_without_spending_cell_ocr_budget (ai_extract.tests.test_surya_ocr.SuryaOCRTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_surya_ocr.py", line 270, in test_large_aligned_table_reuses_source_ocr_without_spending_cell_ocr_budget
+    result=recognize_physical_table(Image.new('RGB',(300,510)),predictor,source,
+  File "/app/ai_extract/services/surya_inference_service.py", line 394, in recognize_physical_table
+    return _recognize_physical_table(image,predictor,source_cells,column_predictor=column_predictor)
+  File "/app/ai_extract/services/surya_inference_service.py", line 532, in _recognize_physical_table
+    if len(results)!=len(pending):raise ValueError('Surya physical-cell OCR count mismatch')
+ValueError: Surya physical-cell OCR count mismatch
+
+======================================================================
+ERROR: test_new_cell_text_is_retained_with_warning_when_unverified (ai_extract.tests.test_surya_ocr.SuryaOCRTests) (second='33 mm')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_surya_ocr.py", line 76, in test_new_cell_text_is_retained_with_warning_when_unverified
+    self.assertEqual(len(result['table_structure_review']['additional_cell_quotations']),1)
+KeyError: 'additional_cell_quotations'
+
+======================================================================
+ERROR: test_physical_empty_cell_rejects_displaced_source_text_and_border_rim (ai_extract.tests.test_surya_ocr.SuryaOCRTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_surya_ocr.py", line 304, in test_physical_empty_cell_rejects_displaced_source_text_and_border_rim
+    result=recognize_physical_table(Image.new('RGB',(200,100)),predictor,cells,
+  File "/app/ai_extract/services/surya_inference_service.py", line 394, in recognize_physical_table
+    return _recognize_physical_table(image,predictor,source_cells,column_predictor=column_predictor)
+  File "/app/ai_extract/services/surya_inference_service.py", line 532, in _recognize_physical_table
+    if len(results)!=len(pending):raise ValueError('Surya physical-cell OCR count mismatch')
+ValueError: Surya physical-cell OCR count mismatch
+
+======================================================================
+ERROR: test_wrapped_body_is_read_from_physical_cell_not_shifted_model_row_centers (ai_extract.tests.test_surya_ocr.SuryaOCRTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_surya_ocr.py", line 183, in test_wrapped_body_is_read_from_physical_cell_not_shifted_model_row_centers
+    result=recognize_physical_table(Image.new('RGB',(200,400)),predictor,source,column_predictor=lambda im:prediction)
+  File "/app/ai_extract/services/surya_inference_service.py", line 394, in recognize_physical_table
+    return _recognize_physical_table(image,predictor,source_cells,column_predictor=column_predictor)
+  File "/app/ai_extract/services/surya_inference_service.py", line 532, in _recognize_physical_table
+    if len(results)!=len(pending):raise ValueError('Surya physical-cell OCR count mismatch')
+ValueError: Surya physical-cell OCR count mismatch
+
+======================================================================
+FAIL: test_gateway_rejects_incomplete_answer_instead_of_showing_it_as_complete (ai_extract.tests.test_live_flow_regressions.LiveFlowRegressionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_live_flow_regressions.py", line 627, in test_gateway_rejects_incomplete_answer_instead_of_showing_it_as_complete
+    self.assertEqual(post.call_count,4)
+AssertionError: 8 != 4
+
+======================================================================
+FAIL: test_truncated_answer_is_regenerated_concisely_without_partial_text (ai_extract.tests.test_live_flow_regressions.LiveFlowRegressionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_live_flow_regressions.py", line 615, in test_truncated_answer_is_regenerated_concisely_without_partial_text
+    self.assertLess(retried['max_tokens'],2048)
+AssertionError: 2048 not less than 2048
+
+======================================================================
+FAIL: test_colpali_overlaps_page_structure_but_dense_waits_for_complete_document (ai_extract.tests.test_page_pipeline.PagePipelineTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_page_pipeline.py", line 350, in test_colpali_overlaps_page_structure_but_dense_waits_for_complete_document
+    session.process_page(SimpleNamespace(page_number=number, blocks=[]))
+  File "/app/ai_extract/services/layout_service.py", line 472, in process_page
+    layout_repository.ensure_write_connection()
+  File "/app/ai_extract/repositories/layout_repository.py", line 177, in ensure_write_connection
+    database.ensure_connection()
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 275, in ensure_connection
+    self.connect()
+  File "/usr/local/lib/python3.10/site-packages/django/test/testcases.py", line 166, in __call__
+    raise DatabaseOperationForbidden(self.message)
+django.test.testcases.DatabaseOperationForbidden: Database connections to 'default' are not allowed in SimpleTestCase subclasses. Either subclass TestCase or TransactionTestCase to ensure proper test isolation or add 'default' to ai_extract.tests.test_page_pipeline.PagePipelineTests.databases to silence this failure.
+
+======================================================================
+FAIL: test_failure_in_one_index_does_not_erase_the_other (ai_extract.tests.test_page_pipeline.PagePipelineTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_page_pipeline.py", line 374, in test_failure_in_one_index_does_not_erase_the_other
+    session.process_page(SimpleNamespace(page_number=1, blocks=[]))
+  File "/app/ai_extract/services/layout_service.py", line 472, in process_page
+    layout_repository.ensure_write_connection()
+  File "/app/ai_extract/repositories/layout_repository.py", line 177, in ensure_write_connection
+    database.ensure_connection()
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 275, in ensure_connection
+    self.connect()
+  File "/usr/local/lib/python3.10/site-packages/django/test/testcases.py", line 166, in __call__
+    raise DatabaseOperationForbidden(self.message)
+django.test.testcases.DatabaseOperationForbidden: Database connections to 'default' are not allowed in SimpleTestCase subclasses. Either subclass TestCase or TransactionTestCase to ensure proper test isolation or add 'default' to ai_extract.tests.test_page_pipeline.PagePipelineTests.databases to silence this failure.
+
+======================================================================
+FAIL: test_structure_retains_previous_pages_without_rereading_old_blocks (ai_extract.tests.test_page_pipeline.PagePipelineTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_page_pipeline.py", line 313, in test_structure_retains_previous_pages_without_rereading_old_blocks
+    session.process_page(SimpleNamespace(page_number=number, blocks=[object()]))
+  File "/app/ai_extract/services/layout_service.py", line 472, in process_page
+    layout_repository.ensure_write_connection()
+  File "/app/ai_extract/repositories/layout_repository.py", line 177, in ensure_write_connection
+    database.ensure_connection()
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 275, in ensure_connection
+    self.connect()
+  File "/usr/local/lib/python3.10/site-packages/django/test/testcases.py", line 166, in __call__
+    raise DatabaseOperationForbidden(self.message)
+django.test.testcases.DatabaseOperationForbidden: Database connections to 'default' are not allowed in SimpleTestCase subclasses. Either subclass TestCase or TransactionTestCase to ensure proper test isolation or add 'default' to ai_extract.tests.test_page_pipeline.PagePipelineTests.databases to silence this failure.
+
+======================================================================
+FAIL: test_visual_failure_continues_to_next_page_and_retries_only_at_finish (ai_extract.tests.test_page_pipeline.PagePipelineTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_page_pipeline.py", line 403, in test_visual_failure_continues_to_next_page_and_retries_only_at_finish
+    session.process_page(SimpleNamespace(page_number=1, blocks=[]))
+  File "/app/ai_extract/services/layout_service.py", line 472, in process_page
+    layout_repository.ensure_write_connection()
+  File "/app/ai_extract/repositories/layout_repository.py", line 177, in ensure_write_connection
+    database.ensure_connection()
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 275, in ensure_connection
+    self.connect()
+  File "/usr/local/lib/python3.10/site-packages/django/test/testcases.py", line 166, in __call__
+    raise DatabaseOperationForbidden(self.message)
+django.test.testcases.DatabaseOperationForbidden: Database connections to 'default' are not allowed in SimpleTestCase subclasses. Either subclass TestCase or TransactionTestCase to ensure proper test isolation or add 'default' to ai_extract.tests.test_page_pipeline.PagePipelineTests.databases to silence this failure.
+
+======================================================================
+FAIL: test_rejected_content_is_also_printed_to_runtime_logs (ai_extract.tests.test_qwen_output.QwenOutputTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1379, in patched
+    return func(*newargs, **newkeywargs)
+  File "/app/ai_extract/tests/test_qwen_output.py", line 44, in test_rejected_content_is_also_printed_to_runtime_logs
+    self.assertEqual(len(events),4)
+AssertionError: 1 != 4
+
+======================================================================
+FAIL: test_truncated_output_is_visible_but_not_accepted_as_an_answer (ai_extract.tests.test_qwen_output.QwenOutputTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1379, in patched
+    return func(*newargs, **newkeywargs)
+  File "/app/ai_extract/tests/test_qwen_output.py", line 80, in test_truncated_output_is_visible_but_not_accepted_as_an_answer
+    self.assertEqual(result['generation_diagnostics']['state'],'output_limit_reached')
+AssertionError: 'context_limit_exceeded' != 'output_limit_reached'
+- context_limit_exceeded
++ output_limit_reached
+
+
+======================================================================
+FAIL: test_new_cell_text_is_retained_with_warning_when_unverified (ai_extract.tests.test_surya_ocr.SuryaOCRTests) (second='34 mm')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_surya_ocr.py", line 80, in test_new_cell_text_is_retained_with_warning_when_unverified
+    self.assertIn('cell_ocr_differs_from_source_quotations',result['table_structure_review']['structure_warnings'])
+AssertionError: 'cell_ocr_differs_from_source_quotations' not found in []
+
+======================================================================
+FAIL: test_overmerged_span_requires_whitespace_and_independent_cell_ocr (ai_extract.tests.test_surya_ocr.SuryaOCRTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_surya_ocr.py", line 206, in test_overmerged_span_requires_whitespace_and_independent_cell_ocr
+    self.assertEqual(result['table_rows'],[['Label','0.28 sec','0.31 sec']])
+AssertionError: Lists differ: [['0.28 sec', '0.31 sec', '']] != [['Label', '0.28 sec', '0.31 sec']]
+
+First differing element 0:
+['0.28 sec', '0.31 sec', '']
+['Label', '0.28 sec', '0.31 sec']
+
+- [['0.28 sec', '0.31 sec', '']]
+?                         ----
+
++ [['Label', '0.28 sec', '0.31 sec']]
+?   +++++++++
+
+
+======================================================================
+FAIL: test_short_axis_separators_prevent_a_false_rowspan (ai_extract.tests.test_surya_ocr.SuryaOCRTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/ai_extract/tests/test_surya_ocr.py", line 105, in test_short_axis_separators_prevent_a_false_rowspan
+    self.assertEqual(len(grid['cells']),4)
+AssertionError: 6 != 4
+
+----------------------------------------------------------------------
+Ran 560 tests in 9.416s
+
+FAILED (failures=11, errors=11, skipped=4)
+Destroying test database for alias 'default'...
+===== NewIdea =====
+Found 205 test(s).
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+F2026-11-01 16:10:47,802 INFO A3 {"run": 1, "stage": "pipeline", "event": "started", "version_id": 3, "contract_id": 3}
+2026-11-01 16:10:47,834 INFO A3 {"run": 1, "stage": "structure", "event": "started", "page": 1, "total_pages": null}
+2026-11-01 16:10:47,835 INFO A3 {"run": 1, "stage": "structure", "event": "completed", "elapsed_s": 0.0, "page": 1, "total_pages": null, "status": "unstructured", "chunks": 1}
+2026-11-01 16:10:47,839 INFO A3 {"run": 1, "stage": "wait_colpali", "event": "started", "page": 1}
+2026-11-01 16:10:47,840 INFO A3 {"run": 1, "stage": "wait_colpali", "event": "completed", "elapsed_s": 0.0, "page": 1}
+2026-11-01 16:10:47,845 INFO A3 {"run": 1, "stage": "page", "event": "completed", "page": 1, "total_pages": null, "blocks": 1, "graph": "DEFERRED_UNTIL_ANALYSIS", "colpali": "SKIPPED", "dense": "DEFERRED"}
+2026-11-01 16:10:47,932 INFO A3 {"run": 1, "stage": "pregraph_source_reading", "event": "started", "pages": 1}
+2026-11-01 16:10:47,937 INFO A3 {"run": 1, "stage": "pregraph_source_reading", "event": "completed", "elapsed_s": 0.0, "pages": 1, "status": "complete", "sources": 1, "source_order_preserved": true, "new_reading_edges": 0, "provider": "surya_source", "semantic_review": "disabled"}
+2026-11-01 16:10:47,937 INFO A3 {"run": 1, "stage": "whole_document_entities", "event": "started", "pages": 1, "provider": "gliner"}
+2026-11-01 16:10:47,950 ERROR A3 {"run": 1, "stage": "whole_document_entities", "event": "failed", "elapsed_s": 0.01, "error_type": "RuntimeError", "pages": 1, "provider": "gliner"}
+2026-11-01 16:10:47,952 ERROR A3 {"run": 1, "stage": "pipeline", "event": "failed", "error_type": "RuntimeError"}
+E.........F....................2026-11-01 16:10:50,468 INFO A3 {"run": 12, "stage": "structure", "event": "started", "page": 1, "total_pages": null}
+2026-11-01 16:10:50,470 INFO A3 {"run": 12, "stage": "structure", "event": "completed", "elapsed_s": 0.0, "page": 1, "total_pages": null, "status": "structured", "chunks": 1}
+2026-11-01 16:10:50,475 INFO A3 {"run": 12, "stage": "wait_colpali", "event": "started", "page": 1}
+2026-11-01 16:10:50,476 INFO A3 {"run": 12, "stage": "wait_colpali", "event": "completed", "elapsed_s": 0.0, "page": 1}
+2026-11-01 16:10:50,481 INFO A3 {"run": 12, "stage": "page", "event": "completed", "page": 1, "total_pages": null, "blocks": 1, "graph": "DEFERRED_UNTIL_ANALYSIS", "colpali": "COMPLETED", "dense": "DEFERRED"}
+2026-11-01 16:10:50,489 INFO A3 {"run": 12, "stage": "pregraph_source_reading", "event": "started", "pages": 1}
+2026-11-01 16:10:50,494 INFO A3 {"run": 12, "stage": "pregraph_source_reading", "event": "completed", "elapsed_s": 0.01, "pages": 1, "status": "complete", "sources": 1, "source_order_preserved": true, "new_reading_edges": 0, "provider": "surya_source", "semantic_review": "disabled"}
+2026-11-01 16:10:50,494 INFO A3 {"run": 12, "stage": "whole_document_entities", "event": "started", "pages": 1, "provider": "gliner"}
+2026-11-01 16:10:50,496 ERROR A3 {"run": 12, "stage": "whole_document_entities", "event": "failed", "elapsed_s": 0.0, "error_type": "RuntimeError", "pages": 1, "provider": "gliner"}
+E..........EEEEEEEEEEEEEE.F....................FFEF......2026-11-01 16:10:55,999 INFO A3 {"run": "knowledge_text", "stage": "bge_knowledge_batch", "event": "started", "batch": 1, "total_batches": 1, "records": 6}
+2026-11-01 16:10:56,000 INFO A3 {"run": "knowledge_text", "stage": "bge_knowledge_batch", "event": "completed", "elapsed_s": 0.0, "batch": 1, "total_batches": 1, "records": 6}
+2026-11-01 16:10:56,003 INFO A3 {"run": "knowledge_text", "stage": "qdrant_knowledge_write", "event": "started", "points": 6}
+2026-11-01 16:10:56,009 INFO A3 {"run": "knowledge_text", "stage": "qdrant_knowledge_write", "event": "completed", "elapsed_s": 0.01, "points": 6}
+2026-11-01 16:10:56,010 INFO A3 {"run": "knowledge_text", "stage": "bge_knowledge_batch", "event": "started", "batch": 1, "total_batches": 1, "records": 6}
+2026-11-01 16:10:56,010 INFO A3 {"run": "knowledge_text", "stage": "bge_knowledge_batch", "event": "completed", "elapsed_s": 0.0, "batch": 1, "total_batches": 1, "records": 6}
+2026-11-01 16:10:56,015 INFO A3 {"run": "knowledge_text", "stage": "qdrant_knowledge_write", "event": "started", "points": 6}
+2026-11-01 16:10:56,023 INFO A3 {"run": "knowledge_text", "stage": "qdrant_knowledge_write", "event": "completed", "elapsed_s": 0.01, "points": 6}
+2026-11-01 16:10:56,041 INFO A3 {"run": 30, "stage": "bge_batch", "event": "started", "batch": 1, "total_batches": 1, "chunks": 1, "chunks_total": 1}
+2026-11-01 16:10:56,042 INFO A3 {"run": 30, "stage": "bge_batch", "event": "completed", "elapsed_s": 0.0, "batch": 1, "total_batches": 1, "chunks": 1, "chunks_total": 1}
+2026-11-01 16:10:56,043 INFO A3 {"run": 30, "stage": "qdrant_dense_write", "event": "started", "points": 1}
+2026-11-01 16:10:56,045 INFO A3 {"run": 30, "stage": "qdrant_dense_write", "event": "completed", "elapsed_s": 0.0, "points": 1}
+F...F..............{"event": "qwen_token_budget", "model": "Qwen/Qwen2.5-VL-7B-Instruct-AWQ", "prompt_tokens": 15000, "capacity": 16384, "requested_output": 8192}
+..{"event": "qwen_token_budget", "model": "Qwen/Qwen2.5-VL-7B-Instruct-AWQ", "prompt_tokens": 17000, "capacity": 16384, "requested_output": 8192}
+...............................................................................................
+======================================================================
+ERROR: test_extracted_file_is_searchable_without_copying_into_factory_database (tests.test_contract_search.ContractSearchTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/NewIdea/tests/test_contract_search.py", line 51, in test_extracted_file_is_searchable_without_copying_into_factory_database
+    run=LayoutExtractionService().extract_version(self.version)
+  File "/app/ai_extract/services/contract_pipeline_service.py", line 2681, in extract_version
+    return self._extract_version(version,force_ocr=force_ocr,defer_colpali=defer_colpali)
+  File "/app/ai_extract/services/contract_pipeline_service.py", line 2735, in _extract_version
+    session.finish()
+  File "/app/ai_extract/services/layout_service.py", line 603, in finish
+    prepare_document(run,self.progress,defer_related_passages=True)
+  File "/app/ai_extract/services/layout_service.py", line 758, in prepare_document
+    raise RuntimeError('Whole-document entity extraction incomplete: '+str(knowledge['errors']))
+RuntimeError: Whole-document entity extraction incomplete: [{'source_ids': ['block:1:1:0'], 'error_type': 'MissingSchema', 'reason': "Invalid URL '/rag/gliner_entities': No scheme supplied. Perhaps you meant https:///rag/gliner_entities?"}]
+
+======================================================================
+ERROR: test_structure_persisted_with_a3_metadata (contracts.tests.test_intelligence.ContractIntelligenceTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 179, in test_structure_persisted_with_a3_metadata
+    session.finish()
+  File "/app/ai_extract/services/layout_service.py", line 603, in finish
+    prepare_document(run,self.progress,defer_related_passages=True)
+  File "/app/ai_extract/services/layout_service.py", line 758, in prepare_document
+    raise RuntimeError('Whole-document entity extraction incomplete: '+str(knowledge['errors']))
+RuntimeError: Whole-document entity extraction incomplete: [{'source_ids': ['block:17:1:0'], 'error_type': 'MissingSchema', 'reason': "Invalid URL '/rag/gliner_entities': No scheme supplied. Perhaps you meant https:///rag/gliner_entities?"}]
+
+======================================================================
+ERROR: test_failed_worker_does_not_leave_running_job (tests.test_enterprise.EnterpriseKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+psycopg2.InterfaceError: connection already closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/NewIdea/tests/test_enterprise.py", line 203, in test_failed_worker_does_not_leave_running_job
+    self.assertTrue(process_one())
+  File "/app/contracts/management/commands/knowledge_worker.py", line 13, in process_one
+    return search_job_service.process_next_job(search_contract)
+  File "/app/NewIdea/services/search_job_service.py", line 97, in process_next_job
+    receipt = knowledge_repository.next_queued_search()
+  File "/app/NewIdea/repositories/knowledge_repository.py", line 106, in next_queued_search
+    return jobs.first()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1097, in first
+    for obj in queryset[:1]:
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1560, in execute_sql
+    cursor = self.connection.cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 316, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 293, in _cursor
+    with self.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+django.db.utils.InterfaceError: connection already closed
+
+======================================================================
+ERROR: test_foreign_version_evidence_cannot_be_bound (tests.test_enterprise.EnterpriseKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+psycopg2.InterfaceError: connection already closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 11, in setUp
+    self.company = Company.objects.create(company_name='Company A', tax_code='A')
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1821, in execute_sql
+    with self.connection.cursor() as cursor:
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 316, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 293, in _cursor
+    with self.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+django.db.utils.InterfaceError: connection already closed
+
+======================================================================
+ERROR: test_global_search_and_inquiries_require_csrf_and_auth (tests.test_enterprise.EnterpriseKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+psycopg2.InterfaceError: connection already closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 11, in setUp
+    self.company = Company.objects.create(company_name='Company A', tax_code='A')
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1821, in execute_sql
+    with self.connection.cursor() as cursor:
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 316, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 293, in _cursor
+    with self.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+django.db.utils.InterfaceError: connection already closed
+
+======================================================================
+ERROR: test_inactive_reviewer_cannot_be_assigned (tests.test_enterprise.EnterpriseKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+psycopg2.InterfaceError: connection already closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 11, in setUp
+    self.company = Company.objects.create(company_name='Company A', tax_code='A')
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1821, in execute_sql
+    with self.connection.cursor() as cursor:
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 316, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 293, in _cursor
+    with self.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+django.db.utils.InterfaceError: connection already closed
+
+======================================================================
+ERROR: test_inquiry_detail_restores_draft_and_original_evidence (tests.test_enterprise.EnterpriseKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+psycopg2.InterfaceError: connection already closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 11, in setUp
+    self.company = Company.objects.create(company_name='Company A', tax_code='A')
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1821, in execute_sql
+    with self.connection.cursor() as cursor:
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 316, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 293, in _cursor
+    with self.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+django.db.utils.InterfaceError: connection already closed
+
+======================================================================
+ERROR: test_long_question_rejected_before_retrieval (tests.test_enterprise.EnterpriseKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+psycopg2.InterfaceError: connection already closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 11, in setUp
+    self.company = Company.objects.create(company_name='Company A', tax_code='A')
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1821, in execute_sql
+    with self.connection.cursor() as cursor:
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 316, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 293, in _cursor
+    with self.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+django.db.utils.InterfaceError: connection already closed
+
+======================================================================
+ERROR: test_manager_cannot_approve_own_revision (tests.test_enterprise.EnterpriseKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+psycopg2.InterfaceError: connection already closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 11, in setUp
+    self.company = Company.objects.create(company_name='Company A', tax_code='A')
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1821, in execute_sql
+    with self.connection.cursor() as cursor:
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 316, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 293, in _cursor
+    with self.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+django.db.utils.InterfaceError: connection already closed
+
+======================================================================
+ERROR: test_pending_job_limit_prevents_unbounded_queue (tests.test_enterprise.EnterpriseKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+psycopg2.InterfaceError: connection already closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 11, in setUp
+    self.company = Company.objects.create(company_name='Company A', tax_code='A')
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1821, in execute_sql
+    with self.connection.cursor() as cursor:
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 316, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 293, in _cursor
+    with self.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+django.db.utils.InterfaceError: connection already closed
+
+======================================================================
+ERROR: test_queued_search_runs_once_and_preserves_receipt (tests.test_enterprise.EnterpriseKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+psycopg2.InterfaceError: connection already closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 11, in setUp
+    self.company = Company.objects.create(company_name='Company A', tax_code='A')
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1821, in execute_sql
+    with self.connection.cursor() as cursor:
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 316, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 293, in _cursor
+    with self.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+django.db.utils.InterfaceError: connection already closed
+
+======================================================================
+ERROR: test_quota_checked_before_model_or_retrieval (tests.test_enterprise.EnterpriseKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+psycopg2.InterfaceError: connection already closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 11, in setUp
+    self.company = Company.objects.create(company_name='Company A', tax_code='A')
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1821, in execute_sql
+    with self.connection.cursor() as cursor:
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 316, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 293, in _cursor
+    with self.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+django.db.utils.InterfaceError: connection already closed
+
+======================================================================
+ERROR: test_receipt_and_inquiry_not_visible_to_foreign_company (tests.test_enterprise.EnterpriseKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+psycopg2.InterfaceError: connection already closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 11, in setUp
+    self.company = Company.objects.create(company_name='Company A', tax_code='A')
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1821, in execute_sql
+    with self.connection.cursor() as cursor:
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 316, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 293, in _cursor
+    with self.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+django.db.utils.InterfaceError: connection already closed
+
+======================================================================
+ERROR: test_search_receipt_contains_answer_and_source_hash (tests.test_enterprise.EnterpriseKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+psycopg2.InterfaceError: connection already closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 11, in setUp
+    self.company = Company.objects.create(company_name='Company A', tax_code='A')
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1821, in execute_sql
+    with self.connection.cursor() as cursor:
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 316, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 293, in _cursor
+    with self.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+django.db.utils.InterfaceError: connection already closed
+
+======================================================================
+ERROR: test_source_must_exist_in_case_version (tests.test_enterprise.EnterpriseKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+psycopg2.InterfaceError: connection already closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 11, in setUp
+    self.company = Company.objects.create(company_name='Company A', tax_code='A')
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1821, in execute_sql
+    with self.connection.cursor() as cursor:
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 316, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 293, in _cursor
+    with self.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+django.db.utils.InterfaceError: connection already closed
+
+======================================================================
+ERROR: test_worker_rechecks_access_after_company_changes (tests.test_enterprise.EnterpriseKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+psycopg2.InterfaceError: connection already closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 11, in setUp
+    self.company = Company.objects.create(company_name='Company A', tax_code='A')
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1821, in execute_sql
+    with self.connection.cursor() as cursor:
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 316, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 293, in _cursor
+    with self.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 294, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+  File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/postgresql/base.py", line 332, in create_cursor
+    cursor = self.connection.cursor()
+django.db.utils.InterfaceError: connection already closed
+
+======================================================================
+ERROR: test_multiple_documents_rerank_once_before_graph_expansion (tests.test_search_optimization.SearchOptimizationIntegrationTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/test/utils.py", line 443, in inner
+    return func(*args, **kwargs)
+  File "/app/NewIdea/tests/test_search_optimization.py", line 205, in test_multiple_documents_rerank_once_before_graph_expansion
+    result = search_knowledge(self.user, 'payment')
+  File "/app/NewIdea/services/knowledge_search_service.py", line 282, in search_knowledge
+    context, coverage = expand_retrieval_context(query, trees[version.pk], version, ranked,
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 1179, in _execute_mock_call
+    result = effect(*args, **kwargs)
+  File "/app/NewIdea/tests/test_search_optimization.py", line 197, in expand
+    self.assertEqual(stages[0], 'rerank')
+IndexError: list index out of range
+
+======================================================================
+FAIL: test_anonymous_and_missing_contract_are_rejected (tests.test_contract_search.ContractSearchTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/NewIdea/tests/test_contract_search.py", line 89, in test_anonymous_and_missing_contract_are_rejected
+    self.assertEqual(self.post().status_code,401)
+AssertionError: 200 != 401
+
+======================================================================
+FAIL: test_anonymous_cannot_search_or_write (contracts.tests.test_intelligence.ContractIntelligenceTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 58, in test_anonymous_cannot_search_or_write
+    self.assertEqual(self.search().status_code, 401)
+AssertionError: 200 != 401
+
+======================================================================
+FAIL: test_foreign_document_anonymous_and_company_change_are_blocked (tests.test_expert_submission.ExpertSubmissionFlow)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/NewIdea/tests/test_expert_submission.py", line 122, in test_foreign_document_anonymous_and_company_change_are_blocked
+    self.client.logout();self.assertEqual(self.submit().status_code,401)
+AssertionError: 202 != 401
+
+======================================================================
+FAIL: test_corpus_subquestions_recover_a_detail_without_selecting_a_document (tests.test_search_optimization.SearchOptimizationIntegrationTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/test/utils.py", line 443, in inner
+    return func(*args, **kwargs)
+  File "/app/NewIdea/tests/test_search_optimization.py", line 131, in test_corpus_subquestions_recover_a_detail_without_selecting_a_document
+    self.assertIn('robot controller compatibility\nFocused question: '+facet,ranked_queries)
+AssertionError: 'robot controller compatibility\nFocused question: Which controller is compatible?' not found in []
+
+======================================================================
+FAIL: test_model_ranked_candidates_are_not_rejected_by_fixed_zero_threshold (tests.test_search_optimization.SearchOptimizationIntegrationTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/test/utils.py", line 443, in inner
+    return func(*args, **kwargs)
+  File "/app/NewIdea/tests/test_search_optimization.py", line 148, in test_model_ranked_candidates_are_not_rejected_by_fixed_zero_threshold
+    self.assertEqual(result['generation_status'],'generated')
+AssertionError: 'retrieval_unavailable' != 'generated'
+- retrieval_unavailable
++ generated
+
+
+======================================================================
+FAIL: test_only_admitted_document_expands_graph (tests.test_search_optimization.SearchOptimizationIntegrationTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/test/utils.py", line 443, in inner
+    return func(*args, **kwargs)
+  File "/app/NewIdea/tests/test_search_optimization.py", line 106, in test_only_admitted_document_expands_graph
+    self.assertEqual([c.args[2].pk for c in expand.call_args_list],[self.new_version.pk])
+AssertionError: Lists differ: [204] != [203]
+
+First differing element 0:
+204
+203
+
+- [204]
+?    ^
+
++ [203]
+?    ^
+
+
+======================================================================
+FAIL: test_one_collection_search_returns_expert_units_and_preserves_full_answer_context (tests.test_unified_knowledge.UnifiedKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/test/utils.py", line 443, in inner
+    return func(*args, **kwargs)
+  File "/app/NewIdea/tests/test_unified_knowledge.py", line 81, in test_one_collection_search_returns_expert_units_and_preserves_full_answer_context
+    rerank.assert_called_once()
+  File "/usr/local/lib/python3.10/unittest/mock.py", line 908, in assert_called_once
+    raise AssertionError(msg)
+AssertionError: Expected 'rerank' to have been called once. Called 0 times.
+
+======================================================================
+FAIL: test_source_link_reopens_saved_answer_without_exposing_another_company (tests.test_unified_knowledge.UnifiedKnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/NewIdea/tests/test_unified_knowledge.py", line 134, in test_source_link_reopens_saved_answer_without_exposing_another_company
+    self.assertEqual(self.client.get('/api/newidea/expert-submissions/', {'id':receipt.pk}).status_code, 401)
+AssertionError: 200 != 401
+
+----------------------------------------------------------------------
+Ran 205 tests in 8.976s
+
+FAILED (failures=8, errors=17)
+Destroying test database for alias 'default'...
+===== contracts =====
+Found 70 test(s).
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+F....................2026-11-01 16:11:13,194 INFO A3 {"run": 6, "stage": "structure", "event": "started", "page": 1, "total_pages": null}
+2026-11-01 16:11:13,195 INFO A3 {"run": 6, "stage": "structure", "event": "completed", "elapsed_s": 0.0, "page": 1, "total_pages": null, "status": "structured", "chunks": 1}
+2026-11-01 16:11:13,198 INFO A3 {"run": 6, "stage": "wait_colpali", "event": "started", "page": 1}
+2026-11-01 16:11:13,198 INFO A3 {"run": 6, "stage": "wait_colpali", "event": "completed", "elapsed_s": 0.0, "page": 1}
+2026-11-01 16:11:13,200 INFO A3 {"run": 6, "stage": "page", "event": "completed", "page": 1, "total_pages": null, "blocks": 1, "graph": "DEFERRED_UNTIL_ANALYSIS", "colpali": "COMPLETED", "dense": "DEFERRED"}
+2026-11-01 16:11:13,254 INFO A3 {"run": 6, "stage": "pregraph_source_reading", "event": "started", "pages": 1}
+2026-11-01 16:11:13,257 INFO A3 {"run": 6, "stage": "pregraph_source_reading", "event": "completed", "elapsed_s": 0.0, "pages": 1, "status": "complete", "sources": 1, "source_order_preserved": true, "new_reading_edges": 0, "provider": "surya_source", "semantic_review": "disabled"}
+2026-11-01 16:11:13,258 INFO A3 {"run": 6, "stage": "whole_document_entities", "event": "started", "pages": 1, "provider": "gliner"}
+2026-11-01 16:11:13,262 ERROR A3 {"run": 6, "stage": "whole_document_entities", "event": "failed", "elapsed_s": 0.0, "error_type": "RuntimeError", "pages": 1, "provider": "gliner"}
+E......F....../usr/local/lib/python3.10/site-packages/jwt/api_jwt.py:149: InsecureKeyLengthWarning: The HMAC key is 4 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+  return self._jws.encode(
+F.EEEF.E..E.EEE..EsEE.EE.EE.EE.....
+======================================================================
+ERROR: test_structure_persisted_with_a3_metadata (contracts.tests.test_intelligence.ContractIntelligenceTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 179, in test_structure_persisted_with_a3_metadata
+    session.finish()
+  File "/app/ai_extract/services/layout_service.py", line 603, in finish
+    prepare_document(run,self.progress,defer_related_passages=True)
+  File "/app/ai_extract/services/layout_service.py", line 758, in prepare_document
+    raise RuntimeError('Whole-document entity extraction incomplete: '+str(knowledge['errors']))
+RuntimeError: Whole-document entity extraction incomplete: [{'source_ids': ['block:11:1:0'], 'error_type': 'MissingSchema', 'reason': "Invalid URL '/rag/gliner_entities': No scheme supplied. Perhaps you meant https:///rag/gliner_entities?"}]
+
+======================================================================
+ERROR: test_accepted_contract_cannot_move_to_another_company (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 227, in test_accepted_contract_cannot_move_to_another_company
+    self.accepted()
+  File "/app/contracts/tests/test_ledger.py", line 63, in accepted
+    return ledger.accept(self.user, op.pk, self.signature(op))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_accepted_version_cannot_be_renumbered (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 221, in test_accepted_version_cannot_be_renumbered
+    self.accepted()
+  File "/app/contracts/tests/test_ledger.py", line 63, in accepted
+    return ledger.accept(self.user, op.pk, self.signature(op))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_accepted_version_cannot_replace_or_add_files (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 233, in test_accepted_version_cannot_replace_or_add_files
+    self.accepted()
+  File "/app/contracts/tests/test_ledger.py", line 63, in accepted
+    return ledger.accept(self.user, op.pk, self.signature(op))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_commit_recovery_does_not_submit_twice (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 154, in test_commit_recovery_does_not_submit_twice
+    op = self.accepted()
+  File "/app/contracts/tests/test_ledger.py", line 63, in accepted
+    return ledger.accept(self.user, op.pk, self.signature(op))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_conflicting_ledger_payload_never_confirms (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 172, in test_conflicting_ledger_payload_never_confirms
+    op = self.accepted()
+  File "/app/contracts/tests/test_ledger.py", line 63, in accepted
+    return ledger.accept(self.user, op.pk, self.signature(op))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_duplicate_prepare_and_submit_are_idempotent (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 125, in test_duplicate_prepare_and_submit_are_idempotent
+    ledger.accept(self.user, op.pk, sig)
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_expired_challenge_rejected (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 133, in test_expired_challenge_rejected
+    self.assertEqual(self.post(f'/api/ledger/operations/{op.pk}/', {'signature':self.signature(op)}).status_code, 400)
+  File "/app/contracts/tests/test_ledger.py", line 53, in post
+    return self.client.post(url, json.dumps(data), content_type='application/json')
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 1070, in post
+    response = super().post(
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 490, in post
+    return self.generic(
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 617, in generic
+    return self.request(**r)
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 1013, in request
+    self.check_exception(response)
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 743, in check_exception
+    raise exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/contracts/views/ledger_views.py", line 30, in view
+    return fn(request, *args, **kwargs)
+  File "/app/contracts/views/ledger_views.py", line 69, in operation_action
+    return respond(request, ledger_operations_service.operation_action(operation_id, user=request.user, data=body(request) if not request.content_type.startswith('multipart/') else {}))
+  File "/app/contracts/services/ledger_operations_service.py", line 102, in operation_action
+    op = ledger.accept(user, op.pk, data.get('signature', ''))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_failed_gateway_keeps_durable_request_without_fake_tx (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 142, in test_failed_gateway_keeps_durable_request_without_fake_tx
+    op = self.accepted()
+  File "/app/contracts/tests/test_ledger.py", line 63, in accepted
+    return ledger.accept(self.user, op.pk, self.signature(op))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_ledger_outage_is_unknown_not_verified (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 191, in test_ledger_outage_is_unknown_not_verified
+    self.accepted()
+  File "/app/contracts/tests/test_ledger.py", line 63, in accepted
+    return ledger.accept(self.user, op.pk, self.signature(op))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_missing_source_does_not_hide_valid_uploaded_file_signature (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 198, in test_missing_source_does_not_hide_valid_uploaded_file_signature
+    op = self.accepted()
+  File "/app/contracts/tests/test_ledger.py", line 63, in accepted
+    return ledger.accept(self.user, op.pk, self.signature(op))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_modified_file_rejected_before_queue (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 119, in test_modified_file_rejected_before_queue
+    self.assertEqual(self.post(f'/api/ledger/operations/{op.pk}/', {'signature':self.signature(op)}).status_code, 400)
+  File "/app/contracts/tests/test_ledger.py", line 53, in post
+    return self.client.post(url, json.dumps(data), content_type='application/json')
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 1070, in post
+    response = super().post(
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 490, in post
+    return self.generic(
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 617, in generic
+    return self.request(**r)
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 1013, in request
+    self.check_exception(response)
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 743, in check_exception
+    raise exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/contracts/views/ledger_views.py", line 30, in view
+    return fn(request, *args, **kwargs)
+  File "/app/contracts/views/ledger_views.py", line 69, in operation_action
+    return respond(request, ledger_operations_service.operation_action(operation_id, user=request.user, data=body(request) if not request.content_type.startswith('multipart/') else {}))
+  File "/app/contracts/services/ledger_operations_service.py", line 102, in operation_action
+    op = ledger.accept(user, op.pk, data.get('signature', ''))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_revoked_key_blocks_submission (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 139, in test_revoked_key_blocks_submission
+    self.assertEqual(self.post(f'/api/ledger/operations/{op.pk}/', {'signature':self.signature(op)}).status_code, 404)
+  File "/app/contracts/tests/test_ledger.py", line 53, in post
+    return self.client.post(url, json.dumps(data), content_type='application/json')
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 1070, in post
+    response = super().post(
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 490, in post
+    return self.generic(
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 617, in generic
+    return self.request(**r)
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 1013, in request
+    self.check_exception(response)
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 743, in check_exception
+    raise exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/contracts/views/ledger_views.py", line 30, in view
+    return fn(request, *args, **kwargs)
+  File "/app/contracts/views/ledger_views.py", line 69, in operation_action
+    return respond(request, ledger_operations_service.operation_action(operation_id, user=request.user, data=body(request) if not request.content_type.startswith('multipart/') else {}))
+  File "/app/contracts/services/ledger_operations_service.py", line 102, in operation_action
+    op = ledger.accept(user, op.pk, data.get('signature', ''))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_signature_cannot_move_to_another_version (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 114, in test_signature_cannot_move_to_another_version
+    self.assertEqual(self.post(f'/api/ledger/operations/{op2.pk}/', {'signature':self.signature(op)}).status_code, 400)
+  File "/app/contracts/tests/test_ledger.py", line 53, in post
+    return self.client.post(url, json.dumps(data), content_type='application/json')
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 1070, in post
+    response = super().post(
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 490, in post
+    return self.generic(
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 617, in generic
+    return self.request(**r)
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 1013, in request
+    self.check_exception(response)
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 743, in check_exception
+    raise exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/contracts/views/ledger_views.py", line 30, in view
+    return fn(request, *args, **kwargs)
+  File "/app/contracts/views/ledger_views.py", line 69, in operation_action
+    return respond(request, ledger_operations_service.operation_action(operation_id, user=request.user, data=body(request) if not request.content_type.startswith('multipart/') else {}))
+  File "/app/contracts/services/ledger_operations_service.py", line 102, in operation_action
+    op = ledger.accept(user, op.pk, data.get('signature', ''))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_stale_worker_cannot_confirm_after_lease_changes (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 164, in test_stale_worker_cannot_confirm_after_lease_changes
+    op = self.accepted()
+  File "/app/contracts/tests/test_ledger.py", line 63, in accepted
+    return ledger.accept(self.user, op.pk, self.signature(op))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_verify_separates_upload_signature_and_ledger (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 180, in test_verify_separates_upload_signature_and_ledger
+    op = self.accepted()
+  File "/app/contracts/tests/test_ledger.py", line 63, in accepted
+    return ledger.accept(self.user, op.pk, self.signature(op))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_wrong_company_receipt_cannot_confirm (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 210, in test_wrong_company_receipt_cannot_confirm
+    op = self.accepted()
+  File "/app/contracts/tests/test_ledger.py", line 63, in accepted
+    return ledger.accept(self.user, op.pk, self.signature(op))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+ERROR: test_wrong_signature_rejected (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.FeatureNotSupported: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 104, in test_wrong_signature_rejected
+    r = self.post(f'/api/ledger/operations/{op.pk}/', {'signature':base64.b64encode(b'fake').decode()})
+  File "/app/contracts/tests/test_ledger.py", line 53, in post
+    return self.client.post(url, json.dumps(data), content_type='application/json')
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 1070, in post
+    response = super().post(
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 490, in post
+    return self.generic(
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 617, in generic
+    return self.request(**r)
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 1013, in request
+    self.check_exception(response)
+  File "/usr/local/lib/python3.10/site-packages/django/test/client.py", line 743, in check_exception
+    raise exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/contracts/views/ledger_views.py", line 30, in view
+    return fn(request, *args, **kwargs)
+  File "/app/contracts/views/ledger_views.py", line 69, in operation_action
+    return respond(request, ledger_operations_service.operation_action(operation_id, user=request.user, data=body(request) if not request.content_type.startswith('multipart/') else {}))
+  File "/app/contracts/services/ledger_operations_service.py", line 102, in operation_action
+    op = ledger.accept(user, op.pk, data.get('signature', ''))
+  File "/app/contracts/services/ledger_service.py", line 119, in accept
+    op = data_repository.get_contract_ledger_operation_for_accept(op_id, user)
+  File "/app/contracts/repositories/ledger_data_repository.py", line 34, in get_contract_ledger_operation_for_accept
+    return ContractLedgerOperation.objects.select_for_update().select_related('version__contract', 'credential').get(pk=op_id, actor=user, company_id=user.company_id)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.NotSupportedError: FOR UPDATE cannot be applied to the nullable side of an outer join
+
+
+======================================================================
+FAIL: test_anonymous_cannot_search_or_write (contracts.tests.test_intelligence.ContractIntelligenceTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_intelligence.py", line 58, in test_anonymous_cannot_search_or_write
+    self.assertEqual(self.search().status_code, 401)
+AssertionError: 200 != 401
+
+======================================================================
+FAIL: test_anonymous_extraction_and_admin_mutation_are_rejected (contracts.tests.test_layered_architecture.LayeredEndpointTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_layered_architecture.py", line 122, in test_anonymous_extraction_and_admin_mutation_are_rejected
+    self.assertEqual(self.client.get(f'/api/ai/contracts/{self.contract.pk}/summary/').status_code, 401)
+AssertionError: 404 != 401
+
+======================================================================
+FAIL: test_version_routes_require_login_and_contract_scope (contracts.tests.test_layered_architecture.LayeredEndpointTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_layered_architecture.py", line 133, in test_version_routes_require_login_and_contract_scope
+    self.assertEqual(self.client.get(f'/api/contracts/{self.contract.pk}/versions/').status_code, 401)
+AssertionError: 200 != 401
+
+======================================================================
+FAIL: test_anonymous_api_denied (contracts.tests.test_ledger.LedgerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/app/contracts/tests/test_ledger.py", line 71, in test_anonymous_api_denied
+    self.assertEqual(self.client.get('/api/ledger/operations/').status_code, 401)
+AssertionError: 200 != 401
+
+----------------------------------------------------------------------
+Ran 70 tests in 16.495s
+
+FAILED (failures=4, errors=18, skipped=1)
+Destroying test database for alias 'default'...
+===== shared =====
+Found 4 test(s).
+System check identified no issues (0 silenced).
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.015s
+
+OK
+===== evaluation (host) =====
+A3 state write retry 1/2: errno=12
+..A3 state write retry 1/5: errno=12
+A3 state write retry 2/5: errno=12
+......................
+----------------------------------------------------------------------
+Ran 24 tests in 0.082s
+
+OK

@@ -1,0 +1,234 @@
+{
+  "created_at": "2026-10-24T20:11:23.894953+00:00",
+  "question_count": 50,
+  "document_count": 20,
+  "chat_executed": false,
+  "execution_policy": "MANUAL_ONLY_BY_USER_REQUEST",
+  "independent_gold_review": false,
+  "regression_Q1_Q4_included": false,
+  "diagnostic_only": true,
+  "unseen_test_set": false,
+  "category_counts": {
+    "text": 9,
+    "table": 18,
+    "condition": 31,
+    "footnote": 11,
+    "comparison": 13,
+    "procedure": 7,
+    "figure_text": 3,
+    "identifier": 5,
+    "causal_relation": 3,
+    "spatial_text": 1,
+    "multi_evidence": 3,
+    "multi_document": 2,
+    "attribute_leakage": 1
+  },
+  "visual_source_check": "tmp/pdfs/pilot50-source-check.png; selected tables and diagram only, not independent review of all evidence",
+  "document_question_counts": {
+    "TWIN": 3,
+    "BOX": 4,
+    "PLUG": 3,
+    "RACE": 2,
+    "INSUL": 2,
+    "COMP": 2,
+    "CLUTCH": 2,
+    "DUALAC": 3,
+    "RING": 2,
+    "FLASH": 3,
+    "FAN": 2,
+    "COBOPT": 2,
+    "EVP2": 2,
+    "WINCAPS": 2,
+    "DUALARM": 3,
+    "LPH": 4,
+    "JACKET": 3,
+    "VS050": 4,
+    "BRAKE": 2,
+    "WIPER": 2
+  },
+  "source_export_sha256": "6784aae0c81b513a07b510710e785a558a8693c4c22b83a932468cc4305d63ff",
+  "documents": [
+    {
+      "alias": "TWIN",
+      "source_path": "documents/DigitalTwinSoftware_en.pdf",
+      "pdf_sha256": "59fd1207daada80d14d5bb6f80a6776687b519b80afed63174c3d06dbec373a8",
+      "document_id": "contract-version-157",
+      "version_id": 157,
+      "run_id": 45,
+      "fingerprint": "428bd9c456adc23e334bcae1a2f72957427d790ca81bf0c28d12030f4a322565"
+    },
+    {
+      "alias": "BOX",
+      "source_path": "documents/RC8_Controller_Protective_Box_Light_E.pdf",
+      "pdf_sha256": "212c2aea490ac67d82bbead0281dd52ff70793f3573e65359f71a86f747e8db8",
+      "document_id": "contract-version-158",
+      "version_id": 158,
+      "run_id": 46,
+      "fingerprint": "c8eebbc0ed9872117d4d1bfe835bd7db3468925bcd0cd198645da2d7d2fae82d"
+    },
+    {
+      "alias": "PLUG",
+      "source_path": "documents/New folder/Spark Plug Installation _ DENSO Auto Parts.pdf",
+      "pdf_sha256": "2e4ba8f98dd3bea2d6ae4425860999539589bdc904e060c571a5bbb6c2abad6b",
+      "document_id": "contract-version-160",
+      "version_id": 160,
+      "run_id": 51,
+      "fingerprint": "0e88cf870ead9554051b0d7ecdccc7d2550d16fb63f3d7146f3258a391cf0808"
+    },
+    {
+      "alias": "RACE",
+      "source_path": "documents/New folder/Iridium Racing® Spark Plug Components _ DENSO Auto Parts.pdf",
+      "pdf_sha256": "7dfa4a8e78d025874f178429303642619f923448478097031f9b545824ada908",
+      "document_id": "contract-version-164",
+      "version_id": 164,
+      "run_id": 52,
+      "fingerprint": "7eb2b4e6f0d64edab0954329966234376709c0b09ed278cabd76bf6f37fdb735"
+    },
+    {
+      "alias": "INSUL",
+      "source_path": "documents/New folder/Iridium Racing® Insulator Height and Configuration _ DENSO Auto Parts.pdf",
+      "pdf_sha256": "7d49ab9bb514af9a8276a88cba4a17dc10aad8a1b4e1c9681d8f6665dab0521a",
+      "document_id": "contract-version-165",
+      "version_id": 165,
+      "run_id": 53,
+      "fingerprint": "ba6c04dbb0921979abc50300a94bc891cc2c3526600a4d1763684f46e0a9ffd6"
+    },
+    {
+      "alias": "COMP",
+      "source_path": "documents/New folder/Troubleshooting Charts - Compressor _ DENSO Auto Parts.pdf",
+      "pdf_sha256": "06b1227d6015c536b7bbd4cd586e5a3536cfe9ea06f35fe135b043a65ab0e940",
+      "document_id": "contract-version-169",
+      "version_id": 169,
+      "run_id": 59,
+      "fingerprint": "2a3ba482694a4bcfae0f3c443d64f1f100330b0a4f9982a3adc583379c516c0a"
+    },
+    {
+      "alias": "CLUTCH",
+      "source_path": "documents/New folder/Troubleshooting Charts - Clutch, Expansion _ DENSO Auto Parts.pdf",
+      "pdf_sha256": "82d375424f86504d5db6257e35f1a55dff54de5dd8fd732ea9d2623615f6f551",
+      "document_id": "contract-version-170",
+      "version_id": 170,
+      "run_id": 47,
+      "fingerprint": "72008d02df0543e5fc38e6aefc98bb423d3df29cfda20ac5e2cb9179852e376d"
+    },
+    {
+      "alias": "DUALAC",
+      "source_path": "documents/New folder/Poor Cooling Performance in a Vehicle with Dual A_C _ DENSO Auto Parts.pdf",
+      "pdf_sha256": "60d651a2ce5c405243965c38b822dd129971a0d64fa31b0941dc8e0fef5c87e6",
+      "document_id": "contract-version-171",
+      "version_id": 171,
+      "run_id": 55,
+      "fingerprint": "9ac614b785df2ca0b63de37987a56bc467e87122a286b90092a24579f579a6f4"
+    },
+    {
+      "alias": "RING",
+      "source_path": "documents/New folder/Compressor Snap Ring Installation Precaution _ DENSO Auto Parts.pdf",
+      "pdf_sha256": "48a3c8485e564967365254805f4b617869db51f5c08c11ac9c1e28d979514835",
+      "document_id": "contract-version-172",
+      "version_id": 172,
+      "run_id": 48,
+      "fingerprint": "f0feb7bccfcfce3650b79b3e8c3bce369fea98095584e46e022bcc3d45dd634f"
+    },
+    {
+      "alias": "FLASH",
+      "source_path": "documents/New folder/A_C Clutch Inoperative and A_C Light Flashing _ DENSO Auto Parts.pdf",
+      "pdf_sha256": "db2632df1d78ae6ad0b1f6a8244a80f85222ea2dee1d92a4281c217fab61a96e",
+      "document_id": "contract-version-173",
+      "version_id": 173,
+      "run_id": 56,
+      "fingerprint": "687022cad8e14672867f8f88498ff01a505c98a9b0099eed7904286b0a4468f4"
+    },
+    {
+      "alias": "FAN",
+      "source_path": "documents/New folder/A_C Clutch Inoperative and Fan Won't Turn Off _ DENSO Auto Parts.pdf",
+      "pdf_sha256": "8e43a607fd3fe69adab79066cbffb50b21daf7a5b26abee79fcc14e5fa0bc653",
+      "document_id": "contract-version-174",
+      "version_id": 174,
+      "run_id": 50,
+      "fingerprint": "85eda40f2a901470acabad51d1a9525c42ecf1f47a44e00120594a81ce6c52fa"
+    },
+    {
+      "alias": "COBOPT",
+      "source_path": "documents/COBOTTA_Optional_Products_E.pdf",
+      "pdf_sha256": "786a913c0b3f309e9135527f9a79aa50ce139bd4081fb56c233ec7338ca533dd",
+      "document_id": "contract-version-175",
+      "version_id": 175,
+      "run_id": 68,
+      "fingerprint": "85821d752ba81d55213e5fb6472a5174b80044884cbfacff980566c2ba65fb9c"
+    },
+    {
+      "alias": "EVP2",
+      "source_path": "documents/DENSO_Robotics_EVP2_EN.pdf",
+      "pdf_sha256": "191ea49f8a1a9b04c64d2614c9682358d56684de46399848f0389372117af76c",
+      "document_id": "contract-version-176",
+      "version_id": 176,
+      "run_id": 69,
+      "fingerprint": "5d62263ca5a95bfbba8771c14f8baac8cb3dc424c3c51690b6280ffb25a751fb"
+    },
+    {
+      "alias": "WINCAPS",
+      "source_path": "documents/DENSO_Robotics_WINCAPSp_EN.pdf",
+      "pdf_sha256": "92014e1b28009be48c05c4927a30bb7ec427c95b8d02bd9180f4a9f9566e4b2f",
+      "document_id": "contract-version-177",
+      "version_id": 177,
+      "run_id": 67,
+      "fingerprint": "7b83ca11bdd285deca8ecab05796d5f71b16e99b146c0ee5ae1a5f57bbe3be1f"
+    },
+    {
+      "alias": "DUALARM",
+      "source_path": "documents/Dual-arm_Control_E.pdf",
+      "pdf_sha256": "c0190547524e4f67a3c123e62a5bbcff449298403bf5722e8c2d014dfbc273bb",
+      "document_id": "contract-version-178",
+      "version_id": 178,
+      "run_id": 70,
+      "fingerprint": "555a7c3c372aa9118062b69b91e9b37e3c7605cc0b4574c7409273accb63127e"
+    },
+    {
+      "alias": "LPH",
+      "source_path": "documents/LPH_E.pdf",
+      "pdf_sha256": "20606e03ab07c787a7c13f486653d034eb4473b1ab7e3800fdad63d749f82f13",
+      "document_id": "contract-version-179",
+      "version_id": 179,
+      "run_id": 71,
+      "fingerprint": "7d437cb4a050272cee5de160462a14d94f55493178f3262966798b986339f600"
+    },
+    {
+      "alias": "JACKET",
+      "source_path": "documents/Robot_Protective_Jacket_E.pdf",
+      "pdf_sha256": "91b7c757fcd49f49af8667083564307a328263c7855ffcc226ae754c6bf5947b",
+      "document_id": "contract-version-180",
+      "version_id": 180,
+      "run_id": 72,
+      "fingerprint": "3129f97ec219e556c015c89a46efbc8ef9351c51fe2c8b2bfe631746df896a8c"
+    },
+    {
+      "alias": "VS050",
+      "source_path": "documents/VS050S2_E.pdf",
+      "pdf_sha256": "87320a162a902ac085538df07faaf425a29a0009b329262be5048bb07d12d5c4",
+      "document_id": "contract-version-181",
+      "version_id": 181,
+      "run_id": 73,
+      "fingerprint": "856555967cbc066f027af348e58a49577197a8f31f3bf5e177bbc6c67093014e"
+    },
+    {
+      "alias": "BRAKE",
+      "source_path": "documents/New folder/DENSO Brake Pad Kit Product Sheet_0524.pdf",
+      "pdf_sha256": "9e0da4bf99568edcb64334337c3b8cb99e7702cae4b4681ef73031a4bd8912cc",
+      "document_id": "contract-version-182",
+      "version_id": 182,
+      "run_id": 74,
+      "fingerprint": "60790bff29e6354ad11be21509197020c6e7efb85436333f350cd4ecf54b8b73"
+    },
+    {
+      "alias": "WIPER",
+      "source_path": "documents/New folder/Part Number Explanation - Wiper Blade Reference Guide _ DENSO Auto Parts.pdf",
+      "pdf_sha256": "b5d9eed46059ee2923318302d49c2263dfb7b462c7e825d6e0ab550e887c77b5",
+      "document_id": "contract-version-183",
+      "version_id": 183,
+      "run_id": 75,
+      "fingerprint": "ab464f1d3adf514d8ea40d02746f943feeb8ac7dc245c2d71083aae37e1a73cd"
+    }
+  ],
+  "question_file": "evaluation/benchmarks/pilot50_draft.jsonl",
+  "evidence_file": "evaluation/benchmarks/pilot50_evidence.jsonl"
+}

@@ -1,0 +1,104 @@
+50 CÂU HỎI KIỂM THỬ THỦ CÔNG — 20 TÀI LIỆU A3
+
+Chỉ là bộ pilot, không phải test độc lập. Chưa gửi câu nào qua chat.
+
+
+P001. Digital Twin Software kết hợp hai nền tảng nào và hỗ trợ những công việc gì trước khi mua thiết bị thật?
+
+P002. realvirtual.io Professional hỗ trợ những giao diện và kết nối nào để mô phỏng thiết bị?
+
+P003. realvirtual.io Professional là phần bổ sung cho nền tảng nào, và thư viện của nó có những ví dụ thiết bị gì?
+
+P004. RC8 Controller Protective Box Light có cấp bảo vệ và khối lượng bao nhiêu? Khối lượng đó có gồm controller không?
+
+P005. Những trường hợp nào phải dùng RC8 Controller Protective Box nguyên bản thay cho bản Light?
+
+P006. Giới hạn nhiệt độ và độ ẩm của Protective Box Light khi vận hành khác khi lưu kho/vận chuyển thế nào?
+
+P007. Khi điều chỉnh khe hở bugi Iridium Power, dụng cụ không được chạm vào những bộ phận nào và phải kiểm tra lại bằng gì?
+
+P008. Với bugi 14 mm flat seat mới, ren không bôi trơn, mô-men siết cho nắp máy gang và nhôm lần lượt là bao nhiêu?
+
+P009. Nếu ren bugi được bôi trơn thì tài liệu yêu cầu điều chỉnh mô-men siết như thế nào và vì sao?
+
+P010. Trong sơ đồ và chú giải Iridium Racing, nhãn A và G chỉ hai điện cực có vật liệu và đường kính nào?
+
+P011. Lớp silicone oil trên phần cách điện của bugi Iridium Racing được dùng để ngăn vấn đề gì trước cuộc đua?
+
+P012. Trong quy tắc mã bugi Iridium Racing, ký hiệu I biểu thị gì và U, XU tương ứng cỡ ren nào?
+
+P013. So sánh IU01* và IXU01*: đường kính ren và chiều cao bugi của mỗi loại là bao nhiêu?
+
+P014. Trong bảng chẩn đoán máy nén, khi áp suất phía cao bất thường và ngay sau khi dừng máy nén giảm nhanh về khoảng 28 psi, nguyên nhân và xử lý được nêu là gì?
+
+P015. Khi thấy các bu-lông của máy nén bị dính dầu, bảng chẩn đoán nêu vị trí rò gas và biện pháp gì?
+
+P016. Khi ly hợp không hút nhưng hệ thống dây điện bình thường, nguyên nhân và biện pháp trong bảng Clutch là gì?
+
+P017. Khi đầu ra van tiết lưu không lạnh và không cảm nhận được chênh lệch nhiệt đầu vào/đầu ra, bảng nêu hai nguyên nhân và cách xử lý tương ứng nào?
+
+P018. Trong ca A/C hai dàn làm mát kém, máy nén và van tiết lưu phía trước đã được kiểm tra hoặc xử lý thế nào trước khi xác định nguyên nhân phía sau?
+
+P019. Ống cảm nhiệt của van tiết lưu phía sau bị lỏng gây làm mát kém qua cơ chế nào?
+
+P020. Tài liệu hướng dẫn cố định lại ống cảm nhiệt phía sau ở đâu và cần tham khảo gì về cách nhiệt?
+
+P021. Sau khi lắp máy nén và tháo/lắp ly hợp từ, tiếng ồn kèm làm mát kém có thể liên quan đến chi tiết lắp sai nào?
+
+P022. Vòng hãm có mép vát phải quay về phía nào khi lắp vào máy nén, và phải bảo đảm điều gì?
+
+P023. Khi ly hợp máy nén không đóng và đèn A/C nhấp nháy trong ca được nêu, bộ phận nào bị ngắt và gây ra hai triệu chứng đó?
+
+P024. Nếu có đúng các triệu chứng của tài liệu và rơ-le mang Toyota P/N 90987-02022, phải thay bằng mã nào?
+
+P025. Chú thích mở rộng phạm vi cho Toyota Matrix và Toyota Sienna nêu những đời xe nào, và việc mở rộng đó có điều kiện gì?
+
+P026. Tài liệu Water Temperature Switch hướng dẫn kiểm tra thông mạch ở nhiệt độ phòng giữa hai điểm nào? Kết quả hở mạch có ý nghĩa gì?
+
+P027. Khi lắp công tắc nhiệt độ nước A/C, tài liệu cho phép dùng dụng cụ gì và cấm những thao tác/vật liệu nào?
+
+P028. Bộ Camera Built-in Set của COBOTTA liệt kê những thành phần nào?
+
+P029. Tùy chọn hút chân không của COBOTTA có cần máy nén khí bên ngoài không?
+
+P030. EVP2 Guidance và EVP2 Runtime có vai trò và yêu cầu thiết bị khác nhau thế nào?
+
+P031. EVP2 liệt kê năm chức năng tìm kiếm ảnh cơ bản nào?
+
+P032. Để WINCAPS Plus tự sinh đường chạy tránh vật cản và có chu kỳ ngắn nhất, người dùng cần xác định những điểm nào?
+
+P033. Home Position Guidance giả định gì về đường chạy tự động, và dùng RC8 cần thêm thiết bị gì theo chú thích?
+
+P034. Dual-arm Control hỗ trợ những dòng robot nào và controller nào? Một controller điều khiển được bao nhiêu tay robot?
+
+P035. Những chức năng nào giúp hai tay robot tránh va chạm trong không gian hẹp, và chức năng nào phục vụ vật dài hoặc nặng?
+
+P036. LPH-040A1 có tổng chiều dài hai tay và tải trọng tối đa bao nhiêu?
+
+P037. Chu kỳ 0,45 giây của LPH được đo với tải, khoảng cách hai điểm và độ cao nào?
+
+P038. Tính năng command-slave của LPH cho phép PLC điều khiển robot qua gì, hỗ trợ bao nhiêu loại lệnh và có cần lập trình phía robot không?
+
+P039. Áo bảo vệ robot cho chế biến thực phẩm tương thích robot/controller nào và loại cấu hình nào bị loại trừ?
+
+P040. Khi lắp áo bảo vệ, tải trọng tối đa của VS068 và VS087 thay đổi thế nào so với cấu hình tiêu chuẩn?
+
+P041. Phạm vi tuân thủ vật liệu tiếp xúc thực phẩm có ngoại lệ nào và có áp dụng cho tiêu chuẩn ngoài Nhật Bản không?
+
+P042. VS-050S2 có tầm với, tải trọng tối đa và chu kỳ được công bố lần lượt bao nhiêu?
+
+P043. VS-050S2 có cấp sạch và cấp bảo vệ nào ở cổ tay và thân máy?
+
+P044. Khi chọn electric gripper connection flange specification-A, giới hạn góc J5 của VS-050S2 thay đổi thành bao nhiêu so với tiêu chuẩn?
+
+P045. Má phanh DENSO First Time Fit được mô tả thế nào về vật liệu gốm và hàm lượng đồng, và bộ kit có kèm phần cứng không?
+
+P046. Trong hình cấu tạo bộ má phanh, multilayer shim có chức năng gì và NVH là viết tắt của gì?
+
+P047. Trong bảng Conventional & Designer Wiper Blades, chiều dài 14 inch và 26 inch tương ứng bao nhiêu mm?
+
+P048. Trong bảng Rear Wiper Blades, cỡ 12 inch/300 mm liệt kê những mã sản phẩm nào?
+
+P049. So sánh LPH-040A1 và VS-050S2 về tầm với, tải trọng tối đa và chu kỳ. Hai giá trị chu kỳ có được đo ở cùng tải không?
+
+P050. Trong tài liệu Protective Box Light và Dual-arm Control, RC8A đóng vai trò gì? Tên robot tương thích với Dual-arm Control là gì?

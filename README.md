@@ -17,7 +17,7 @@ The folder names come from the project's history, so some do not describe their 
 | `config/` | **Django project settings:** environment variables, database connections, and the top-level URL routes | `settings.py`, `urls.py` |
 | `runtime/` | **Scripts for the GPU inference service** (the `a3-inference` container): one installs its Python environment and llama.cpp, the other starts it on port 8010 | `setup_a3_linux_runtime.sh`, `start_a3_linux_runtime.sh` |
 | `serving/` | **Notebook for the remote models.** Runs the generator (Qwen2.5-VL on vLLM) and ColPali on Kaggle behind one public gateway | `kaggle_vllm_qwen_colpali_gateway.ipynb` |
-| `evaluation/` | **Scripts that produced the paper's evidence:** freeze the inputs, run the main flow and the E1/E2/E4 experiments, compute the metrics, and write the results tables. Not needed to run the system | `metrics.py`, `runners/pilot_metrics.py`, `runners/pilot_freeze.py`, `runners/pilot_mainflow.py`, `runners/pilot_run.py`, `runners/pilot_deliverables.py` |
+| `evaluation/` | **Scripts that produced the paper's evidence:** freeze the inputs, run the main flow and the E1/E2/E4 experiments, compute the metrics, and write the results tables. Not needed to run the system | `metrics.py`, `build_pilot50.py`, `benchmarks/corpus20/pilot50_authored.py`, `runners/pilot_metrics.py`, `runners/pilot_freeze.py`, `runners/pilot_mainflow.py`, `runners/pilot_run.py`, `runners/pilot_deliverables.py` |
 | `paper/` | **The paper as a PDF** | `Hierarchical_Evidence_Pods.pdf` |
 | `research_evaluation_20261030/` | **Evidence for the paper,** from the evaluation of 30–31 October 2026. Nothing here is needed to run the system | See below |
 
@@ -66,6 +66,33 @@ Requirements: Docker with an NVIDIA GPU for `a3-inference`, and a gateway servin
 | Extraction status | `/ai-extract/`, `/ai-extract/contracts/<id>/` |
 | Page inspector: regions drawn on each page | `/ai-extract/contracts/<id>/pages/<n>/` |
 | Questions and cited answers | `/newidea/` |
+
+## Tests
+
+```bash
+docker compose exec web python manage.py test ai_extract     # also NewIdea, contracts, shared
+python -X utf8 -m unittest discover -s evaluation/tests -t .
+```
+
+**Not all tests pass.** Result of 1 November 2026, one app at a time, on the project's existing image with an empty temporary PostgreSQL and no model services or gateway. The full output is in `research_evaluation_20261030/results/test_run_20261101.txt`.
+
+| Tests | Run | Passed | Failed | Errors | Skipped |
+|---|---|---|---|---|---|
+| `ai_extract/` | 560 | 534 | 11 | 11 | 4 |
+| `NewIdea/` | 205 | 180 | 8 | 17 | 0 |
+| `contracts/` | 70 | 47 | 4 | 18 | 1 |
+| `shared/` | 4 | 4 | 0 | 0 | 0 |
+| `evaluation/` (on the host) | 24 | 24 | 0 | 0 | 0 |
+
+Most frequent causes among the 69 unsuccessful Django tests:
+
+- 17 errors: `FOR UPDATE cannot be applied to the nullable side of an outer join`.
+- 14 errors: `connection already closed`.
+- 5 errors: no entity-service URL was set for the test (`MissingSchema`).
+- 1 error: `openpyxl` is missing from the image.
+- The rest are assertion failures and errors that have not been analysed. Some may be tests that no longer match the code; others may be real defects.
+
+The evaluation in the paper ran the deployed pipeline directly and does not depend on this suite.
 
 ## Evidence for the paper
 
@@ -157,6 +184,7 @@ The PDFs are publicly published documents and remain the property of their publi
 - The image-input main-flow run (`answers_images_on.jsonl`) has 45 of 50 answers, was not rerun and is not used in the paper.
 - The paper states that the figure-to-text bridge added 52 passages in 10 questions. That count predates the five second-run answers; the reported run gives 60 passages in 11 questions (`results/paper_numbers.csv`).
 - `evidence_precision_at_10` of P047 was first stored as 0.1, using a denominator of 10 instead of its 9 unique sources, and was corrected to 0.111. The reported mean (0.126) and SD (0.060) do not change.
+- `evaluation/build_pilot50.py` writes the question and evidence files, then stops because it expects the PDFs under a top-level `documents/` folder. The questions and reference answers it writes match all 50 in `gold_questions.jsonl`.
 - `mainflow_20261030/judgments.jsonl` (automatic judge) stopped at 14 of 100 answers and is not used, so it is not included.
 
 ### Missing logs
