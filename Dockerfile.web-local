@@ -1,0 +1,8 @@
+# Reuse the existing local web image and add current web dependencies.
+FROM riskdl-web:latest
+WORKDIR /app
+COPY requirements.txt /tmp/contract-web-requirements.txt
+RUN python -m pip install --no-cache-dir -r /tmp/contract-web-requirements.txt
+# Match the Qdrant 1.13 server used by the local Compose runtime.
+RUN python -m pip install --no-cache-dir qdrant-client==1.13.3
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

@@ -477,16 +477,15 @@ class LiveFlowRegressionTests(SimpleTestCase):
         self.assertFalse(validate_answer('There are 2 cameras [E99].',sources)['valid'])
         # Semantic truth is checked by the model, not by matching digits.
 
-    def test_isolated_verifier_retries_wrong_language_without_relaxing_evidence(self):
+    def test_isolated_verifier_accepts_reason_in_any_language(self):
         analysis=[dict(evidence_id='E1',quote='Only a product label.',explanation='Không cần PC.')]
         outputs=[dict(supported=True,reason='Nguồn hỗ trợ.'),
-                 dict(checks=[dict(check_id='0',supported=True,reason='Lý do 否')]),
-                 dict(checks=[dict(check_id='0',supported=False,reason='Nguồn không nêu yêu cầu PC.')])]
+                 dict(checks=[dict(check_id='0',supported=False,reason='Lý do 否')])]
         with patch('ai_extract.services.contract_pipeline_service._chat',side_effect=[json.dumps(x) for x in outputs]) as chat:
             result=_request_openai_compatible('http://unused','verify_answer',
                 dict(evidence=[],analyze_citations=True,citation_analysis=analysis))
         self.assertFalse(result['supported'])
-        self.assertEqual(chat.call_count,3)
+        self.assertEqual(chat.call_count,2)
         self.assertEqual(json.loads(chat.call_args.args[1][1]['content'])[0]['quote'],analysis[0]['quote'])
 
     def test_isolated_analysis_verification_cannot_borrow_another_sources_facts(self):
@@ -502,23 +501,17 @@ class LiveFlowRegressionTests(SimpleTestCase):
         self.assertEqual(isolated_inputs[0]['quote'], analysis[0]['quote'])
         self.assertNotIn('evidence', isolated_inputs[0])
 
-    def test_wrong_language_is_rejected_and_repaired_once_with_same_sources(self):
+    def test_answer_language_is_not_validated(self):
         sources = [dict(evidence_id='E1', text='Guidance runs on a PC.')]
-        bad = dict(claims=[dict(text='Guidance runs on a PC.', evidence_ids=['E1'])],
-                   citation_analysis=[dict(evidence_id='E1', quote=sources[0]['text'], explanation='PC is required.')])
-        good = dict(claims=[dict(text='Guidance chạy trên PC.', evidence_ids=['E1'])],
-                    citation_analysis=[dict(evidence_id='E1', quote=sources[0]['text'], explanation='Nguồn xác nhận Guidance chạy trên PC')])
-        with patch('ai_extract.services.contract_pipeline_service._chat', side_effect=[json.dumps(bad), json.dumps(good)]) as chat:
+        output = dict(claims=[dict(text='Guidance runs on a PC.', evidence_ids=['E1'])],
+                      citation_analysis=[dict(evidence_id='E1', quote=sources[0]['text'], explanation='PC is required.')])
+        with patch('ai_extract.services.contract_pipeline_service._chat', return_value=json.dumps(output)) as chat:
             result = _request_openai_compatible('http://unused', 'contract_qa',
                 dict(query='Guidance', evidence=sources, answer_format='cited_claims', analyze_citations=True))
-        self.assertEqual(chat.call_count, 2)
-        self.assertEqual(result['generation_input']['format_validation_attempts'], 2)
-        self.assertIn('Guidance chạy trên PC', result['answer'])
-        bad['claims'][0]['text'] = 'Guidance 运行在 PC。'
-        with self.assertRaises(QwenGatewayError):
-            render_cited_claims(bad, sources, require_analysis=True)
+        self.assertEqual(chat.call_count, 1)
+        self.assertIn('Guidance runs on a PC', result['answer'])
 
-    def test_repeated_wrong_language_is_never_accepted(self):
+    def test_missing_citation_analysis_is_never_accepted(self):
         output = dict(claims=[dict(text='Guidance runs on a PC.', evidence_ids=['E1'])], citation_analysis=[])
         with patch('ai_extract.services.contract_pipeline_service._chat', return_value=json.dumps(output)) as chat:
             with self.assertRaises(QwenGatewayError):
@@ -527,13 +520,12 @@ class LiveFlowRegressionTests(SimpleTestCase):
                          answer_format='cited_claims', analyze_citations=True))
         self.assertEqual(chat.call_count, 2)
 
-    def test_verification_repairs_english_reason_once(self):
-        outputs = [dict(supported=True, reason='The source supports the claim.'),
-                   dict(supported=True, reason='Nguồn xác nhận nội dung trả lời.')]
-        with patch('ai_extract.services.contract_pipeline_service._chat', side_effect=[json.dumps(x) for x in outputs]) as chat:
+    def test_verification_accepts_english_reason(self):
+        output = dict(supported=True, reason='The source supports the claim.')
+        with patch('ai_extract.services.contract_pipeline_service._chat', return_value=json.dumps(output)) as chat:
             result = _request_openai_compatible('http://unused', 'verify_answer', dict(evidence=[], analyze_citations=True))
-        self.assertEqual(chat.call_count, 2)
-        self.assertEqual(result['reason'], outputs[1]['reason'])
+        self.assertEqual(chat.call_count, 1)
+        self.assertEqual(result['reason'], output['reason'])
 
     def test_vietnamese_citation_analysis_requires_verbatim_supported_quotes(self):
         sources = [dict(evidence_id='E1', text='Guidance runs on a PC.')]

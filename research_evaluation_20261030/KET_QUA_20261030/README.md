@@ -1,77 +1,72 @@
-# Kết quả thực nghiệm ngày 2026-10-30
+# Kết quả thực nghiệm pilot (cập nhật 2026-10-31)
 
-## Đã chạy: luồng chính (full system), 50 câu pilot, mỗi chế độ 1 lần
+Toàn bộ số liệu dưới đây là số được báo cáo trong bài (`paper/main.tex`). Không có số nào được sửa tay; mọi chỉ số tính lại được bằng script trong `evaluation/runners/`.
 
-Mỗi câu chạy qua `search_knowledge(generate=True)` của NewIdea: planner → BM25 + BGE-M3 + ColPali → RRF → reranker → mở rộng graph → evidence pods → sinh câu trả lời có kiểm tra citation. Hai chế độ:
-- **ảnh tắt**: generator chỉ nhận text.
-- **ảnh bật**: ảnh được gửi khi chính sách production yêu cầu.
+## Luồng chính (full system), 50 câu pilot, text-only
 
-Retrieval chạy một lần cho mỗi câu và dùng chung cho cả hai chế độ.
+Mỗi câu chạy qua `search_knowledge(generate=True)` của hệ thống thật: planner → BM25 + BGE-M3 + ColPali → RRF → reranker → mở rộng graph → Evidence Pods → sinh câu trả lời có kiểm tra citation. Generator (Qwen2.5-VL-7B-AWQ, zero-shot) chỉ nhận text.
 
-| | Ảnh tắt | Ảnh bật |
+**Đủ 50/50 câu có câu trả lời.** 5 câu lấy từ lượt chạy thứ hai (2026-10-31):
+- P047–P050: lượt đầu mất do server sinh câu trả lời tạm ngừng (`gateway_unavailable`).
+- P007: lượt đầu bị bước kiểm tra ngôn ngữ đầu ra từ chối (Qwen viết một từ tiếng Trung). Bước kiểm tra này đã được gỡ khỏi hệ thống, sau đó chạy lại.
+
+45 câu còn lại giữ nguyên lượt đầu (đều đã qua bước kiểm tra ngay lần đầu). Log thô của cả hai lượt nằm ở `../mainflow_20261030/answers_images_off.jsonl` (dòng sau cùng của mỗi câu là lượt được báo cáo); bản trước khi chạy lại: `answers_images_off.before_rerun_20261031.jsonl`.
+
+| Chỉ số | Giá trị | Mẫu số |
 |---|---|---|
-| Số câu có câu trả lời | 45/50 | 45/50 |
-| Số câu có gửi ảnh | 0 | 27 |
-| Key-value recall (20 câu có số liệu/mã) | 0,842 ± 0,322 | 0,775 ± 0,368 |
-| Số câu đủ hết số liệu/mã | 15/20 | 13/20 |
-| Nguồn gold có trong ngữ cảnh gửi model | 0,955 | 0,955 |
-| Thời gian sinh (median) | 43,7 s | 44,0 s |
-| Thời gian retrieval (median) | 67,2 s | (dùng chung) |
+| Hit@1 | 0,800 (40/50) | 50 câu |
+| MRR | 0,869 | 50 câu |
+| Evidence Recall@10 | 0,905 | 50 câu |
+| Evidence Precision@10 | 0,126 (trần 0,146 vì trung bình 1,46 vùng gold/câu) | 50 câu |
+| Required-evidence recall | 0,955 | 50 câu |
+| Citation precision / recall | 0,839 / 0,810 | 50 câu |
+| Answer accuracy (partial = 0,5) | **0,800** = (33 + 0,5×14)/50 | 50 câu |
+| Strict accuracy | 0,660 (33/50) | 50 câu |
+| Đúng / một phần / sai / không trả lời | 33 / 14 / 2 / 1 | 50 câu |
+| Attribute leakage rate | 0,051 (5/98) | 98 claim |
+| Citation faithfulness | 0,888 (87/98) | 98 claim |
+| Key-value recall | 0,826 (18/24 câu đủ) | 24 câu có số/mã |
 
-**Các câu không có câu trả lời:**
-- P007: bị kiểm tra của production từ chối (`response_rejected`) ở cả hai chế độ.
-- P047–P050: mất ở cả hai chế độ do gateway Kaggle/ngrok offline giữa lượt chạy (`gateway_unavailable`, `ERR_NGROK_3200`).
+Gold: 73 lượt câu–vùng trên 65 vùng khác nhau (7 vùng dùng chung cho nhiều câu); 21 lượt câu–bảng trên 16 bảng. Gold được đối chiếu qua `content_hash`, nên bản upload trùng của cùng một PDF ở phiên bản khác vẫn được tính.
 
-**Phạm vi diễn giải:**
-- Key-value recall là so khớp chuỗi số/mã trong câu trả lời, không phải chấm ngữ nghĩa. Câu trả lời **chưa được chấm** Accuracy / Attribute Leakage / Citation Faithfulness: judge mới chạy 14/100 lượt thì gateway tắt, nên các lượt đó không được dùng.
-- Đây là bộ pilot trên tài liệu đã dùng để phát triển, không phải test độc lập.
+**Chấm nhãn:** nhãn đúng/một phần/sai, leakage và faithfulness được gán trong một lượt chấm có hỗ trợ của LLM (Claude) theo rubric `../RUBRIC_DANH_GIA.md`, sau đó tác giả thứ nhất rà soát. Chưa có người chấm độc lập thứ hai.
 
-## Recall / precision (45 câu có câu trả lời)
+**Chế độ bật ảnh** (generator nhận thêm ảnh khi chính sách production yêu cầu) vẫn được giữ trong các file nhưng **không dùng trong bài** và **không chạy lại**: còn 45/50 câu (P007, P047–P050 không có câu trả lời).
 
-| | Ảnh tắt | Ảnh bật |
-|---|---|---|
-| Evidence Recall@10 | 0,919 | 0,919 (retrieval dùng chung) |
-| Evidence Precision@10 | 0,120 (trần 0,136, vì mỗi câu chỉ có 1,36 vùng gold) | 0,120 |
-| Required-Evidence Recall (mọi nguồn gửi model) | 0,956 | 0,956 |
-| Citation precision (nguồn được trích là gold) | **0,859** | 0,741 |
-| Citation recall (vùng gold được trích) | **0,837** | 0,737 |
+## Thí nghiệm nhỏ (worked examples), mỗi cấu hình chạy 1 lần
 
-Gold được đối chiếu qua `content_hash`, nên bản upload trùng của cùng một PDF ở phiên bản khác vẫn được tính. File: `mainflow_retrieval_citation*.csv`, `recall_precision.xlsx`.
+Chọn các câu đã chạy đủ mọi cấu hình, không chọn theo kết quả.
 
-## Ví dụ thực tế E1 / E2 / E4 (mỗi bộ 4 câu, chạy 1 lần)
-
-Chọn các câu đã chạy đủ mọi cấu hình, không chọn theo kết quả. File: `E1_examples.csv`, `E2_examples.csv`, `E4_examples.csv`.
-
-- **E2** (P003, P007, P022, P027):
-  - P007: không mở rộng thì recall 0,50; thêm khối trước/sau thì đủ 1,00.
-  - Scope-aware so với structural: vẫn giữ đủ evidence, ít hơn 34–62% token, graph latency thấp hơn 3,5–8,6 lần.
-- **E4** (P013, P028, P039, P040):
-  - Ảnh cả trang: đúng 100% số liệu, nhưng tốn khoảng 2.760 visual token, tổng 2.934 token.
-  - OCR + caption có cấu trúc: cũng đúng 100%, chỉ 616 token.
-  - Ảnh crop: kém nhất (0,33).
-- **E1** (P002, P018, P023, P029):
-  - Đều là câu text không có bảng, nên các định dạng gần như không khác nhau. Mọi định dạng đều chỉ trích nguồn gold.
-  - D (breadcrumb) có citation recall cao nhất khi dùng gold.
+- **E2 mở rộng graph** (P003, P007, P022, P027), `E2_examples.csv`: scope-aware ít hơn 34–62% token so với structural mà vẫn giữ đủ evidence; nhưng prev/next còn rẻ hơn scope-aware ở cả 4 câu.
+- **E4 đầu vào ảnh** (P013, P028, P039, P040), `E4_examples.csv`, `E4_manual_grades.csv`: OCR text 0,75 so với ảnh cả trang 0,63, chỉ khoảng 1/5 số token; OCR thô và OCR + pods cùng 0,75.
+- **E1 định dạng bằng chứng**:
+  - 4 câu text không có bảng (P002, P018, P023, P029), `E1_examples.csv`: các định dạng gần như không khác nhau.
+  - 5 câu bảng có lưới (P006, P008, P013, P015, P048), `E1_table_examples.csv`: mọi định dạng đúng P006, P008, P013; ở P015 pods (E) trả lời cụt, thiếu biện pháp; ở P048 pods (D, E) chỉ liệt kê 2/4 mã, flat 3/4, JSON/Markdown 4/4. **Pods không tốt hơn** text theo hàng trên các bảng đơn giản này. Lưu ý: định dạng flat (A) đã ghi mỗi hàng bảng thành một dòng `ô ; ô`.
 
 ## File
 
-- `mainflow_answers.csv`, `mainflow_results.xlsx`: từng câu × chế độ, gồm câu hỏi, đáp án mẫu, câu trả lời, ID evidence được trích, ID evidence gold, chỉ số và thời gian.
-- `mainflow_summary.csv`: bảng trên.
-- `mainflow_failures.csv`: 10 dòng không có câu trả lời, kèm lý do.
-- `mainflow_answers_images_{on,off}.jsonl`: log đầy đủ: nguồn gửi model (ID + text), claims, planner, timing, chẩn đoán.
+- **`BANG_TONG_HOP.xlsx`** (file bàn giao chính): README, summary_mean_sd, comparison_full, error_cases, manual_grades, ranking, ví dụ E1/E2/E4. Tạo lại: `python -m evaluation.runners.pilot_deliverables research_evaluation_20261030`.
+- `summary_mean_sd.csv`: mean ± SD theo câu hỏi cho mọi chỉ số và số câu đúng/một phần/sai/không trả lời.
+- `comparison_full.csv`: so sánh E1 (5 định dạng × gold/retrieved), E2 (4 mode), E4 (4 kiểu input).
+- `error_cases.csv`: các dòng lỗi, phân loại `missing_detail` / `leakage` / `unsupported_content` / `abstained` / `not_generated`.
+- `charts/*.png`: chỉ số luồng chính với khoảng tin cậy bootstrap 95%, E2 (token, recall theo mode), E4 (accuracy so với token).
+- `mainflow_answers.csv`, `mainflow_results.xlsx`: từng câu: câu hỏi, đáp án mẫu, câu trả lời, ID evidence được trích, ID gold, chỉ số, thời gian.
+- `mainflow_answers_images_off.jsonl`: lượt được báo cáo của từng câu (50 dòng): nguồn gửi model (ID + text), claims, planner, timing, chẩn đoán. `mainflow_answers_images_on.jsonl`: chế độ bật ảnh (không dùng trong bài).
+- `mainflow_manual_grades.csv`, `mainflow_manual_grades_summary.csv`: nhãn từng câu và bảng tổng hợp.
+- `mainflow_ranking_metrics.csv`, `mainflow_retrieval_citation*.csv`, `recall_precision.xlsx`: Hit@1, RR, Recall@3/5/10, Precision@10, required recall, citation precision/recall.
+- `mainflow_summary.csv`: số câu có câu trả lời, key-value recall, thời gian (retrieval median 66,9 s, sinh câu trả lời median 43,5 s).
+- `mainflow_failures.csv`: các dòng không có câu trả lời (chỉ còn chế độ bật ảnh).
+- `before_rerun_20261031/`: các CSV trước khi chạy lại 5 câu.
 
-Dữ liệu đầu vào đóng băng ở `../frozen_20261030/`: gold, retrieval production, graph Neo4j, pods. Protocol nằm ở `../PILOT50_PROTOCOL.md`.
+## Log thiếu hoặc không dùng (ghi rõ)
 
-## Chưa hoàn thành
+- Output thô của lượt đầu bị từ chối của P007 **không được lưu** (runner lúc đó chỉ lưu số token). Từ 2026-10-31 runner lưu toàn bộ `qwen_outputs`.
+- Prompt của luồng chính do code production dựng lại mỗi lần và không lưu theo từng câu. Log ablation trong `../runs/` có prompt đầy đủ.
+- `../mainflow_20261030/judgments.jsonl` và `report/`: bộ chấm Qwen tự động dừng ở 14/100 lượt khi gateway tắt. **Không dùng.**
+- `failed_concurrent_gpu_*`, `mixed_old_new_*` trong `../mainflow_20261030/`: lượt hỏng (GPU tranh chấp, tiến trình cũ chạy chồng), chỉ giữ làm dấu vết, không đưa vào bản phát hành.
+- `../runs/E1`, `E2`, `E4` là lịch chạy lớn đã dừng giữa chừng (E1 khoảng 300/1.500 lượt, E2 111/600, E4 70/288) và lấy mẫu không đều giữa các ô, nên **chỉ dùng các câu đã chạy đủ mọi cấu hình**, không dùng để so sánh toàn bộ.
+- Chưa làm: bộ 200–300 câu trên tài liệu chưa dùng, người chấm độc lập thứ hai, lần chạy không có ColPali, LLM thuần text.
 
-| Yêu cầu | Trạng thái |
-|---|---|
-| E1 (5 định dạng × gold/retrieved × ≥3 lần) | 276/1.500 lượt, chạy bằng prompt của runner đánh giá, không phải luồng chính. Đã dừng, chưa chấm. `../runs/E1/` |
-| E2 (4 mode × ≥3 lần) | 111/600 lượt, đã dừng, chưa chấm. `../runs/E2/` |
-| E4 (full-page / crop / OCR / OCR+caption) | 70/288 lượt, đã dừng, chưa chấm. Đã đo được: ảnh cả trang ≈ 2.700–2.800 visual token/trang. GPU memory không đo được vì inference chạy từ xa. `../runs/E4/` |
-| E3 (text-only) | Dùng chế độ ảnh tắt của luồng chính: generator (Qwen2.5-VL) chỉ nhận text. Chưa chạy trên tài liệu chưa thấy |
-| Bộ test 200–300 câu trên tài liệu chưa dùng | Chưa làm |
+## Git
 
-Các log trong `../runs/` lấy mẫu không đều giữa các ô (lịch chạy ban đầu xáo trộn toàn bộ), nên **không dùng để so sánh các định dạng**.
-
-Các file `failed_concurrent_gpu_*` và `mixed_old_new_*` trong `../mainflow_20261030/` là các lượt hỏng (GPU bị tranh chấp, tiến trình cũ chạy chồng); chúng chỉ được giữ làm dấu vết.
+Bản phát hành: https://github.com/Andydo21/MultiModelAndExtract. Trong bản phát hành, tên máy chủ gateway và e-mail xuất hiện trong văn bản bên thứ ba đã được che (`<gateway-host>`, `<email>`), nên chuỗi hash của log ablation chỉ kiểm tra được trên log gốc.

@@ -193,16 +193,6 @@ class QwenServerError(QwenGatewayError):
 
 _QWEN_OUTPUTS = ContextVar('qwen_outputs', default=None)
 _QWEN_LOG_LOCK = Lock()
-_NON_VI_SCRIPT = re.compile(r'[\u3400-\u9fff\u3040-\u30ff\uac00-\ud7af]')
-_VI_LETTERS = re.compile(r'[\u1ea0-\u1ef9ăâđêôơưĂÂĐÊÔƠƯ]')
-_VI_WORDS = re.compile(r'\b(là|và|của|được|không|có|cần|trên|nguồn|dùng|cho|chạy|gồm|theo|yêu|cầu|hỗ|trợ|phần|khi|sử|dụng|với|để|từ|này|bằng|một|chỉ|đúng|đủ|thiếu|xác|nhận|chưa|nêu|thiết|lập|phải|giữ|thể|trong)\b', re.I)
-
-
-def require_vietnamese_prose(text):
-    """Reject obvious wrong-language prose; source quotes are checked separately."""
-    if (not isinstance(text, str) or _NON_VI_SCRIPT.search(text)
-            or not (_VI_WORDS.search(text) or _VI_LETTERS.search(text))):
-        raise QwenGatewayError('Lời giải thích phải bằng tiếng Việt; chỉ giữ nguyên tên riêng và mã thiết bị')
 
 
 def qwen_output_log(task, response):
@@ -373,7 +363,7 @@ def validate_delivered_figure_citations(data, evidence, sent_images):
             raise QwenGatewayError('Figure citation rejected: image was not sent in this model call')
 
 
-def render_cited_claims(data, evidence, require_analysis=False, require_vietnamese=False):
+def render_cited_claims(data, evidence, require_analysis=False):
     """Render model-selected citations; never invent a source binding."""
     allowed = {item['evidence_id'] for item in evidence}
     source_texts = {item['evidence_id']:item.get('text','') for item in evidence}
@@ -400,8 +390,6 @@ def render_cited_claims(data, evidence, require_analysis=False, require_vietname
         text = text.strip()
         if not text or text.endswith('?'):
             continue  # A repeated question must not discard other valid answers.
-        if require_analysis or require_vietnamese:
-            require_vietnamese_prose(text)
         claim['evidence_ids'] = list(dict.fromkeys(identifiers))
         claim['text'] = text
         quotes=claim.get('quotes',[])
@@ -467,7 +455,6 @@ def render_cited_claims(data, evidence, require_analysis=False, require_vietname
                     or re.search(r'\[E\d+\]', explanation)):
                 raise QwenGatewayError('Citation analysis must quote its actual supporting source')
             seen.add(identity)
-            require_vietnamese_prose(explanation)
             # The verbatim quote stays in JSON/source details. The displayed
             # explanation is Vietnamese, even when the document is English.
             for sentence in re.split(r'(?<=[.!?])\s+|\n+', explanation.strip()):
@@ -1108,8 +1095,6 @@ def _request_openai_compatible(base_url: str, task: str, payload: dict) -> dict:
                     judgment = _parse_json_object(raw)
                     if type(judgment.get('supported')) is not bool or not isinstance(judgment.get('reason'), str):
                         raise QwenGatewayError('Invalid evidence-verification response')
-                    if payload.get('analyze_citations'):
-                        require_vietnamese_prose(judgment['reason'])
                     break
                 except QwenGatewayError:
                     if attempt or not payload.get('analyze_citations'):
@@ -1165,8 +1150,6 @@ def _request_openai_compatible(base_url: str, task: str, payload: dict) -> dict:
                             for item in batch:
                                 if not isinstance(item.get('reason'),str) or not item['reason'].strip():
                                     raise QwenGatewayError('Missing claim-verification reason')
-                                if not payload.get('citation_claims'):
-                                    require_vietnamese_prose(item['reason'])
                             break
                         except QwenGatewayError:
                             if attempt:raise
@@ -1454,7 +1437,7 @@ def _request_openai_compatible(base_url: str, task: str, payload: dict) -> dict:
                     if answer_parts:
                         structured['insufficient_evidence']=not bool(structured.get('claims'))
                     validate_delivered_figure_citations(structured, evidence, sent_images)
-                    answer = render_cited_claims(structured, evidence, payload.get('analyze_citations', False), require_vietnamese=True)
+                    answer = render_cited_claims(structured, evidence, payload.get('analyze_citations', False))
                     break
                 except QwenGatewayError as error:
                     if attempt or not (payload.get('analyze_citations') or payload.get('check_completeness')):

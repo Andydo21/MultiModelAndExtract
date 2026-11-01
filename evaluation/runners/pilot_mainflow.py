@@ -106,6 +106,8 @@ def generate(question, retrieval, images):
         completion_tokens=sum(u.get('completion_tokens') or 0 for u in usage) or None,
         generation_calls=len(answer.get('qwen_outputs', [])), qwen_errors=[o.get('outputs', {}).get('error')
             for o in answer.get('qwen_outputs', []) if isinstance(o.get('outputs'), dict) and o['outputs'].get('error')],
+        # Every raw model response, including ones the checks rejected.
+        qwen_outputs=answer.get('qwen_outputs', []),
         error=answer.get('error'))
 
 
@@ -113,15 +115,20 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('frozen')
     parser.add_argument('out')
+    parser.add_argument('--modes', default='on,off', help='comma-separated image modes to run')
+    parser.add_argument('--questions', default='', help='comma-separated question IDs (default: all)')
+    parser.add_argument('--rerun', action='store_true', help='run the selected questions even if already completed')
     args = parser.parse_args()
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    targets = {m: out/f'answers_images_{m}.jsonl' for m in ('on', 'off')}
+    targets = {m: out/f'answers_images_{m}.jsonl' for m in args.modes.split(',')}
     done = {m: {r['question_id'] for r in map(json.loads, t.open(encoding='utf-8')) if r['status'] == 'completed'
                 and r['generation_status'] != 'retrieval_unavailable'
                 and (r.get('generation_diagnostics') or {}).get('state') != 'gateway_unavailable'}
-            if t.exists() else set() for m, t in targets.items()}
+            if t.exists() and not args.rerun else set() for m, t in targets.items()}
     questions = [json.loads(l) for l in (Path(args.frozen)/'gold_questions.jsonl').open(encoding='utf-8')]
+    if args.questions:
+        questions = [q for q in questions if q['question_id'] in args.questions.split(',')]
     todo = [q for q in questions if any(q['question_id'] not in d for d in done.values())]
     user = get_user_model().objects.get(pk=USER_ID)
     print(f'{len(todo)} of {len(questions)} questions remain', flush=True)
@@ -136,7 +143,7 @@ def main():
     with cf.ThreadPoolExecutor(4) as pool:
         for question in todo:
             retrieval = retrieve(user, question)  # sequential: one GPU model resident at a time
-            for mode in ('on', 'off'):
+            for mode in targets:
                 if question['question_id'] not in done[mode]:
                     future = pool.submit(generate, question, retrieval, mode)
                     future.add_done_callback(lambda f, m=mode: finish(f, m))

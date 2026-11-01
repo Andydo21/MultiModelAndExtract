@@ -190,12 +190,11 @@ class KnowledgeAnswerChecks(SimpleTestCase):
                                [dict(evidence_id='E1', text='robot')])
         self.assertTrue(result['valid'])
 
-    def test_answer_prose_rejects_chinese_but_not_source_quotes(self):
-        from ai_extract.services.contract_pipeline_service import render_cited_claims, QwenGatewayError
+    def test_answer_language_is_not_a_rejection_reason(self):
+        from ai_extract.services.contract_pipeline_service import render_cited_claims
         evidence=[dict(evidence_id='E1', text='机器人')]
         answer=dict(claims=[dict(text='Robot hoạt động 自动生成路径', evidence_ids=['E1'])])
-        with self.assertRaises(QwenGatewayError):
-            render_cited_claims(answer, evidence, require_vietnamese=True)
+        self.assertIn('[E1]', render_cited_claims(answer, evidence))
 
     def test_figure_citation_requires_pixels_in_same_model_call(self):
         from ai_extract.services.contract_pipeline_service import validate_delivered_figure_citations, QwenGatewayError

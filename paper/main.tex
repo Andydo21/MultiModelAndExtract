@@ -1,5 +1,7 @@
-\documentclass[conference]{IEEEtran}
-\IEEEoverridecommandlockouts
+% EAI INISCOM 2027 submission, Springer LNICST format (llncs class, splncs04 bibliography).
+% \anontrue  -> anonymised PDF for review (no author names, no repository link).
+% \anonfalse -> camera-ready version with authors and repository link.
+\documentclass[runningheads]{llncs}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb}
@@ -12,56 +14,70 @@
 \usepackage{tikz}
 \usetikzlibrary{positioning,arrows.meta,fit,backgrounds}
 \usepackage{url}
-\usepackage{cite}
+\usepackage[hidelinks]{hyperref}
 
-% Draft marker for the experiment section, which is pending additional runs.
-\newcommand{\draft}[1]{\textcolor{red!70!black}{[DRAFT: #1]}}
-\newcommand{\tbd}{\textcolor{red!70!black}{\textbf{TBD}}}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.85}
+\setcounter{topnumber}{3}
+
+\setlength{\emergencystretch}{3em}
+
+
+\newif\ifanon
+\anonfalse
 
 \begin{document}
 
-\title{Hierarchical Evidence Pods: Structure-Preserving Hybrid Retrieval and Graph-Grounded Question Answering over Complex Technical Documents}
+\title{Hierarchical Evidence Pods: Structure-Preserving Hybrid Retrieval and Graph-Grounded Question Answering over Technical Documents}
+\titlerunning{Hierarchical Evidence Pods for Technical-Document QA}
 
-\author{\IEEEauthorblockN{Do Dang An}
-\IEEEauthorblockA{Posts and Telecommunications\\Institute of Technology (PTIT)\\Hanoi, Vietnam}
-\and
-\IEEEauthorblockN{Dao Thi Thuy Quynh}
-\IEEEauthorblockA{Posts and Telecommunications\\Institute of Technology (PTIT)\\Hanoi, Vietnam}}
+\ifanon
+\author{Anonymous Author(s)}
+\authorrunning{Anonymous}
+\institute{Anonymous Institution}
+\else
+\author{Do Dang An \and Dao Thi Thuy Quynh\thanks{Supervisor of this work.}}
+\authorrunning{D. D. An and D. T. T. Quynh}
+\institute{Posts and Telecommunications Institute of Technology (PTIT), Hanoi, Vietnam\\
+\email{ando21445@gmail.com}}
+\fi
 
 \maketitle
 
 \begin{abstract}
-Question answering over technical manuals, specification sheets and contracts requires models to keep values attached to the right subject, table column, heading scope and footnote condition. Flat text chunking breaks these bindings, while feeding whole page images to vision--language models (VLMs) is costly and still leaves the binding implicit. We present a two-stage system that moves layout and structure analysis offline and hands the generator compact, explicitly scoped evidence. Offline, pages are rendered and analysed with Surya layout/OCR; tables are segmented with a Table Transformer and read cell by cell; GLiNER-RelEx proposes source-grounded entity spans; the result is projected into a per-document Neo4j graph (hierarchy, reading order, table rows/cells, figure--text candidates) and indexed with BM25, BGE-M3 and figure-level ColPali vectors. Online, a hybrid retriever fuses the three channels with reciprocal rank fusion, re-ranks them with a cross-encoder, selects seeds by question-part coverage and novelty, expands them inside the same document snapshot, and packages them as \emph{Hierarchical Evidence Pods}: sources grouped by document, reading stream and heading path, with table grids, merged-cell metadata, review warnings and stable citation IDs. Vision is used only offline and for retrieval (ColPali locates figures); the generator receives text only, so a language model without a vision encoder can answer from tables, footnotes and figures. On a 50-question pilot set over 20 technical documents, the production pipeline placed 95.6\% of gold evidence regions in the generator context. With text-only input to a zero-shot 7B generator, answer accuracy was 0.82, attribute leakage 4.8\% and citation faithfulness 0.92. In worked examples, structured OCR text was more accurate than full-page images (0.75 vs.\ 0.63) with about one fifth of the prompt tokens, and scope-aware graph expansion recovered missing evidence with 34--62\% fewer tokens than structural expansion.
+Question answering over technical manuals and specification sheets requires every value to stay attached to the right subject, table column, heading scope and footnote condition. We present a retrieval-augmented system that performs layout, table and figure analysis offline and gives the generator compact, explicitly scoped evidence as text. Offline, pages are read by a vision--language OCR model, tables are reconstructed cell by cell, and the result is projected into a source-bound per-document graph indexed with BM25, dense text vectors and figure-level ColPali vectors. Online, a hybrid retriever fuses the channels, selects seeds by question-part coverage and novelty, expands them within the seed's document snapshot, and serializes them as \emph{Hierarchical Evidence Pods} with table grids, merged-cell metadata and stable citation IDs. In a pilot evaluation involving 50 questions over 20 technical documents, the production pipeline achieved a Hit@1 of 0.80, an MRR of 0.87, and a required-evidence recall of 0.955. Using text-only input to a zero-shot 7B vision-language model, the system achieved an answer accuracy of 0.800, an attribute leakage rate of 0.051, and a citation faithfulness score of 0.89. Small-scale controlled experiments further suggest that scope-aware graph expansion can reduce context length while retaining required evidence, and that structured OCR text can be competitive with direct image input under the evaluated settings.
+\keywords{Document question answering \and Retrieval-augmented generation \and Table understanding \and Knowledge graph \and Hybrid retrieval \and Evidence packaging}
 \end{abstract}
 
-\begin{IEEEkeywords}
-document question answering, retrieval-augmented generation, table understanding, knowledge graph, hybrid retrieval, evidence packaging
-\end{IEEEkeywords}
-
 \section{Introduction}
-Retrieval-augmented generation (RAG)~\cite{lewis2020rag} lets a language model answer from documents it was not trained on. Technical documents, however, are not running prose: product variants share one specification table, limits are qualified by footnotes, and the heading above a table decides which device a value belongs to. When such pages are cut into fixed-length text chunks, row--column alignment and heading scope disappear, and a generator can attach a value to the wrong subject---an error we call \emph{attribute leakage}. Reading the page image with a VLM~\cite{mathew2021docvqa,bai2025qwen25vl} keeps the layout but spends a large number of visual tokens per page and still leaves the model to infer which value belongs where.
+Retrieval-augmented generation (RAG)~\cite{lewis2020rag} lets a language model answer from documents it was not trained on. Technical documents, however, are not running prose: product variants share one specification table, limits are qualified by footnotes, and the heading above a table decides which device a value belongs to. When such pages are cut into fixed-length text chunks, row--column alignment and heading scope disappear, and a generator can attach a value to the wrong subject---an error we call \emph{attribute leakage}. Reading the page image with a vision--language model (VLM)~\cite{mathew2021docvqa,bai2025qwen25vl} keeps the layout but spends a large number of visual tokens per page and still leaves the model to infer which value belongs where.
 
-This work takes a different position: the expensive structural analysis is done once, offline, and its result is preserved explicitly in the evidence given to the generator, \emph{as text}. The design goal is that a generator without a vision encoder can read tables, footnotes and figures correctly. Visual models are used where they are cheap and decisive---layout analysis and OCR offline, and ColPali as a \emph{retrieval} channel that locates relevant figures---while the online generator receives only structured text. The system (Fig.~\ref{fig:arch}) consists of an offline extraction stage (A3) and an online retrieval and answering stage (A2). Our contributions are:
+This work takes a different position: the expensive structural analysis is done once, offline, and its result is preserved explicitly in the evidence given to the generator, \emph{as text}. Visual models are used where they are cheap and decisive---layout analysis and OCR offline, and ColPali as a \emph{retrieval} channel that locates relevant figures---while the online generator receives only structured text. The system (Fig.~\ref{fig:arch}) consists of an offline extraction stage and an online retrieval and answering stage. Our contributions are:
 \begin{itemize}
-\item an offline pipeline that turns rendered pages into source-bound regions, cell-level table grids, figure--text candidates and a per-document graph, without letting similarity or model proposals become verified facts;
-\item a hybrid retriever (BM25, BGE-M3, and figure-level ColPali used purely for retrieval; RRF; cross-encoder) with part-coverage and novelty-aware seed selection and snapshot-scoped graph expansion;
-\item \emph{Hierarchical Evidence Pods}, an evidence serialization that groups sources by document, reading stream and heading path, renders verified table grids with merged-cell metadata, and keeps stable source IDs for checked citations;
-\item an evaluation on a 50-question pilot set with frozen inputs, reporting the production pipeline with text-only generator input and worked examples for evidence format, graph expansion and visual input.
+\item \emph{Hierarchical Evidence Pods}, a structure-preserving evidence serialization that groups source regions by document, reading stream, and heading path; represents validated table grids with merged-cell metadata; and retains stable source identifiers for traceable citations. This representation aims to preserve contextual relationships among subjects, attributes, values, and qualifying conditions when supported by the extracted document structure;
+\item \emph{scope-aware graph expansion} over a source-bound per-document graph built offline, in which seeds chosen for question-part coverage and novelty are expanded only inside their document snapshot and heading scope, and similarity or model proposals are kept as candidates rather than facts;
+\item a \emph{source-grounded question-answering pipeline} in which the generator receives text only and returns claims whose citations are checked against the supplied source IDs;
+\item a pilot evaluation on 50 questions, reporting the production pipeline and small controlled examples on frozen inputs for evidence format, graph expansion and visual input, with all reruns reported.
 \end{itemize}
 
 \section{Related Work}
-\textbf{Document understanding.} LayoutLMv3~\cite{huang2022layoutlmv3} jointly models text and layout; DocVQA~\cite{mathew2021docvqa} benchmarks QA on page images. Surya~\cite{paruchuri2024surya} provides multilingual layout analysis, OCR and reading order, and the Table Transformer (TATR)~\cite{smock2022pubtables} detects table rows and columns. \textbf{Retrieval.} BM25~\cite{robertson2009bm25} remains strong for identifiers; BGE-M3~\cite{chen2024bgem3} provides multilingual dense embeddings; ColPali~\cite{faysse2025colpali} retrieves page images through late interaction over patch embeddings. Reciprocal rank fusion (RRF)~\cite{cormack2009rrf} combines rankings without score calibration. \textbf{Structure for LLMs.} GraphRAG~\cite{edge2024graphrag} builds entity graphs for corpus-level summarization; table serialization strongly affects LLM table understanding~\cite{sui2024table}; long contexts are used unevenly by LLMs~\cite{liu2024lost}. Our graph is per document and source-bound: it supplies scope and neighbours for retrieved regions rather than generated summaries. Query decomposition follows least-to-most prompting~\cite{zhou2023leasttomost}.
+\textbf{Document understanding.} Layout-aware encoders such as LayoutLMv3~\cite{huang2022layoutlmv3} pre-train text, layout and image jointly, but are fine-tuned per task and keep the structure implicit in their representations; DocVQA~\cite{mathew2021docvqa} benchmarks QA on page images. We instead use off-the-shelf layout and table models and make the structure explicit, as text that any generator can read. Surya~2~\cite{paruchuri2026surya2} provides layout analysis, OCR and reading order, and the Table Transformer (TATR)~\cite{smock2022pubtables} detects table rows and columns.
+\textbf{Retrieval.} BM25~\cite{robertson2009bm25} remains strong for identifiers; BGE-M3~\cite{chen2024bgem3} provides multilingual dense embeddings; ColPali~\cite{faysse2025colpali} retrieves page images through late interaction over patch embeddings. Reciprocal rank fusion (RRF)~\cite{cormack2009rrf} combines rankings without score calibration.
+\textbf{Structure for LLMs.} GraphRAG~\cite{edge2024graphrag} builds entity graphs for corpus-level summarization; table serialization strongly affects LLM table understanding~\cite{sui2024table}; long contexts are used unevenly by LLMs~\cite{liu2024lost}. Our graph is per document and source-bound: it supplies scope and neighbours for retrieved regions rather than generated summaries. Query decomposition follows least-to-most prompting~\cite{zhou2023leasttomost}.
 
 \section{Method}
 
-\begin{figure*}[t]
+\begin{figure}[!htbp]
 \centering
+\resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[
-  box/.style={draw=blue!50!black, fill=blue!4, rounded corners=2pt, align=center, font=\footnotesize, minimum height=10mm, text width=27mm},
-  store/.style={draw=teal!60!black, fill=teal!5, rounded corners=2pt, align=center, font=\footnotesize, minimum height=9mm, text width=27mm},
+  box/.style={draw=blue!50!black, fill=blue!4, rounded corners=2pt, align=center, font=\footnotesize, minimum height=10mm, text width=30mm},
+  store/.style={draw=teal!60!black, fill=teal!5, rounded corners=2pt, align=center, font=\footnotesize, minimum height=9mm, text width=30mm},
   lab/.style={font=\footnotesize\bfseries, anchor=west},
   arr/.style={-{Stealth[length=2mm]}, gray!70!black}]
-\node[lab] at (-1.6,1.1) {Offline extraction (A3)};
+\node[lab] at (-1.8,1.2) {Offline extraction};
 \node[box] (in) at (0,0) {PDF / image / Office file};
 \node[box, right=4mm of in] (render) {Render pages (150/300 DPI)\\Surya layout, OCR, reading order};
 \node[box, right=4mm of render] (table) {Tables: TATR grid + per-cell Surya OCR\\Figures: one inner OCR pass};
@@ -72,54 +88,117 @@ This work takes a different position: the expensive structural analysis is done 
 \node[store, below=7mm of tree] (qd) {Qdrant\\BGE-M3 dense, ColPali figure crops};
 \draw[arr] (in)--(render); \draw[arr] (render)--(table); \draw[arr] (table)--(gliner); \draw[arr] (gliner)--(tree);
 \draw[arr] (tree.south) -- ++(0,-0.25) -| (sql.north); \draw[arr] (tree.south) -- ++(0,-0.25) -| (neo.north); \draw[arr] (tree)--(qd);
-\node[lab] at (-1.6,-3.0) {Online retrieval and answering (A2)};
-\node[box] (q) at (0,-4.1) {Question + access scope\\Qwen query plan};
+\node[lab] at (-1.8,-4.3) {Online retrieval and answering};
+\node[box] (q) at (0,-5.5) {Question + access scope\\Qwen query plan};
 \node[box, right=4mm of q] (ret) {BM25 $\|$ BGE-M3 $\|$ ColPali\\RRF ($k{=}60$) + cross-encoder};
 \node[box, right=4mm of ret] (seed) {Seed selection: part coverage, novelty};
 \node[box, right=4mm of seed] (pods) {Snapshot-scoped graph expansion $\rightarrow$ Evidence Pods};
 \node[box, right=4mm of pods] (gen) {Generator: cited claims; code checks IDs and format};
 \draw[arr] (q)--(ret); \draw[arr] (ret)--(seed); \draw[arr] (seed)--(pods); \draw[arr] (pods)--(gen);
-\draw[arr, dashed] (sql.south) -- (ret.north); \draw[arr, dashed] (qd.south) -- ++(0,-0.9) -| (ret.north east); \draw[arr, dashed] (neo.south) -- (pods.north);
-\end{tikzpicture}
-\caption{System overview. Structural analysis is performed once offline; the online stage retrieves source regions and serializes them with their scope.}
+\draw[arr, dashed] (sql.south) -- (ret.north); \draw[arr, dashed] (qd.south) -- ++(0,-0.45) -| ([xshift=4mm]ret.north); \draw[arr, dashed] (neo.south) -- (pods.north);
+\end{tikzpicture}}
+\caption{System overview. Top row: offline extraction from the input file through rendering, Surya layout/OCR, table and figure reading and entity spans into a source tree, stored in PostgreSQL, Neo4j and Qdrant. Bottom row: online question planning, three-channel retrieval with fusion and re-ranking, seed selection, graph expansion into evidence pods and cited generation. Structural analysis is performed once offline; the online stage retrieves source regions and serializes them with their scope.}
 \label{fig:arch}
-\end{figure*}
+\end{figure}
 
-\subsection{Offline extraction (A3)}
-\textbf{Page rendering and layout.} Each PDF page is rendered twice, at 150\,DPI for page analysis and at 300\,DPI for text inside figures and for table structure; the PDF text layer is not used, so scanned and born-digital files follow the same path. Word, PowerPoint and spreadsheet files are parsed natively, keeping their own tables and embedded images. Surya~2~\cite{paruchuri2024surya}, a compact vision--language OCR model that we serve locally with llama.cpp, reads the page in a single full-page pass that returns layout regions (title, paragraph, list, table, figure, caption, header/footer, footnote), their text and their reading order. Each region becomes one \emph{source} carrying its text, page number and bounding box. A crop whose decoding loops or exhausts its token budget is retried once with wider framing and a larger budget; figure-text crops get one further low-temperature, contrast-enhanced attempt. Regions that still fail stay flagged and are excluded from retrieval and entity extraction, and a document with a failed page is not published to the graph.
+\subsection{Offline Extraction}
+Extraction runs in two phases (Algorithm~\ref{alg:extract}): a per-page phase that reads and stores each page as soon as it is rendered, and a whole-document phase that runs only after every page is available, because hierarchy, entity identity, similarity links and the graph depend on the complete document.
 
-\textbf{Tables.} Table regions are cropped from the 300\,DPI rendering. TATR~\cite{smock2022pubtables} (\texttt{table-transformer-structure-recognition}, a DETR detector with a ResNet-18 backbone) predicts columns, rows and spanning cells, which are reconciled with ruling lines visible in the crop, and every non-empty cell is read separately by Surya OCR (one enlarged retry for empty readings). The grid is accepted as \emph{cell-aware} only if it is complete and consistent---no holes, no overlapping cells, spans inside the grid, at most 200$\times$64 cells; the source text is then rebuilt from the cells, header rows and merged cells are stored as metadata, and the page OCR is kept for audit. Otherwise the table is \emph{unresolved}: no row/column text is published for it, and it can reach a generator only as an image crop.
+\begin{algorithm}[t]
+\caption{Offline extraction pipeline (one document version)}\label{alg:extract}
+\begin{algorithmic}[1]
+\For{each page $p$}
+  \State render $p$ at 150 and 300\,DPI (native parse for Office files)
+  \State Surya full-page pass $\rightarrow$ regions, text, reading ranks \Comment{cached}
+  \State one inner layout/OCR pass per figure crop
+  \State tables: TATR grid + per-cell OCR; validate or mark unresolved \Comment{cached}
+  \State persist the page's source regions in one transaction
+  \State ColPali-embed figure crops of $p$ \Comment{background, or deferred}
+  \State rebuild the source tree (hierarchy, reading streams)
+\EndFor
+\If{some page failed} \State keep the stored pages; stop without dense indexing or graph \EndIf
+\State check reading order; GLiNER entity spans; GLiNER2 same-name identity
+\State BGE-M3 dense index of all source regions
+\State \texttt{RELATED\_PASSAGE} links (BGE-M3, reranker, GLiNER2)
+\State retry failed ColPali pages once
+\State project, compact, validate and publish the Neo4j snapshot
+\State prune older graphs and vectors; rebuild the BM25 postings snapshot
+\end{algorithmic}
+\end{algorithm}
+
+Page results are cached under a key formed from the page image hash and the OCR policy, so an interrupted or repeated run reuses completed pages and re-reads only failed ones; vector identifiers are deterministic, so a retry overwrites rather than duplicates points. A Surya region is never split: each region is one source. Text from native Office parsing, which has no region boundaries, is split into segments of at most 900 characters at sentence or word boundaries, and consecutive segments of the same source under the same heading are re-joined up to that size. Figure embedding can overlap the per-page phase or run later as a backfill; the dense index waits for the complete tree so that every source carries its final heading path. Every stored region can be inspected against its page in the deployed interface (Fig.~\ref{fig:extract} is drawn from these stored regions).
+
+
+
+\textbf{Page rendering and layout.} Each PDF page is rendered twice, at 150\,DPI for page analysis and at 300\,DPI for text inside figures and for table structure; the PDF text layer is not used, so scanned and born-digital files follow the same path. Word, PowerPoint and spreadsheet files are parsed natively, keeping their own tables and embedded images. Surya~2~\cite{paruchuri2026surya2} (checkpoint \texttt{datalab-to/surya-ocr-2}), a compact vision--language OCR model that we serve locally with llama.cpp, reads the page in a single full-page pass that returns layout regions (title, paragraph, list, table, figure, caption, header/footer, footnote), their text and their reading order. Each region becomes one \emph{source} carrying its text, page number and bounding box. A crop whose decoding loops or exhausts its token budget is retried once with wider framing and a larger budget; figure-text crops get one further low-temperature, contrast-enhanced attempt. Regions that still fail stay flagged and are excluded from retrieval and entity extraction, and a document with a failed page is not published to the graph.
+
+\textbf{Tables.} Table regions are cropped from the 300\,DPI rendering. TATR~\cite{smock2022pubtables} (\texttt{microsoft/table-transformer-structure-recognition}, a DETR detector with a ResNet-18 backbone) predicts columns, rows and spanning cells, which are reconciled with ruling lines visible in the crop, and every non-empty cell is read separately by Surya OCR (one enlarged retry for empty readings). The grid is accepted as \emph{cell-aware} only if it is complete and consistent---no holes, no overlapping cells, spans inside the grid, at most 200$\times$64 cells; the source text is then rebuilt from the cells, header rows and merged cells are stored as metadata, and the page OCR is kept for audit. Otherwise the table is \emph{unresolved}: no row/column text is published for it, and it can reach a generator only as an image crop.
 
 \textbf{Figures.} Each page-level figure gets exactly one extra layout and OCR pass on its 300\,DPI crop. Page text overlapping the figure is masked first so that it keeps its own owner, and nested pictures are not scanned again. Every text region found inside becomes its own source, a child of the figure with a separate reading scope, marked as single-pass OCR. A caption that Surya places inside the figure region is attached to it; nearby captions and paragraphs are only linked by geometry as \emph{candidates} (\texttt{FIGURE\_CAPTION\_CANDIDATE}, \texttt{FIGURE\_NEAR\_TEXT\_CANDIDATE}), because proximity does not prove that a caption describes a figure. No free-form image description is generated.
 
 \textbf{Hierarchy.} Heading levels are taken only from the model output or the native file; a heading with an unknown level is placed directly under the document rather than at a guessed depth. Tables, figures and their children are nested under the current heading, whereas page headers, footers and footnotes are attached to the document root. Sources are ordered by Surya's ranks within each page or figure scope; if the ranks are missing or ambiguous, the heading stack is reset instead of guessing an order.
 
-\textbf{Entities.} GLiNER-RelEx (multilingual v1.0)~\cite{zaratiana2024gliner} is used for named-entity spans only (organisations, people, products and models, components, protocols), collapsed into a single entity type. A batch is accepted only if every span reproduces the source text exactly at its offsets, does not overlap another span and scores at least 0.5; relation output is rejected at this stage. Accepted spans become \texttt{MENTIONS} edges, and mentions with the same name inside one document are linked to one entity only when a GLiNER2 classifier judges them to denote the same thing in context. Model-proposed relations between passages are not published. The language model is not used in this stage.
+\textbf{Entities.} Entity spans are proposed by the GLiNER-RelEx checkpoint \path{knowledgator/gliner-relex-multi-v1.0}~\cite{knowledgator2025relex}, which uses the GLiNER architecture~\cite{zaratiana2024gliner}; we use it for named-entity spans only (organisations, people, products and models, components, protocols), collapsed into a single entity type. A batch is accepted only if every span reproduces the source text exactly at its offsets, does not overlap another span and scores at least 0.5; relation output is rejected at this stage. Accepted spans become \texttt{MENTIONS} edges, and mentions with the same name inside one document are linked to one entity only when the GLiNER2 classifier \texttt{fastino/gliner2-base-v1}~\cite{zaratiana2025gliner2} judges them to denote the same thing in context. Model-proposed relations between passages are not published. The language model is not used in this stage.
 
 \textbf{Related passages.} For every source, BGE-M3 proposes five similar sources in the same document; a pair becomes a \texttt{RELATED\_PASSAGE} edge only if the cross-encoder logit is non-negative and a GLiNER2 topic check agrees, with at most two links per source. These edges support navigation and are never treated as references.
 
-\textbf{Graph projection.} Each extraction run is projected into Neo4j as a snapshot keyed by tenant, contract, version, run and source fingerprint; edges never cross snapshots. Node categories are \texttt{structure} (document and section headings), \texttt{layout\_block}, \texttt{evidence} (one per source region), \texttt{table}/\texttt{table\_row}/\texttt{table\_cell}, \texttt{source\_image}, \texttt{visual\_object}, \texttt{visual\_embedding} and \texttt{entity}. Edges include \texttt{CONTAINS} (heading hierarchy), \texttt{HAS\_EVIDENCE} (block to source), \texttt{NEXT} (reading order, created only between distinct unambiguous ranks within one page scope), \texttt{HAS\_ROW}/\texttt{HAS\_CELL}, \texttt{ABOVE}/\texttt{LEFT\_OF} (geometry only), figure--text candidates, \texttt{MENTIONS} and \texttt{RELATED\_PASSAGE} (embedding similarity candidates, never treated as verified references).
+\textbf{Graph projection.} Each extraction run is projected into Neo4j as a snapshot keyed by tenant, contract, version, run and source fingerprint; edges never cross snapshots. Node categories are \texttt{structure} (document and section headings), \texttt{layout\_block}, \texttt{evidence} (one per source region), \texttt{table\_row}/\texttt{table\_cell}, \texttt{source\_image}, \texttt{visual\_embedding} and \texttt{entity}. Table~\ref{tab:graph} lists every relation, the tool that produces it and its size on the pilot documents, and Fig.~\ref{fig:extract} shows the regions and graph size for one datasheet page. Each relation records its origin, and only relations derived from the source layout are treated as structure; proximity and similarity relations are stored as candidates. No relation is created by the language model.
 
-\textbf{Indexes.} Three retrieval indexes are built per version (ColPali serves retrieval only; its vectors are never given to the generator): a BM25~\cite{robertson2009bm25} index over token postings stored in PostgreSQL; 1024-dimensional BGE-M3~\cite{chen2024bgem3} dense vectors of source regions in Qdrant; and ColPali (\texttt{vidore/colpali-v1.2})~\cite{faysse2025colpali} multi-vectors computed only for figure crops. Text and table regions never fall back to full-page visual embeddings. Each figure vector is linked to its layout block in the graph through \texttt{HAS\_EMBEDDING}.
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.6\textwidth,alt={Datasheet page with 43 numbered region boxes overlaid: paragraphs, figures, titles, one specification table with footnotes below it, and a page footer.}]{figures/vs050_p2_regions.png}
+\caption{Extraction output for page 2 of the VS-050S2 datasheet, drawn from the stored source regions on the rendered page: 43 regions (28 paragraphs, 7 figures, 6 titles, 1 table, 1 page footer). Inner figure text, such as the joint ranges beside the right drawing, becomes separate sources, and each footnote under the table is its own region. For the two-page document the published graph has 361 nodes and 664 edges, including 40 table rows with 87 cells, 64 \texttt{NEXT}, 44 \texttt{CONTAINS}, 35 \texttt{MENTIONS} of 34 entities, 26 figure near-text candidates and 15 ColPali figure vectors. The contact blocks at the page bottom are read as paragraphs under the last heading, the scope error discussed in Sect.~\ref{sec:errors}.}
+\label{fig:extract}
+\end{figure}
 
-\textbf{Role of ColPali.} ColPali embeds the figure image itself: its vision encoder turns the crop into patch-level vectors, and a text query is scored against them by late interaction (MaxSim over query tokens and patches). It plays two roles. (1) \emph{Text-to-image search}: a question can reach a diagram, wiring drawing or labelled photo even when the figure's OCR text is sparse, misread or worded differently from the question. (2) \emph{Bridge from figures to text}: a retrieved figure is not passed to the generator as pixels; instead the graph connects it to the document's passages. Its in-figure text regions (\texttt{HAS\_FIGURE\_TEXT}) carry \texttt{MENTIONS} of entities, and passages elsewhere in the document that mention the same entities are added as context (\texttt{visual\_text\_shared\_entity\_candidate}), together with caption candidates. The generator thus receives the figure as its OCR text, caption candidates and the passages that discuss the same components, all as text.
+\begin{table}[!htbp]
+\centering\scriptsize
+\caption{Relations of the per-document graph, the tool that produces them, and their number in the 20 pilot documents (6{,}643 nodes and 13{,}021 edges in total; median 345 nodes and 676 edges per document; 780 entity nodes).}
+\label{tab:graph}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{0.31\textwidth}p{0.49\textwidth}r@{}}
+\toprule
+Relation & Produced by / meaning & Count \\
+\midrule
+\texttt{CONTAINS} & heading levels from Surya or the native file; section $\rightarrow$ heading/block & 1{,}007 \\
+\texttt{HAS\_EVIDENCE} & source tree; block or table row $\rightarrow$ source region & 3{,}214 \\
+\texttt{NEXT} & Surya reading-order ranks; only distinct, unambiguous ranks in one page or figure scope & 1{,}331 \\
+\texttt{HAS\_ROW}, \texttt{HAS\_CELL} & TATR grid with per-cell Surya OCR; table $\rightarrow$ row $\rightarrow$ cell & 288 / 1{,}046 \\
+\texttt{HAS\_FIGURE\_TEXT} & Surya parent region in the inner figure pass; figure $\rightarrow$ its text & 79 \\
+\texttt{FIGURE\_CAPTION\_CANDIDATE},\newline \texttt{FIGURE\_NEAR\_TEXT\_CANDIDATE} & bounding-box proximity; unverified caption / nearby text & 4 / 336 \\
+\texttt{ABOVE}, \texttt{LEFT\_OF} & geometry: nearest aligned ($\geq$50\% overlap), unobstructed neighbour within 80/1000 of the page; layout only & 967 / 184 \\
+\texttt{MENTIONS} & GLiNER-RelEx entity spans, merged by GLiNER2 same-name identity; source $\rightarrow$ entity & 726 \\
+\texttt{RELATED\_PASSAGE} & BGE-M3 top-5, reranker logit $\geq 0$, GLiNER2 topic check, $\leq$2 per source; similarity only & 372 \\
+\texttt{HAS\_VISUAL}, \texttt{APPEARS\_IN} & rendered page image; source/block $\leftrightarrow$ page & 1{,}607 each \\
+\texttt{HAS\_EMBEDDING} & ColPali vector acknowledged by Qdrant; figure block $\rightarrow$ vector & 253 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsection{Online retrieval (A2)}
+\textbf{Edge construction rules.} Each relation is created by a fixed rule, and an edge whose condition cannot be established is omitted rather than guessed. \texttt{CONTAINS} follows a heading stack driven by supplied levels (a heading of level $\ell$ closes all open headings of level $\geq\ell$; inner figure regions hang under their Surya parent). \texttt{NEXT} links consecutive sources of one page or figure scope only if all ranks are distinct non-negative integers and none is unresolved; otherwise the group gets no \texttt{NEXT} edges. Tables get one row node per grid row and one cell node per cell with its row, column, spans and header flag. On normalised page coordinates (0--1000), \texttt{LEFT\_OF} and \texttt{ABOVE} keep only the nearest right-hand and lower block whose gap is at most 80, whose extents overlap by at least half and whose connecting corridor is not crossed by another block; a caption or paragraph that is such a neighbour of a figure, or one of its two closest unobstructed blocks, becomes a caption or near-text candidate. A \texttt{MENTIONS} edge stores the exact span and score ($\geq$0.5) of a mention; page headers and footers produce none. Same-name mentions are paired and GLiNER2 judges each pair in a window of about 900 characters: \emph{same} needs a score $\geq$0.9 and a margin of 0.1 over \emph{different}, a confident \emph{different} forbids the merge, and accepted pairs are merged by union--find, highest score first, so two different names never share an entity node. \texttt{RELATED\_PASSAGE} and \texttt{HAS\_EMBEDDING} follow the conditions in Table~\ref{tab:graph}.
+
+\textbf{Publication checks.} A document is published only if every page was read and the whole-document analysis finished on the same source fingerprint. The projection is compacted (redundant cell paths and duplicate generic links removed) and validated (unique node keys, every node and edge endpoint inside the snapshot), then replaced in a single Neo4j transaction that also prunes older snapshots, so readers never see a half-written graph. Online, structural relations and shared \texttt{MENTIONS} drive expansion, \texttt{HAS\_FIGURE\_TEXT} and caption candidates serve figures, and \texttt{RELATED\_PASSAGE} is used only after re-ranking; geometric relations and table rows/cells are not passed to the generator, because the pods already present tables as grids.
+
+\textbf{Indexes.} Three retrieval indexes are built per version (ColPali serves retrieval only; its vectors are never given to the generator): a BM25~\cite{robertson2009bm25} index over token postings stored in PostgreSQL; 1024-dimensional BGE-M3~\cite{chen2024bgem3} dense vectors of source regions in Qdrant; and ColPali multi-vectors computed only for figure crops, using the \texttt{vidore/colpali-v1.2} checkpoint released with~\cite{faysse2025colpali}. Text and table regions never fall back to full-page visual embeddings. Each figure vector is linked to its layout block in the graph through \texttt{HAS\_EMBEDDING}.
+
+\textbf{Role of ColPali.} ColPali embeds the figure image itself: its vision encoder turns the crop into patch-level vectors, and a text query is scored against them by late interaction (MaxSim over query tokens and patches). It plays two roles. (1) \emph{Text-to-image search}: a question can reach a diagram, wiring drawing or labelled photo even when the figure's OCR text is sparse, misread or worded differently from the question. (2) \emph{Bridge from figures to text}: a retrieved figure is not passed to the generator as pixels; instead the graph connects it to the document's passages. Its in-figure text regions (\texttt{HAS\_FIGURE\_TEXT}) carry \texttt{MENTIONS} of entities, and passages elsewhere in the document that mention the same entities are added as context, together with caption candidates. The generator thus receives the figure as its OCR text, caption candidates and the passages that discuss the same components, all as text.
+
+\subsection{Online Retrieval}
 \textbf{Query planning.} In one call, the generator (Qwen2.5-VL-7B-Instruct, AWQ, served with vLLM~\cite{bai2025qwen25vl,kwon2023vllm}) splits the question into answer parts with retrieval queries, the reading scope and whether images are needed. If planning fails, retrieval uses the original question and records the planner as unavailable.
 
 \textbf{Hybrid retrieval and fusion.} Every retrieval query is sent to all three channels over the latest versions the user may read. Candidate lists are fused with equal-weight RRF~\cite{cormack2009rrf},
 \begin{equation}
-\mathrm{RRF}(d)=\sum_{m\in\{\mathrm{BM25},\,\mathrm{dense},\,\mathrm{ColPali}\}}\frac{1}{60+r_m(d)},
+\mathrm{RRF}(d)=\sum_{m\in\{\mathrm{BM25},\,\mathrm{dense},\,\mathrm{ColPali}\}}\frac{1}{k+r_m(d)},\qquad k=60,
 \end{equation}
-where $r_m(d)$ is the rank of $d$ in channel $m$ (terms are omitted when $d$ is absent). All fused candidates are then scored together by the multilingual cross-encoder \texttt{BAAI/bge-reranker-v2-m3}, always paired with the original request.
+where $r_m(d)$ is the rank of $d$ in channel $m$ (terms are omitted when $d$ is absent). We use $k=60$, the value proposed and found robust by Cormack et al.~\cite{cormack2009rrf}, and equal weights because the three channels have no calibrated scores; neither was tuned on the pilot set. All fused candidates are then scored together by the multilingual cross-encoder \texttt{BAAI/bge-reranker-v2-m3} of the BGE family~\cite{chen2024bgem3}, always paired with the original request.
 
 \textbf{Seed selection.} Seeds are chosen greedily. Let $P_i$ be the answer parts that candidate $i$ was retrieved for, $C$ the parts already covered, $\rho_i=\max_r 1/(1+\log_2 r)$ over its ranks, $o_i$ its maximum token Jaccard overlap with already selected seeds and $D$ the set of documents already used. The next seed maximizes, lexicographically,
 \begin{equation}
 \bigl(\,|P_i\setminus C|,\;\rho_i-0.35\,o_i+0.05\,[\mathrm{doc}_i\notin D],\;\textstyle\sum_r 1/(60+r)\bigr),
 \end{equation}
-up to $\min\!\bigl(24,\max(|\text{parts}|,\,3\cdot\text{groups})\bigr)$ seeds. Similar passages are down-weighted rather than discarded, so different versions, quantities and conditions remain available.
+up to $\min\!\bigl(24,\max(|\text{parts}|,\,3\cdot\text{groups})\bigr)$ seeds. Coverage of unanswered parts always comes first. The coefficients are heuristic values set during development and not tuned on the pilot set: 0.35 makes a near-duplicate of an existing seed lose against a moderately lower-ranked but different source, and 0.05 is a small tie-breaking bonus for a new document that cannot outweigh a clear rank difference. The upper bound of 24 is the default answer-source limit of the deployed configuration. Similar passages are down-weighted rather than discarded, so different versions, quantities and conditions remain available.
 
-\textbf{Graph expansion.} For each seed, Neo4j returns neighbours within the same snapshot: sources reached through a direct structural relation of the seed's block (excluding the document root), sources sharing an entity mention, figure-text and visual-explanation links, and \texttt{RELATED\_PASSAGE} neighbours. Similarity-only neighbours are admitted only if they pass re-ranking against the question. Expanded sources are deduplicated and ordered by reading position.
+\textbf{Graph expansion.} For each seed, Neo4j returns neighbours within the same snapshot: sources reached through a direct structural relation of the seed's block (excluding the document root), sources sharing an entity mention, figure-text and visual-explanation links, and \texttt{RELATED\_PASSAGE} neighbours. Scope-aware expansion admits structural neighbours only inside the seed's heading scope. Similarity-only neighbours are admitted only if they pass re-ranking against the question. Expanded sources are deduplicated and ordered by reading position.
 
 \subsection{Hierarchical Evidence Pods}
 Selected sources are serialized as pods (Algorithm~\ref{alg:pods}, Fig.~\ref{fig:pod}).
@@ -129,7 +208,9 @@ Selected sources are serialized as pods (Algorithm~\ref{alg:pods}, Fig.~\ref{fig
 \item \textbf{Figures.} Figure sources carry their in-image text, caption and location; figure--text links are presented as proposals.
 \item \textbf{Links and IDs.} Each source keeps a stable ID (version, run, region). Graph links between selected sources are listed once next to their first source with direction and review status; structural machinery such as \texttt{HAS\_CELL} is not serialized.
 \end{enumerate}
-The generator returns claims (subject, attribute, value, condition, source IDs). Code checks that every cited ID was supplied and that the format is valid, with a single format-repair retry; it does not verify semantic correctness. If the prompt exceeds the context window (16{,}384 tokens), the output budget is reduced first and sources are then split into groups whose findings are combined against the original cited sources. The pods are plain text: a figure retrieved through ColPali reaches the generator as its in-image OCR text, caption candidates and location, so the answering step needs no vision encoder. The deployed system can optionally attach the figure or unresolved-table crop when the generator is a VLM; this option is disabled in all text-input experiments, and image input is studied only in E4.
+The pod in Fig.~\ref{fig:pod} shows how the four parts of a fact stay together. The \emph{subject} is given by the scope header (document LPH\_E, heading ``Specifications''), the \emph{attribute} and \emph{value} by one grid row (``Cycle time (*2)'' $\rightarrow$ ``0.45\,sec''), and the \emph{condition} by the footnote *2 in the same scope (2\,kg payload, two points 300\,mm apart, 25\,mm height). In flat chunking the footnote is a separate chunk without the product name, and the row loses its column header; the pod keeps all four under one ID-labelled scope, so the generator can cite the value and its condition together.
+
+The generator returns claims (subject, attribute, value, condition, source IDs). Code checks that every cited ID was supplied and that the format is valid, with a single format-repair retry; it does not verify semantic correctness. If the prompt exceeds the context window (16{,}384 tokens), the output budget is reduced first and sources are then split into groups whose findings are combined against the original cited sources. The pods are plain text: a figure retrieved through ColPali reaches the generator as its in-image OCR text, caption candidates and location, so the answering step needs no image input. The deployed system can optionally attach the figure or unresolved-table crop when the generator is a VLM; this option is disabled in all text-input experiments, and image input is studied only in E4.
 
 \begin{algorithm}[t]
 \caption{Evidence pod serialization}\label{alg:pods}
@@ -150,10 +231,10 @@ The generator returns claims (subject, attribute, value, condition, source IDs).
 \end{algorithmic}
 \end{algorithm}
 
-\begin{figure}[t]
+\begin{figure}[!htbp]
 \centering
-\footnotesize
-\begin{tabular}{@{}p{0.95\columnwidth}@{}}
+\scriptsize
+\begin{tabular}{@{}p{0.8\textwidth}@{}}
 \toprule
 \texttt{\#\# Source scope 1 | Document/version 1: LPH\_E}\\
 \texttt{Heading: LPH\_E > Specifications}\\
@@ -161,69 +242,264 @@ The generator returns claims (subject, attribute, value, condition, source IDs).
 \texttt{\{"table\_header\_rows":[1],"merged\_cells":[\{"row":4,}\\
 \texttt{\ \ "column":1,"rowspan":4,"colspan":1\}, \ldots]\}}\\
 \texttt{| Term | | Specifications |}\\
-\texttt{| --- | --- | --- |}\\
-\texttt{| Motion angle | J1(1st-Axis) | ±130° |}\\
-\texttt{| | J2(2nd-Axis) | ±146.6° |}\\
+\texttt{| -{}-{}- | -{}-{}- | -{}-{}- |}\\
+\texttt{| Motion angle | J1(1st-Axis) | $\pm$130° |}\\
+\texttt{| | J2(2nd-Axis) | $\pm$146.6° |}\\
 \texttt{| Maximum payload | | 3kg |}\\
 \texttt{| Cycle time (*2) | | 0.45sec |}\\
 \texttt{\#\#\# [a3:v1000015:r1000028:block:1001810]}\\
-\texttt{*2 : Time required for a robot to move}\\
-\texttt{a 2kg payload between two points 300 mm}\\
-\texttt{apart at a height of 25mm.}\\
+\texttt{*2 : Time required for a robot to move a 2kg payload}\\
+\texttt{between two points 300 mm apart at a height of 25mm.}\\
 \bottomrule
 \end{tabular}
-\caption{Excerpt of an evidence pod produced by the system (abridged; ``Motion angle and stroke'' shortened). The merged motion-angle cell is declared as a span instead of being copied into each row. Here the cycle-time note was read as a paragraph under the same heading and therefore shares the table's scope.}
+\caption{Excerpt of an evidence pod produced by the system (abridged; ``Motion angle and stroke'' shortened): a scope header, a table source with header and merged-cell metadata followed by its Markdown grid, and a footnote source. The merged motion-angle cell is declared as a span instead of being copied into each row. Here the cycle-time note was read as a paragraph under the same heading and therefore shares the table's scope.}
 \label{fig:pod}
 \end{figure}
 
 \section{Experimental Protocol and Results}
 \subsection{Setup}
-\textbf{Corpus and questions.} The deployed index contains 201 document versions. The pilot set has 50 questions on 20 English technical documents (robot, controller, spark-plug, A/C service and wiper product literature) with reference answers, subject--attribute--value--condition tuples and gold evidence regions (65 regions, 16 tables). Categories: condition 31, table 18, comparison 13, footnote 11, procedure 7, identifier 5, figure text 3, multi-document 2. Gold answers were checked against the evidence text. The documents were also used during development, so the set is a pilot rather than an independent test set.
+\textbf{Corpus and questions.} The deployed index contains 201 document versions. The pilot set has 50 questions on 20 English technical documents (robot, controller, spark-plug, A/C service and wiper product literature) with reference answers, subject--attribute--value--condition tuples and gold evidence regions: 73 question--region pairs over 65 distinct regions (1.46 per question; 33 questions have one gold region, 17 have two to four, and seven regions serve more than one question), including 21 pairs over 16 distinct tables. All metrics count question--region pairs. Categories (a question may have several): condition 31, table 18, comparison 13, footnote 11, procedure 7, identifier 5, figure text 3, multi-document 2. Gold answers were checked against the evidence text. The documents were also used during development, so the set is a pilot rather than an independent test set. Questions referred to by ID are listed in Table~\ref{tab:questions} with their reference answers and the label of the system's answer.
 
-\textbf{Inputs are frozen.} Retrieval is run once with the production pipeline over all 201 versions (top-10 \texttt{query\_match} sources per question), and graphs are exported from Neo4j before any generation. Regions duplicated across uploads of the same PDF are matched by content hash in another version.
+\textbf{Inputs.} The production main flow runs the full deployed pipeline, including retrieval, live on the index of all 201 versions. For the controlled ablations and the ColPali counts, retrieval is run once with the same pipeline (top-10 \texttt{query\_match} sources per question) and frozen together with graphs exported from Neo4j before any generation, so every configuration sees identical inputs. Regions duplicated across uploads of the same PDF are matched by content hash in another version.
 
-\textbf{Hardware.} The generator and ColPali are served on two NVIDIA Tesla T4 GPUs (15\,GB each; 10.0\,GB and 5.9\,GB in use while serving); vLLM runs with a memory utilisation of 0.8, giving a KV-cache pool of 38{,}448 tokens. Extraction models (Surya, TATR, GLiNER, BGE-M3 and the reranker) run on a local RTX~3050 Ti laptop GPU with 4\,GB.
+\textbf{Hardware.} The generator and ColPali are served on two NVIDIA Tesla T4 GPUs (15\,GB each; 10.0\,GB and 5.9\,GB in use while serving); vLLM runs with a memory utilisation of 0.8, giving a KV-cache pool of 38{,}448 tokens. Extraction models (Surya, TATR, GLiNER-RelEx, GLiNER2, BGE-M3 and the reranker) run on a local RTX~3050 Ti laptop GPU with 4\,GB.
 
-\textbf{Generation.} Qwen2.5-VL-7B-Instruct-AWQ on vLLM ($16{,}384$-token context), temperature 0, max 2048 output tokens, one run per configuration (with temperature 0, 62 of 71 ablation configurations that were repeated gave identical outputs). The production main flow uses the deployed prompts and checks; the controlled ablations use a fixed JSON-schema output whose citation field is restricted to the supplied IDs. Prompt tokens are counted with the served model's tokenizer (revision \texttt{536a357}) and checked against API usage; sources are never truncated or padded.
+\textbf{Generation.} Qwen2.5-VL-7B-Instruct-AWQ on vLLM ($16{,}384$-token context), temperature 0, max 2048 output tokens, one run per configuration (with temperature 0, 62 of 71 ablation configurations that were repeated gave identical outputs). The generator is a VLM; ``text-only'' in this paper means that no image is attached to its prompt, not that a model without a vision encoder was used. The production main flow uses the deployed prompts and checks; the controlled ablations use a fixed JSON-schema output whose citation field is restricted to the supplied IDs. Prompt tokens are counted with the served model's tokenizer (revision \texttt{536a357}) and checked against API usage; sources are never truncated or padded.
 
 \textbf{Experiments.} \emph{E1 (evidence format)}: the same evidence, order and model under A flat text, B JSON, C Markdown tables, D C+breadcrumb, E full pods; with gold evidence and with top-5 retrieved evidence. \emph{E2 (graph expansion)}: fixed top-3 retrieved seeds, one 6{,}000-token ceiling, modes A none, B previous/next blocks, C structural (B + parent heading, siblings, figure--text links), D scope-aware (C restricted to the seed's heading scope). \emph{E4 (visual input)}: full-page images, evidence crops, OCR text only, and OCR+caption structured pods, on questions with tables or figures; visual tokens are measured as API prompt tokens minus the tokenizer count of the same messages without images.
 
-\textbf{Metrics.} Evidence recall and precision over the first ten sources (R@10, P@10) and required-evidence recall over all sources sent to the generator; citation precision (cited sources that are gold) and citation recall (gold regions cited); key-value recall, the share of gold numbers and codes from the subject--attribute--value tuples that appear in the answer (strict string match); prompt tokens, visual tokens and latency. Retrieval, citation, key-value and cost metrics are computed deterministically from the logs. Answer accuracy (correct 1, partial 0.5, wrong or no answer 0; strict accuracy counts only correct answers), attribute leakage rate (claims that bind a value or condition to the wrong subject, over all claims) and citation faithfulness (claims stated by the sources they cite, over all claims) were labelled by reading every answer against its reference answer, tuples and gold evidence, following a fixed rubric; the reader is one of the authors, so the labels are not an independent human evaluation.
+\textbf{Metrics and denominators.} \emph{Retrieval}: Hit@1 and mean reciprocal rank (MRR) of the first gold region among the retrieved sources; evidence recall and precision over the first ten sources (R@10, P@10); required-evidence recall over all sources sent to the generator. \emph{Citations}: citation precision (cited sources that are gold) and citation recall (gold regions cited). These are computed per question and averaged over questions. \emph{Answers}: answer accuracy over answers (correct 1, partial 0.5, wrong or no answer 0); strict accuracy counts only correct answers; attribute leakage rate (ALR) is the share of \emph{claims} that bind a value or condition to the wrong subject; citation faithfulness is the share of claims stated by the sources they cite; key-value recall is the share of gold numbers and codes from the tuples that appear in the answer (strict string match), over the questions whose tuples contain such values. Prompt tokens, visual tokens and latency are taken from the logs. Retrieval, citation, key-value and cost metrics are computed deterministically from the logs.
+
+\textbf{Grading procedure.} Answer labels, leakage and faithfulness were assigned in a single LLM-assisted reading pass (Claude, Anthropic), which compared every answer with its reference answer, tuples and gold evidence, following a fixed rubric: \emph{correct} if every requested part is stated with the right value and condition, \emph{partial} if a requested detail is missing or one claim is wrong while the rest is right, \emph{wrong} otherwise, and \emph{no answer} if the model declines to answer; each claim is then checked for leakage and for support by its cited sources. The labels were then reviewed by the first author against the same material, and the review agreed with them. The grading was not blind to the system and no second, independent grader was used, so inter-annotator agreement was not measured; two independent human graders are planned for the full evaluation.
 
 \subsection{Results}
-\textbf{Production main flow.} Each pilot question was run once through the deployed pipeline (planner, hybrid retrieval, re-ranking, graph expansion, evidence pods, checked generation) with text-only generator input (Table~\ref{tab:mainflow}). The generator is used zero-shot: no fine-tuning and no in-context examples, only the deployed instructions. Results are reported on the 45 questions with a completed answer.
+\textbf{Runs.} Each of the 50 pilot questions was run once through the deployed pipeline with text-only generator input, zero-shot (no fine-tuning, no in-context examples). Five answers were obtained in a second run: four (P047--P050) after a temporary server outage and one (P007) after an output-language check that had rejected its first answer was removed. All metrics are reported over the 50 questions (Table~\ref{tab:mainflow}).
 
-\textbf{Retrieval.} The hybrid retriever ranked the gold regions within the first ten sources for 92\% of gold evidence (R@10; complete for 39 of 45 questions) and placed 95.6\% of them in the generator context after graph expansion (required-evidence recall). P@10 is 0.12 against a ceiling of 0.136, since a question has 1.36 gold regions on average: the context is deliberately broader than the minimal evidence. All 45 answers cite only source IDs that were supplied to the model. ColPali returned figure candidates for every question; 22\% of the top-ten sources (111 of 498, in 35 of 50 questions) were found by ColPali alone and by neither text channel, and the figure-to-text bridge added 52 passages in 10 questions. In this pilot no gold region arrived only through the visual channel: the three figure questions are answered by text inside the figures, which the text channels already find, so the pilot does not yet measure the benefit of visual search on diagrams without readable text.
+\textbf{Retrieval.} The first-ranked source was a gold region for 40 of the 50 questions (Hit@1 0.800; MRR 0.869). On average 90.5\% of a question's gold regions were among its first ten sources (R@10; complete for 41 of 50 questions), and 95.5\% were placed in the generator context after graph expansion (required-evidence recall). P@10 is 0.126 against a ceiling of 0.146, since a question has 1.46 gold regions on average: the context is deliberately broader than the minimal evidence (31.0 sources per question).
 
-\textbf{Citations.} 86\% of cited sources were gold regions (citation precision) and 84\% of gold regions were cited (citation recall).
+\textbf{ColPali.} ColPali returned figure candidates for every question; 22\% of the top-ten sources (111 of 498, in 35 of 50 questions) were found by ColPali alone and by neither text channel, and the figure-to-text bridge added 52 passages in 10 questions. These numbers show that the visual channel \emph{diversifies the candidate pool}; they do not show a retrieval gain. In this pilot no gold region arrived only through the visual channel. The three figure questions are P010 (labels A and G of the Iridium Racing electrode diagram; partial), P028 (components of the COBOTTA Camera Built-in Set; correct) and P046 (function of the multilayer shim and meaning of NVH in the brake-pad kit diagram; correct). In all three, every gold region is text printed in or beside the figure and was found by both BM25 and dense retrieval; ColPali placed one figure candidate in the top ten for P010 and three for P046, none of them gold, and none for P028. The reason is the test material rather than the channel: the pilot corpus contains no document whose answer lies only in a figure without readable text (for example, an unlabelled wiring diagram or a photo of a part), which is the case ColPali is meant for, so the pilot cannot yet demonstrate its effectiveness. With no such questions and no run without ColPali, we make no claim that ColPali improves recall; a set of figure-only questions is planned for the full evaluation.
 
-\textbf{Answer quality.} The generator answered 31 of 45 questions correctly and 12 partially, with one wrong answer and one abstention (accuracy 0.82, strict 0.69); only 4.8\% of its claims bound a value to the wrong subject or condition, and 92\% of claims were stated by the sources they cited. Most partial answers omit one requested detail of a multi-part question rather than state something false.
+\textbf{Citations.} On average 83.9\% of a question's cited sources were gold regions (citation precision) and 81.0\% of its gold regions were cited (citation recall). Every answer cited only IDs that had been supplied, which is what the code check enforces; this does not mean that every citation supports its claim: 11 of the 98 claims were not supported by their cited sources (e.g., P009 in Table~\ref{tab:answers}).
 
-\textbf{Text-only reading.} With text-only input, answers reproduced 84\% of gold numbers and codes (key-value recall over the 20 questions whose tuples contain such values; 15 of 20 complete), including all identifier questions and 87\% on table questions, without any image reaching the generator. This supports the design goal that the answering step does not need vision.
+\textbf{Answer quality.} The generator answered 33 of 50 questions correctly and 14 partially, with two wrong answers and one abstention, giving an answer accuracy of $(33 + 0.5\times 14)/50 = 0.800$ (80.0\%) and a strict accuracy of $33/50 = 0.660$. The 50 answers contain 98 claims; 5 of them bound a value or condition to the wrong subject (ALR $5/98 = 0.051$), and 87 were stated by the sources they cited (citation faithfulness $87/98 = 0.888$). Most partial answers omit one requested detail of a multi-part question rather than state something false. By category, the 18 table questions reached an accuracy of 0.833 (13 correct, 4 partial, 1 wrong: P048), with required-evidence recall 0.958; the footnote questions were the weakest (11 questions, accuracy 0.636, required-evidence recall 0.795), and condition questions reached 0.774 (31 questions). In all 20 questions whose gold evidence includes a table, every gold table (21 of 21 question--table pairs, 16 distinct tables) was retrieved and placed in the generator context together with its scope. The table questions referred to by ID are P013, P037, P040, P044 and P048 (Tables~\ref{tab:answers} and~\ref{tab:questions}).
 
-\textbf{Error analysis.}\label{sec:errors} We read the five text-only answers below full key-value recall. Two are correct and are missed by the strict string match (P044 gives ``+110, $-$102'' without the degree sign; P005 writes ``2,000 W''). Two are incomplete rather than wrong: P037 states the 25\,mm height of the cycle-time footnote but omits the 2\,kg load and 300\,mm distance, and P034 names the robots and arm count but not the RC8A controller. In P009 the footnote holding the answer was not retrieved, and the model stated that the documents do not cover the case instead of inventing a value. Footnote and condition questions are therefore the weakest group (62\% and 76\% key-value recall), consistent with the limitation that qualifiers are only linked to the values they modify when they are retrieved together. None of the five answers attached a value to the wrong subject.
+\textbf{Text-only reading.} With text-only input, answers reproduced 82.6\% of gold numbers and codes (key-value recall over the 24 questions whose tuples contain such values; 18 of 24 complete), 80\% on identifier questions and 82\% on table questions, without any image reaching the generator.
 
-\input{mainflow_table}
+\begin{table}[!htbp]
+\centering\scriptsize
+\caption{Production main flow (text-only input to Qwen2.5-VL-7B, zero-shot, one run). All 50 pilot questions are answered (P047--P050 and P007 from a second run, see text). Retrieval and citation rows are per-question means over the 50 questions; Hit@1 $=40/50$. Accuracy $=(33+0.5\times14)/50$; strict accuracy $=33/50$; ALR $=5/98$ and faithfulness $=87/98$ over the 98 claims of the 50 answers; key-value recall over the 24 questions whose tuples contain numbers or codes. The P@10 ceiling is 0.146 because a question has 1.46 gold regions on average.}
+\label{tab:mainflow}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Metric & Value & Denominator \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Retrieval}} \\
+Hit@1 & 0.800 & 50 questions \\
+MRR & 0.869 & 50 questions \\
+Evidence recall@10 & 0.905 & 50 questions \\
+Evidence precision@10 (ceiling 0.146) & 0.126 & 50 questions \\
+Required-evidence recall & 0.955 & 50 questions \\
+Citation precision / recall & 0.839 / 0.810 & 50 questions \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Answers}} \\
+Answer accuracy (partial $=0.5$) & 0.800 (80.0\%) & 50 answers \\
+Strict accuracy & 0.660 & 50 answers \\
+Correct / partial / wrong / no answer & 33 / 14 / 2 / 1 & 50 answers \\
+Attribute leakage rate $\downarrow$ & 0.051 (5/98) & 98 claims \\
+Citation faithfulness & 0.888 (87/98) & 98 claims \\
+Key-value recall & 0.826 & 24 questions \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\textbf{Worked examples.} The controlled ablations (fixed evidence and generator prompt) are reported on four questions each, namely those for which every configuration had completed; they illustrate behaviour and are not powered for significance. In E2 (Table~\ref{tab:e2}), expansion matters when retrieval misses part of the evidence: for P007 the seeds held one of two gold regions (R@10 0.50) and a single previous/next step recovered the other. Structural expansion admitted 13--28 sources and approached the 6{,}000-token ceiling, whereas scope-aware expansion rejected 17--96 candidates (mostly outside the seed's heading scope), kept the recovered evidence and used 34--62\% fewer tokens with 3.5--8.6$\times$ lower graph latency. In E4 (Table~\ref{tab:e4}), structured OCR text was at least as accurate as full-page images (0.75 vs.\ 0.63) with half the leakage, while using about one fifth of the prompt tokens (616 vs.\ 2{,}934; 2{,}760 visual tokens per page); region crops alone were the weakest input. All four inputs failed P040, whose table has a two-level header (standard specification vs.\ robot fitted with jacket): the models read the 7\,kg and 6\,kg values but bound them to the wrong configuration, which the key-value metric alone would have scored as correct. In E1 (Table~\ref{tab:e1}) the four examples are text questions without tables; all formats cited only gold sources and breadcrumbs gave the most complete citations with gold evidence, while full pods cost the most tokens without a gain on these questions. A full-scale E1 on table-heavy questions remains to be run.
+Fig.~\ref{fig:p044} traces one answered question from the source page to the cited answer: the qualifying footnote is retrieved with the table, kept in the same scope, and cited for the conditional value. Table~\ref{tab:answers} shows further answers, including a partial, a leaking and an abstaining one with a non-supporting citation.
 
-\input{results_tables}
+\begin{figure}[!htbp]
+\centering
+\begin{minipage}[t]{0.62\textwidth}\vspace{0pt}
+\centering\textbf{\scriptsize (a) Input page region (excerpt)}\\[3pt]
+\includegraphics[width=\linewidth,alt={Excerpt of the VS-050S2 specification table showing the J5 motion range of plus or minus 115 degrees marked with footnote 4, and footnote 4 stating the range plus 110, minus 102 when flange specification-A is selected.}]{figures/p044_input_focus.png}
+\end{minipage}\\[6pt]
+\begin{minipage}[t]{0.56\textwidth}\vspace{0pt}
+\centering\textbf{\scriptsize (b) Evidence pod (abridged)}\\[3pt]
+\raggedright\ttfamily\scriptsize
+\#\# Source scope 1 | Document/version 1: VS050S2\_E\\
+Heading: VS050S2\_E > Medical and Pharmaceutical Robot VS-050S2 Series > Dimensions / Motion range > Specifications\\[2pt]
+\#\#\# [a3:v1000017:r1000081:block:1003483]\\
+Item / Specifications / Model / VS-050S2 / Axes / 6 / \ldots\\
+Motion range / J1 (1st axis) / $\pm$180° (*3) / \ldots\\
+J5 (5th axis) / $\pm$115° (*4) / J6 (6th axis) / $\pm$360° / \ldots\\
+Maximum payload / 4kg / \ldots / Weight / Approx. 34 kg\\[2pt]
+\#\#\# [a3:v1000017:r1000081:block:1003487]\\
+*4: When electric gripper connection flange specification-A is selected, the J5 motion range is +110, -102.\\[2pt]
+Outgoing source links (proposals; source text takes precedence):\\
+- [\ldots:block:1003487] -{}-RELATED\_PASSAGE-{}-> [\ldots:block:1003483]; \{"review\_status":"candidate", "relation\_semantics": "content\_similarity\_navigation\_only", \ldots\}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.40\textwidth}\vspace{0pt}
+\centering\textbf{\scriptsize (c) Question and answer}\\[3pt]
+\raggedright\scriptsize
+\textbf{Q (P044):} When electric gripper connection flange specification-A is selected, what does the J5 motion range of the VS-050S2 change to, compared with the standard?\\[4pt]
+\textbf{Generated answer:} When electric gripper connection flange specification-A is selected, the J5 range of the VS-050S2 changes to +110, $-$102 from the standard [E1].\\[4pt]
+\textbf{Cited source:} E1 = \texttt{block:1003487}, the *4 footnote.\\[4pt]
+\textbf{Reference:} standard J5 $\pm$115°; with flange specification-A, +110° to $-$102°. \textbf{Label:} correct.
+\end{minipage}
+\caption{A worked example from the production main flow (text-only generator input). (a) Excerpt of the source specification table and its footnote *4, read by Surya (other rows, footnotes and the blank space between the two columns omitted; dashed line marks the column cut). (b) The evidence pod given to the generator: the table and the footnote that qualifies its J5 row share one heading scope, and the graph's similarity link between them is shown as a proposal. (c) The generator cites the footnote and states the conditional value. The question and answer were in Vietnamese and are translated; the example illustrates the mechanism, and aggregate results are in Table~\ref{tab:mainflow}.}
+\label{fig:p044}
+\end{figure}
+
+\begin{table}[!htbp]
+\centering\scriptsize
+\caption{Answers of the production main flow (text-only input, one run) for five pilot questions, chosen to show a correct, partial, leaking and abstaining answer. Answers were in Vietnamese and are translated; ``cited'' is the source the answer's citation points to. A citation can be a valid supplied ID without supporting the claim: P009 is a citation failure.}
+\label{tab:answers}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lp{0.25\textwidth}p{0.33\textwidth}p{0.30\textwidth}@{}}
+\toprule
+ID & Question & Generated answer & Cited source; label \\
+\midrule
+P013 & Compare IU01* and IXU01*: thread diameter and plug height of each? & IU01* has a 10\,mm thread, IXU01* a 12\,mm thread; plug height is 50\,mm for IU01* and 51\,mm for IXU01*. & the plug-model table (cell-aware grid); \textbf{correct} \\
+P038 & Through what does the LPH command-slave function let a PLC control the robot, how many command types, and is robot-side programming needed? & Through a Function Block (FB); 130 robot command types programmable from the PLC; no programming on the robot side is needed. & the command-slave paragraph; \textbf{correct} \\
+P034 & Which robot series and controller does Dual-arm Control support, and how many arms per controller? & It supports the HSR and HS-A1 series; one controller controls two robot arms. & the compatibility table (which also lists RC8A) and the controller paragraph; \textbf{partial}: the RC8A controller is omitted \\
+P010 & In the Iridium Racing diagram, which electrodes do labels A and G denote, with what material and diameter? & ``Labels A and G'' denote 100\% platinum electrodes of 0.8\,mm; label G denotes an iridium electrode of 0.4\,mm. & label A text and an iridium-alloy paragraph; \textbf{partial}, one leaking claim: A's material is also given to G \\
+P009 & If the spark-plug threads are lubricated, how must the tightening torque be adjusted, and why? & The documents do not mention adjusting the torque for lubricated threads. & an unrelated reference list; \textbf{no answer and citation failure}: the cited source does not support the statement, and the footnote with the answer (reduce by about one third) was not retrieved \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[p]
+\centering\scriptsize
+\caption{Pilot questions referred to by ID in this paper (asked in Vietnamese; English translation), with the gold reference answer; questions shown in Table~\ref{tab:answers} are not repeated. The bracketed label is the grade of the production main-flow answer (text-only input): \emph{correct}; \emph{partial} (a requested detail missing or one claim wrong); \emph{wrong}; \emph{no answer} (an answer was produced but declined to answer the question).}
+\label{tab:questions}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lp{0.47\textwidth}p{0.44\textwidth}@{}}
+\toprule
+ID & Question & Reference answer \textbf{[system answer]} \\
+\midrule
+P002 & Which interfaces and connections does realvirtual.io Professional support for simulating equipment? & TwinCAT and OPC UA interfaces, PLC connections and software wiring. \textbf{[Correct]} \\
+P003 & Which platform is realvirtual.io Professional an add-on for, and which example equipment does its library contain? & An add-on for Unity; conveyors and motors. \textbf{[Partial]} \\
+P005 & In which cases must the original RC8 Controller Protective Box be used instead of the Light version? & VM Series; VS068/087 with an additional axis; MC8 with total motor capacity of 2,000\,W or more. \textbf{[Correct]} \\
+P007 & When adjusting the gap of an Iridium Power spark plug, which parts must the tool not touch, and what must the gap be re-checked with? & Not the iridium centre electrode or the porcelain; re-check with a calibrated gapping tool. \textbf{[Correct]} \\
+P018 & In the dual A/C poor-cooling case, how were the compressor and the front expansion valve checked or treated before the rear cause was identified? & The compressor was confirmed to be OK; the front expansion valve had recently been replaced. \textbf{[Partial]} \\
+P022 & Which way must the bevelled edge of the snap ring face when it is installed on the compressor, and what must be ensured? & Away from the compressor; the ring must be fully seated and hold the stator and rotor securely. \textbf{[Correct]} \\
+P023 & When the compressor clutch does not engage and the A/C light flashes in the described case, which part disengages and causes both symptoms? & The magnetic clutch relay. \textbf{[Correct]} \\
+P027 & When installing the A/C water-temperature switch, which tool is allowed and which actions or materials are prohibited? & Hand tools with a deep socket; no over-torque, no air tools, no dropping or striking, no sealing tape. \textbf{[Correct]} \\
+P028 & Which components does the COBOTTA Camera Built-in Set list? & AF Camera (N10-W02), end-effector EtherNet cable and camera stay. \textbf{[Correct]} \\
+P029 & Does the COBOTTA vacuum suction option need an external air compressor? & No. \textbf{[Correct]} \\
+P037 & With what payload, distance between two points and height is the 0.45\,s cycle time of the LPH measured? & 2\,kg payload, two points 300\,mm apart, at a height of 25\,mm. \textbf{[Partial]} \\
+P039 & Which robots and controllers is the food-processing protective jacket compatible with, and which configurations are excluded? & VS068/VS087 robots with RC8A and RC8 controllers; not for Communication Interface Flange-A, UL specifications or cleanroom type. \textbf{[Wrong]} \\
+P040 & When the protective jacket is fitted, how does the maximum payload of the VS068 and VS087 change compared with the standard configuration? & Both drop from 7\,kg (standard) to 6\,kg (with jacket). \textbf{[Partial]} \\
+P044 & When electric gripper connection flange specification-A is selected, what does the J5 motion range of the VS-050S2 change to, compared with the standard? & From $\pm$115$^\circ$ (standard) to +110$^\circ$ / $-$102$^\circ$. \textbf{[Correct]} \\
+P046 & In the brake-pad kit diagram, what is the function of the multilayer shim, and what does NVH stand for? & It mitigates NVH; NVH = Noise, Vibration and Harshness. \textbf{[Correct]} \\
+P048 & In the Rear Wiper Blades table, which part numbers are listed for size 12\,in / 300\,mm? & 160-5512, 160-5612, 160-5712 and 160-5912. \textbf{[Wrong]} \\
+P050 & In the Protective Box Light and Dual-arm Control documents, what role does RC8A play, and which robots are compatible with Dual-arm Control? & RC8A is a controller (supported by the box and by Dual-arm Control); robots: HSR and HS-A1 series. \textbf{[Partial]} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Error analysis.}\label{sec:errors} We read the six text-only answers below full key-value recall. P048 is wrong although its gold table was ranked first: the model returned the product-line name ``Beam Wiper Blades'' instead of the four part numbers and cited a block holding only a URL. Two are correct and are missed by the strict string match (P044 gives ``+110, $-$102'' without the degree sign; P005 writes ``2,000 W''). Two are incomplete rather than wrong: P037 states the 25\,mm height of the cycle-time footnote but omits the 2\,kg load and 300\,mm distance, and P034 names the robots and arm count but not the RC8A controller. In P009 the footnote holding the answer was not retrieved; the model stated that the documents do not cover the case instead of inventing a value, but cited an unrelated reference list, so this answer is also a citation failure. Footnote and condition questions are the weakest group (67\% and 78\% key-value recall). None of these six answers attached a value to the wrong subject; the leaking claims occur elsewhere, e.g., P010 (Table~\ref{tab:answers}) and P050, where RC8A, the controller, is described as a protective box.
+
+\textbf{Unresolved error types.} Three structural error types remain open and are not fixed by the current pipeline. (1) \emph{Footnote scope}: regions labelled as footnotes are attached to the document root, so a footnote can land in a different pod from the table it qualifies and reaches the generator only when retrieval returns it as well. (2) \emph{Multi-level table headers}: a two-level header is not represented explicitly, and the generator can bind a value to the wrong header branch; in P040 every input read the 7\,kg and 6\,kg values but assigned them to the wrong configuration (standard vs.\ robot fitted with jacket). (3) \emph{Incorrect heading assignment}: blocks that do not belong to a heading, such as contact blocks at the page bottom (Fig.~\ref{fig:extract}), are attached to the preceding heading and enter its scope.
+
+\textbf{Worked examples.} The controlled ablations (fixed evidence and generator prompt) are reported on four questions each, namely those for which every configuration had completed, with E1 additionally run on five table questions; they illustrate behaviour and are not powered for significance.
+
+\emph{E2 graph expansion} (Table~\ref{tab:e2}). Expansion matters when retrieval misses part of the evidence: for P007 the three seeds held one of two gold regions (R@10 0.50 in mode A) and a single previous/next step recovered the other. Structural expansion admitted 13--28 sources and approached the 6{,}000-token ceiling, whereas scope-aware expansion rejected 17--96 candidates (mostly outside the seed's heading scope), kept the recovered evidence and used 34--62\% fewer tokens than structural expansion, with 3.5--8.6$\times$ lower graph latency. The simpler previous/next mode, however, used fewer tokens than scope-aware expansion on all four questions (P003: 1{,}934 vs.\ 2{,}079; P007: 1{,}339 vs.\ 3{,}468; P022: 3{,}033 vs.\ 3{,}739; P027: 2{,}158 vs.\ 3{,}840) and also recovered P007's missing region. The token saving of scope-aware expansion is therefore relative to structural expansion; on these four questions it did not beat previous/next. Its intended benefit, admitting same-scope structure (headings, siblings, figure text) that previous/next cannot reach, was not exercised by these examples.
+
+\emph{E4 visual input} (Table~\ref{tab:e4}). On these four questions and with this generator, structured OCR text was more accurate than full-page images (0.75 vs.\ 0.63) with half the leakage, while using about one fifth of the prompt tokens (616 vs.\ 2{,}934; 2{,}760 visual tokens per page) and of the KV-cache memory (34 vs.\ 160\,MiB); region crops alone were the weakest input. OCR text only and OCR + caption pods reached the same accuracy (0.75) and leakage (0.10); on these questions the pod structure added no accuracy over plain OCR text, at 106 more prompt tokens. The subset gives the pods little to work with: only P013 has a multi-column table grid (which plain OCR text, rebuilt from the same cells, already lists in row order), P028 is a bullet list, P039 a two-column table, and P040 a two-level header. All four inputs failed P040, the multi-level header case above, which the key-value metric alone would have scored as correct. Testing whether pods help the model read table structure needs questions on multi-column, multi-header grids.
+
+\emph{E1 evidence format} (Table~\ref{tab:e1}). All formats cited only gold sources, breadcrumbs gave the most complete citations with gold evidence, and full pods cost the most tokens without a gain. The evidence-format experiment was conducted on four text-oriented questions whose gold evidence contains no table, so the table rendering of the pods was not exercised. Therefore, the results should be interpreted as illustrative rather than conclusive evidence of the superiority of Hierarchical Evidence Pods. In this subset, full pods did not consistently outperform simpler evidence representations. We also ran E1 with gold evidence on five table questions whose tables have cell-aware grids (P006, P008, P013, P015, P048). Every format returned the correct values for P006, P008 and P013. On P015 full pods gave an incomplete answer (the leak location, partly in Chinese, without the remedy) while the other formats gave both parts; on P048 the pod formats (D, E) listed two of the four part numbers, flat text three, and JSON and Markdown all four (key-value recall 0.875 for full pods vs.\ 0.938 for flat text; citation recall 0.80 vs.\ 0.90), at 697 vs.\ 480 prompt tokens. Flat text (A) already lists each table row on one line, so this compares grid serializations with row-wise text rather than structure with no structure; on these simple tables row-wise text was sufficient, and the pods gave no gain. A broader evaluation involving hierarchical tables, merged cells, and conditional footnotes is required to quantify the contribution of the proposed serialization.
+
+\begin{table}[!htbp]
+\centering\scriptsize
+\caption{E2 graph expansion on four worked examples (top-3 retrieved seeds, 6{,}000-token ceiling). +N: sources added; Rej.: candidates rejected (scope boundary, token budget, empty, duplicate). R@10 and P@10 are computed on the \emph{expanded evidence set} of each mode (the three seeds plus admitted neighbours, first ten sources), not on the initial retrieval list; mode A is the seeds alone. Tokens: prompt tokens; Graph ms includes tokenizer calls for the budget.}
+\label{tab:e2}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llcccccc@{}}
+\toprule
+Q & Mode & +N & Rej. & R@10 & P@10 & Tokens & Graph ms \\
+\midrule
+\multirow{4}{*}{P003} & A none & 0 & 0 & 1.00 & 0.33 & 1054 & 6 \\
+ & B prev/next & 5 & 1 & 1.00 & 0.14 & 1934 & 38 \\
+ & C structural & 22 & 1 & 1.00 & 0.10 & 5483 & 207 \\
+ & D scope-aware & 6 & 17 & 1.00 & 0.12 & 2079 & 24 \\
+\midrule
+\multirow{4}{*}{P007} & A none & 0 & 0 & \textbf{0.50} & 0.33 & 810 & 5 \\
+ & B prev/next & 3 & 3 & \textbf{1.00} & 0.33 & 1339 & 16 \\
+ & C structural & 28 & 16 & 1.00 & 0.20 & 5895 & 345 \\
+ & D scope-aware & 15 & 29 & 1.00 & 0.20 & 3468 & 98 \\
+\midrule
+\multirow{4}{*}{P022} & A none & 0 & 0 & 1.00 & 0.33 & 2181 & 7 \\
+ & B prev/next & 4 & 0 & 1.00 & 0.14 & 3033 & 32 \\
+ & C structural & 13 & 14 & 1.00 & 0.10 & 5965 & 308 \\
+ & D scope-aware & 6 & 21 & 1.00 & 0.11 & 3739 & 52 \\
+\midrule
+\multirow{4}{*}{P027} & A none & 0 & 0 & 1.00 & 0.33 & 880 & 5 \\
+ & B prev/next & 6 & 0 & 1.00 & 0.11 & 2158 & 36 \\
+ & C structural & 24 & 86 & 1.00 & 0.10 & 5858 & 462 \\
+ & D scope-aware & 14 & 96 & 1.00 & 0.10 & 3840 & 90 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+\centering\scriptsize
+\caption{E4 visual input on four table/figure questions (P013, P028, P039, P040; gold evidence; one run; same generator). Acc.: manual answer accuracy over the 4 answers (partial 0.5); ALR: attribute leakage rate over the claims of the 4 answers; Cit.\ R: gold regions cited; tokens are means over the 4 questions. Full-page images and crops are given to the VLM generator without text; OCR + caption pods is our text representation. KV: GPU KV-cache memory held by the prompt, computed as prompt tokens $\times$ 56\,KiB (Qwen2.5-VL-7B: 28 layers, 4 KV heads, head size 128, FP16); vision-encoder activations are not included. Offline extraction cost is shared by all inputs (median 19\,s per page for the whole offline extraction pipeline).}
+\label{tab:e4}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+Input & Acc. & ALR$\downarrow$ & Cit.\,R & Vis.\,tok. & Prompt tok. & KV (MiB) \\
+\midrule
+Full-page image & 0.63 & 0.22 & 1.00 & 2760 & 2934 & 160 \\
+Region crops & 0.25 & 0.11 & 0.50 & 241 & 411 & 22 \\
+OCR text only & 0.75 & 0.10 & 1.00 & 0 & 510 & 28 \\
+OCR + caption pods & 0.75 & 0.10 & 1.00 & 0 & 616 & 34 \\
+\bottomrule
+\end{tabular}
+\par\vspace{10pt}
+\centering\scriptsize
+\caption{E1 evidence format on four worked examples (P002, P018, P023, P029; mean over the 4 questions, one run). These four are text questions without tables or figures, so formats differ mainly in length; the table is illustrative, not evidence that one format is superior. The five table questions are reported in the text. All cited sources were gold in every cell (citation precision 1.00).}
+\label{tab:e1}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+ & \multicolumn{2}{c}{Gold evidence} & \multicolumn{2}{c}{Retrieved (top-5)} \\
+Format & Cit.\ R & Tokens & Cit.\ R & Tokens \\
+\midrule
+A flat text & 0.88 & 222 & 0.88 & 468 \\
+B JSON & 0.75 & 240 & 0.88 & 531 \\
+C Markdown table & 0.88 & 222 & 0.88 & 475 \\
+D + breadcrumb & 1.00 & 265 & 0.88 & 617 \\
+E full pods & 0.88 & 414 & 0.88 & 1088 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \section{Discussion and Limitations}
-\textbf{Structure as text.} The results support moving structure analysis offline. Once tables are delivered as grids and figure text as OCR with caption candidates, a 7B generator answered more accurately from text than from full-page images in our worked examples, at a fraction of the prompt length, and in the main flow it reached 0.82 accuracy with text alone. 
+\textbf{Structure as text.} The results are consistent with moving structure analysis offline. Once tables are delivered as grids and figure text as OCR with caption candidates, the generator reached 0.800 accuracy in the main flow with no image in its prompt, and in the four E4 examples it answered more accurately from OCR text than from full-page images at a fraction of the prompt length. These findings concern Qwen2.5-VL-7B given text-only input, not a language model without a vision encoder, and the E4 comparison covers four questions; they show that a VLM can work from structured text, not that vision is unnecessary in general. The design rationale for the pods is that plain OCR text cannot keep a table's structure: once a table is read line by line, which value belongs to which row, column, header level or merged cell is left for the model to guess, whereas a grid with declared headers and spans states it explicitly. Prior work shows that table serialization strongly affects how well LLMs read tables~\cite{sui2024table}. We therefore expect the pods to help most on multi-column and multi-level tables; the pilot shows that the tables reach the generator (all 21 question--table pairs were in its context), but on five simple table questions the grid form did not read better than row-wise text (Sect.~\ref{sec:errors}), so its benefit on complex tables is left to the full evaluation.
 
-\textbf{Image input.} The generator is a 7B quantized VLM used zero-shot, so its reading of images reflects an untuned model rather than the value of visual evidence: given images alone it scored 0.63 on full pages and 0.25 on region crops, below the 0.75 it reached on structured text of the same evidence (Table~\ref{tab:e4}); crops in particular remove the labels and headings that the pods keep. We therefore treat images as an offline and retrieval resource in this work. Combining image crops with the pods for a VLM generator---for example, attaching a crop only where the pods lack text, such as unresolved tables---requires a stronger or adapted VLM and is left for future work.
+\textbf{Image input and expansion.} The generator is a 7B quantized VLM used zero-shot, so its weak reading of images (Table~\ref{tab:e4}) reflects an untuned model rather than the value of visual evidence; crops in particular lose the labels and headings that the pods keep. We therefore treat images as an offline and retrieval resource here; attaching a crop only where the pods lack text, such as unresolved tables, needs a stronger or adapted VLM and is left for future work. Graph expansion helps most when retrieval returns part of the evidence, and restricting it to the seed's heading scope avoided filling the budget with irrelevant siblings, although simple previous/next expansion was cheaper still on the four examples.
 
-\textbf{Scope over volume.} Graph expansion is most useful when retrieval returns part of the evidence. Adding every structural neighbour fills the budget with siblings that rarely matter; restricting expansion to the seed's heading scope kept the recovered evidence with far fewer tokens.
-
-\textbf{Limitations.} (i) a table whose grid fails validation is published without text, so a text-only generator cannot read it and only an image crop remains, and even a valid grid with a two-level header (P040) can be misread because the header hierarchy is declared only as merged-cell metadata; (ii) regions labelled as footnotes are attached to the document root, so a footnote can land in a different pod from the table it qualifies and is used only when retrieval returns it as well; (iii) heading scope can be wrong when contact blocks at the page bottom are attached to the preceding heading; (iv) \texttt{RELATED\_PASSAGE} similarity links include noise (shared URLs, boilerplate) and are therefore presented only as proposals; (v) answers are checked for citation IDs and format, not by an independent semantic verifier; (vi) the pilot uses one generator, one run per configuration and documents seen during development, and the ablations are worked examples rather than full-scale comparisons; text-only conditions used Qwen2.5-VL without images rather than a model lacking a vision encoder. Future work extends the evaluation to 200--300 questions on unseen documents, a text-only LLM and full-scale format and expansion ablations.
+\textbf{Limitations.}\label{sec:limitations} (i) A table whose grid fails validation is published without text, so a text-only generator cannot read it and only an image crop remains. (ii) The three unresolved error types of Sect.~\ref{sec:errors}---footnote scope, multi-level table headers and incorrect heading assignment---remain. (iii) \texttt{RELATED\_PASSAGE} similarity links include noise (shared URLs, boilerplate) and are therefore presented only as proposals. (iv) Answers are checked for citation IDs and format, not by an independent semantic verifier, and 11 of 98 claims were unsupported by their citations. (v) The pilot uses one generator, one run per configuration, LLM-assisted grading reviewed by the first author but without a second, independent grader and documents seen during development; five of 50 questions were answered in a second run, four after a temporary server outage and one after the output-language check was removed; the ablations are worked examples on four or five questions rather than full-scale comparisons, and no run without the ColPali channel was made. (vi) ``Text-only'' conditions used Qwen2.5-VL without images rather than a model lacking a vision encoder. Future work extends the evaluation to 200--300 questions on unseen documents with a second grader, a text-only LLM, a no-ColPali ablation and full-scale format and expansion ablations on table-heavy questions.
 
 \section{Conclusion}
-We described a system that performs layout, table and figure analysis offline and gives the generator source regions together with their document, heading and reading-stream scope, explicit table grids and stable citation IDs. On a pilot set of technical documents the pipeline retrieved nearly all gold evidence, and a zero-shot generator given only structured text answered with accuracy 0.82, attribute leakage of 4.8\% and citation faithfulness of 0.92, while structured text outperformed full-page images at about one fifth of the prompt length. Vision is thus needed for building the evidence, not for reading it.
+The results demonstrate the feasibility of performing document structure analysis offline and providing a generation model with compact, source-grounded textual evidence. The proposed pipeline achieved promising retrieval and question-answering performance on a technical-document pilot set. Controlled examples suggest potential benefits of scope-aware expansion and structured text representations, although larger and independent evaluations are needed to establish their generalizability.
 
+\ifanon
+\textbf{Code and data availability.} The extraction and retrieval code, the evaluation scripts, the pilot questions with gold evidence and the per-question logs will be released in a public repository; the link is withheld for anonymous review.
+\else
 \textbf{Code and data availability.} The extraction and retrieval code, the evaluation scripts, the pilot questions with gold evidence and the per-question logs are available at \url{https://github.com/Andydo21/MultiModelAndExtract}.
+\fi
 
-\bibliographystyle{IEEEtran}
+\section*{Acknowledgements}
+\ifanon\else
+This work was carried out by Do Dang An under the supervision of Dao Thi Thuy Quynh at the Posts and Telecommunications Institute of Technology (PTIT).
+
+\fi
+\textbf{Use of generative AI.} Qwen2.5-VL-7B-Instruct is a component of the evaluated system (query planning and answer generation), as described in Sect.~3. In preparing this paper, the authors used Claude (Anthropic) to assist with drafting and restructuring text, LaTeX formatting, writing evaluation and reporting scripts, and the LLM-assisted grading of answers described in Sect.~4.1. All experiments were run by the authors, all numbers are taken from the evaluation logs, and the authors reviewed and take full responsibility for the content. No figure was generated by AI; all figures are screenshots or renderings of system output, or diagrams drawn by the authors.
+
+\textbf{Disclosure of interests.} The authors have no competing interests to declare that are relevant to the content of this article.
+
+\bibliographystyle{splncs04}
 \bibliography{refs}
 
 \end{document}

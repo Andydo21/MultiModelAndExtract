@@ -30,12 +30,13 @@
   year      = {2022}
 }
 
-@misc{paruchuri2024surya,
-  title        = {Surya: {OCR}, Layout Analysis, Reading Order and Table Recognition in 90+ Languages},
-  author       = {Paruchuri, Vikas},
-  howpublished = {\url{https://github.com/VikParuchuri/surya}},
-  note         = {GitHub repository},
-  year         = {2024}
+% Version actually deployed: Surya 2 (VLM-based OCR/layout), served as GGUF with llama.cpp.
+@misc{paruchuri2026surya2,
+  title        = {Surya 2: {OCR}, Layout Analysis and Reading Order},
+  author       = {Paruchuri, Vikas and {Datalab}},
+  howpublished = {\url{https://github.com/datalab-to/surya}},
+  note         = {{GitHub} repository; package \texttt{surya-ocr} 0.22, model \texttt{datalab-to/surya-ocr-2}; accessed October 2026},
+  year         = {2026}
 }
 
 @inproceedings{smock2022pubtables,
@@ -52,6 +53,24 @@
   booktitle = {Proc. 2024 Conference of the North American Chapter of the Association for Computational Linguistics (NAACL)},
   pages     = {5364--5376},
   year      = {2024}
+}
+
+% Checkpoint actually deployed for entity spans: knowledgator/gliner-relex-multi-v1.0 (GLiNER architecture).
+@misc{knowledgator2025relex,
+  title        = {{GLiNER-RelEx} multi v1.0 (\texttt{knowledgator/gliner-relex-multi-v1.0})},
+  author       = {{Knowledgator Engineering}},
+  howpublished = {\url{https://huggingface.co/knowledgator/gliner-relex-multi-v1.0}},
+  note         = {{Hugging Face} model card; accessed October 2026},
+  year         = {2025}
+}
+
+% Checkpoint actually deployed for identity and topic checks: fastino/gliner2-base-v1.
+@misc{zaratiana2025gliner2,
+  title         = {{GLiNER2}: An Efficient Multi-Task Information Extraction System with Schema-Driven Interface},
+  author        = {Zaratiana, Urchade and Pasternak, Gil and Boyd, Oliver and Hurn-Maloney, George and Lewis, Ash},
+  eprint        = {2507.18546},
+  archivePrefix = {arXiv},
+  year          = {2025}
 }
 
 @misc{chen2024bgem3,
@@ -125,13 +144,5 @@
   title     = {Least-to-Most Prompting Enables Complex Reasoning in Large Language Models},
   author    = {Zhou, Denny and Sch{\"a}rli, Nathanael and Hou, Le and Wei, Jason and Scales, Nathan and Wang, Xuezhi and Schuurmans, Dale and Cui, Claire and Bousquet, Olivier and Le, Quoc and Chi, Ed},
   booktitle = {International Conference on Learning Representations (ICLR)},
-  year      = {2023}
-}
-
-@inproceedings{zheng2023judge,
-  title     = {Judging {LLM}-as-a-Judge with {MT-Bench} and {Chatbot Arena}},
-  author    = {Zheng, Lianmin and Chiang, Wei-Lin and Sheng, Ying and Zhuang, Siyuan and Wu, Zhanghao and Zhuang, Yonghao and Lin, Zi and Li, Zhuohan and Li, Dacheng and Xing, Eric P. and Zhang, Hao and Gonzalez, Joseph E. and Stoica, Ion},
-  booktitle = {Advances in Neural Information Processing Systems (Datasets and Benchmarks Track)},
-  volume    = {36},
   year      = {2023}
 }

@@ -1,0 +1,21 @@
+﻿document_id,version,file_name,questions,gold_regions
+contract-version-1000000,1000000,EVAL20-1000000-59fd1207daada80d14d5 — DigitalTwinSoftware_en,P001 P002 P003,2
+contract-version-1000001,1000001,EVAL20-1000000-212c2aea490ac67d82bb — RC8_Controller_Protective_Box_Light_E,P004 P005 P006 P050,6
+contract-version-1000002,1000002,EVAL20-1000000-2e4ba8f98dd3bea2d6ae — Spark Plug Installation _ DENSO Auto Parts,P007 P008 P009,4
+contract-version-1000003,1000003,EVAL20-1000000-7dfa4a8e78d025874f17 — Iridium Racing® Spark Plug Components _ DENSO Auto Parts,P010 P011,3
+contract-version-1000004,1000004,EVAL20-1000000-7d49ab9bb514af9a8276 — Iridium Racing® Insulator Height and Configuration _ DENSO Auto Parts,P012 P013,2
+contract-version-1000005,1000005,EVAL20-1000000-06b1227d6015c536b7bb — Troubleshooting Charts - Compressor _ DENSO Auto Parts,P014 P015,2
+contract-version-1000006,1000006,"EVAL20-1000000-82d375424f86504d5db6 — Troubleshooting Charts - Clutch, Expansion _ DENSO Auto Parts",P016 P017,2
+contract-version-1000007,1000007,EVAL20-1000000-60d651a2ce5c40524396 — Poor Cooling Performance in a Vehicle with Dual A_C _ DENSO Auto Parts,P018 P019 P020,3
+contract-version-1000008,1000008,EVAL20-1000000-48a3c8485e5649673652 — Compressor Snap Ring Installation Precaution _ DENSO Auto Parts,P021 P022,3
+contract-version-1000009,1000009,EVAL20-1000000-db2632df1d78ae6ad0b1 — A_C Clutch Inoperative and A_C Light Flashing _ DENSO Auto Parts,P023 P024 P025,4
+contract-version-1000010,1000010,EVAL20-1000000-8e43a607fd3fe69adab7 — A_C Clutch Inoperative and Fan Won't Turn Off _ DENSO Auto Parts,P026 P027,2
+contract-version-1000011,1000011,EVAL20-1000000-786a913c0b3f309e9135 — COBOTTA_Optional_Products_E,P028 P029,3
+contract-version-1000012,1000012,EVAL20-1000000-191ea49f8a1a9b04c64d — DENSO_Robotics_EVP2_EN,P030 P031,4
+contract-version-1000013,1000013,EVAL20-1000000-92014e1b28009be48c05 — DENSO_Robotics_WINCAPSp_EN,P032 P033,4
+contract-version-1000014,1000014,EVAL20-1000000-c0190547524e4f67a3c1 — Dual-arm_Control_E,P034 P035 P050,3
+contract-version-1000015,1000015,EVAL20-1000000-20606e03ab07c787a7c1 — LPH_E,P036 P037 P038 P049,3
+contract-version-1000016,1000016,EVAL20-1000000-91b7c757fcd49f49af86 — Robot_Protective_Jacket_E,P039 P040 P041,4
+contract-version-1000017,1000017,EVAL20-1000000-87320a162a902ac08553 — VS050S2_E,P042 P043 P044 P049,5
+contract-version-1000018,1000018,EVAL20-1000000-9e0da4bf99568edcb643 — DENSO Brake Pad Kit Product Sheet_0524,P045 P046,3
+contract-version-1000019,1000019,EVAL20-1000000-b5d9eed46059ee292331 — Part Number Explanation - Wiper Blade Reference Guide _ DENSO Auto Parts,P047 P048,3

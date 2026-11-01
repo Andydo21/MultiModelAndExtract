@@ -1,0 +1,39 @@
+﻿question_id,setting,label,error_type,leaked_claims,unsupported_claims,note,question
+P003,text_only,partial,missing_detail,0,0,conveyors mistranslated (off: movement; on: springs),"realvirtual.io Professional là phần bổ sung cho nền tảng nào, và thư viện của nó có những ví dụ thiết bị gì?"
+P009,text_only,no_answer,abstained,0,1,"off: gold footnote not retrieved, abstained; on: hallucinated optics text",Nếu ren bugi được bôi trơn thì tài liệu yêu cầu điều chỉnh mô-men siết như thế nào và vì sao?
+P010,text_only,partial,leakage,1,1,A and G both given platinum in one claim,"Trong sơ đồ và chú giải Iridium Racing, nhãn A và G chỉ hai điện cực có vật liệu và đường kính nào?"
+P017,text_only,partial,missing_detail,0,0,"off: remedy for tube leak given as repair, not replace","Khi đầu ra van tiết lưu không lạnh và không cảm nhận được chênh lệch nhiệt đầu vào/đầu ra, bảng nêu hai nguyên nhân và cách xử lý tương ứng nào?"
+P018,text_only,partial,leakage,1,1,off: compressor said to be replaced,"Trong ca A/C hai dàn làm mát kém, máy nén và van tiết lưu phía trước đã được kiểm tra hoặc xử lý thế nào trước khi xác định nguyên nhân phía sau?"
+P019,text_only,partial,missing_detail,0,0,off: misses the temperature-reading step,Ống cảm nhiệt của van tiết lưu phía sau bị lỏng gây làm mát kém qua cơ chế nào?
+P020,text_only,partial,missing_detail,0,0,on: wrong mounting point,Tài liệu hướng dẫn cố định lại ống cảm nhiệt phía sau ở đâu và cần tham khảo gì về cách nhiệt?
+P025,text_only,partial,missing_detail,0,1,on: Sienna 1998-2006 invented,"Chú thích mở rộng phạm vi cho Toyota Matrix và Toyota Sienna nêu những đời xe nào, và việc mở rộng đó có điều kiện gì?"
+P026,text_only,partial,missing_detail,0,1,off: wrong test points,Tài liệu Water Temperature Switch hướng dẫn kiểm tra thông mạch ở nhiệt độ phòng giữa hai điểm nào? Kết quả hở mạch có ý nghĩa gì?
+P033,text_only,partial,leakage,1,1,RC8 attached to Protective Box from another document,"Home Position Guidance giả định gì về đường chạy tự động, và dùng RC8 cần thêm thiết bị gì theo chú thích?"
+P034,text_only,partial,missing_detail,0,0,RC8A controller omitted,Dual-arm Control hỗ trợ những dòng robot nào và controller nào? Một controller điều khiển được bao nhiêu tay robot?
+P037,text_only,partial,missing_detail,0,0,2 kg load and 300 mm distance omitted,"Chu kỳ 0,45 giây của LPH được đo với tải, khoảng cách hai điểm và độ cao nào?"
+P039,text_only,wrong,leakage,1,1,RC8A/RC8 listed as excluded configurations,Áo bảo vệ robot cho chế biến thực phẩm tương thích robot/controller nào và loại cấu hình nào bị loại trừ?
+P040,text_only,partial,missing_detail,0,0,values 7->6 kg right but described as an increase,"Khi lắp áo bảo vệ, tải trọng tối đa của VS068 và VS087 thay đổi thế nào so với cấu hình tiêu chuẩn?"
+P048,text_only,wrong,unsupported_content,0,2,"rerun 2026-10-31 (gateway offline in 2026-10-30 run); gives ""Beam Wiper Blades"" instead of the four part numbers; cites a URL block","Trong bảng Rear Wiper Blades, cỡ 12 inch/300 mm liệt kê những mã sản phẩm nào?"
+P049,text_only,partial,missing_detail,0,1,"rerun 2026-10-31 (gateway offline in 2026-10-30 run); all six values correct; says cycle times are not at the same load but omits the 2 kg / 1 kg loads, and cites only the tables","So sánh LPH-040A1 và VS-050S2 về tầm với, tải trọng tối đa và chu kỳ. Hai giá trị chu kỳ có được đo ở cùng tải không?"
+P050,text_only,partial,leakage,1,1,rerun 2026-10-31 (gateway offline in 2026-10-30 run); robot series correct; RC8A described as a protective box instead of the controller (leak),"Trong tài liệu Protective Box Light và Dual-arm Control, RC8A đóng vai trò gì? Tên robot tương thích với Dual-arm Control là gì?"
+P001,image_policy,partial,missing_detail,0,0,"on: generic, uses missing",Digital Twin Software kết hợp hai nền tảng nào và hỗ trợ những công việc gì trước khi mua thiết bị thật?
+P002,image_policy,partial,missing_detail,0,1,"on: Ethernet IP unsupported, PLC/wiring missing",realvirtual.io Professional hỗ trợ những giao diện và kết nối nào để mô phỏng thiết bị?
+P003,image_policy,partial,missing_detail,0,1,conveyors mistranslated (off: movement; on: springs),"realvirtual.io Professional là phần bổ sung cho nền tảng nào, và thư viện của nó có những ví dụ thiết bị gì?"
+P009,image_policy,wrong,unsupported_content,0,2,"off: gold footnote not retrieved, abstained; on: hallucinated optics text",Nếu ren bugi được bôi trơn thì tài liệu yêu cầu điều chỉnh mô-men siết như thế nào và vì sao?
+P010,image_policy,wrong,leakage,1,1,A and G both given platinum in one claim,"Trong sơ đồ và chú giải Iridium Racing, nhãn A và G chỉ hai điện cực có vật liệu và đường kính nào?"
+P018,image_policy,partial,leakage,1,1,off: compressor said to be replaced,"Trong ca A/C hai dàn làm mát kém, máy nén và van tiết lưu phía trước đã được kiểm tra hoặc xử lý thế nào trước khi xác định nguyên nhân phía sau?"
+P020,image_policy,wrong,unsupported_content,0,1,on: wrong mounting point,Tài liệu hướng dẫn cố định lại ống cảm nhiệt phía sau ở đâu và cần tham khảo gì về cách nhiệt?
+P025,image_policy,wrong,unsupported_content,0,1,on: Sienna 1998-2006 invented,"Chú thích mở rộng phạm vi cho Toyota Matrix và Toyota Sienna nêu những đời xe nào, và việc mở rộng đó có điều kiện gì?"
+P027,image_policy,wrong,unsupported_content,0,1,on: says nothing else is forbidden,"Khi lắp công tắc nhiệt độ nước A/C, tài liệu cho phép dùng dụng cụ gì và cấm những thao tác/vật liệu nào?"
+P033,image_policy,partial,leakage,1,1,RC8 attached to Protective Box from another document,"Home Position Guidance giả định gì về đường chạy tự động, và dùng RC8 cần thêm thiết bị gì theo chú thích?"
+P034,image_policy,partial,missing_detail,0,0,RC8A controller omitted,Dual-arm Control hỗ trợ những dòng robot nào và controller nào? Một controller điều khiển được bao nhiêu tay robot?
+P035,image_policy,partial,leakage,1,1,on: heavy-object function wrong,"Những chức năng nào giúp hai tay robot tránh va chạm trong không gian hẹp, và chức năng nào phục vụ vật dài hoặc nặng?"
+P037,image_policy,partial,missing_detail,0,0,2 kg load and 300 mm distance omitted,"Chu kỳ 0,45 giây của LPH được đo với tải, khoảng cách hai điểm và độ cao nào?"
+P038,image_policy,wrong,leakage,2,2,on: EVP2 search functions given as LPH commands,"Tính năng command-slave của LPH cho phép PLC điều khiển robot qua gì, hỗ trợ bao nhiêu loại lệnh và có cần lập trình phía robot không?"
+P039,image_policy,wrong,leakage,1,1,RC8A/RC8 listed as excluded configurations,Áo bảo vệ robot cho chế biến thực phẩm tương thích robot/controller nào và loại cấu hình nào bị loại trừ?
+P040,image_policy,partial,missing_detail,0,0,values 7->6 kg right but described as an increase,"Khi lắp áo bảo vệ, tải trọng tối đa của VS068 và VS087 thay đổi thế nào so với cấu hình tiêu chuẩn?"
+P007,image_policy,not_generated,response_rejected,,,withheld by the production citation check,"Khi điều chỉnh khe hở bugi Iridium Power, dụng cụ không được chạm vào những bộ phận nào và phải kiểm tra lại bằng gì?"
+P047,image_policy,not_generated,gateway_unavailable,,,generator offline during the run,"Trong bảng Conventional & Designer Wiper Blades, chiều dài 14 inch và 26 inch tương ứng bao nhiêu mm?"
+P048,image_policy,not_generated,gateway_unavailable,,,generator offline during the run,"Trong bảng Rear Wiper Blades, cỡ 12 inch/300 mm liệt kê những mã sản phẩm nào?"
+P049,image_policy,not_generated,gateway_unavailable,,,generator offline during the run,"So sánh LPH-040A1 và VS-050S2 về tầm với, tải trọng tối đa và chu kỳ. Hai giá trị chu kỳ có được đo ở cùng tải không?"
+P050,image_policy,not_generated,gateway_unavailable,,,generator offline during the run,"Trong tài liệu Protective Box Light và Dual-arm Control, RC8A đóng vai trò gì? Tên robot tương thích với Dual-arm Control là gì?"

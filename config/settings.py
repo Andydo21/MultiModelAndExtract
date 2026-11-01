@@ -170,7 +170,7 @@ AUTH_USER_MODEL = "contracts.User"
 
 # AI Inference Service Configuration
 AI_SERVICE_URL = os.environ.get(
-    "AI_SERVICE_URL", "https://<gateway>.ngrok-free.app"
+    "AI_SERVICE_URL", "http://localhost:8000"
 )
 
 # Kaggle Qwen AI Extract & Summarize Service

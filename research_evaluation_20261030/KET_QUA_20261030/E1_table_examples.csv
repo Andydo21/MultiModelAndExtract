@@ -1,0 +1,51 @@
+﻿question_id,evidence_mode,format,citation_recall,key_value_recall,input_tokens,answer
+P006,gold,A,1.0,1.0,392,"Khi vận hành, nhiệt độ và độ ẩm của Protective Box Light được giới hạn trong khoảng từ 0°C đến 40°C, với độ ẩm không vượt quá 90% RH (không kondens). Trong khi lưu kho hoặc vận chuyển, nhiệt độ và độ ẩm được giới hạn trong khoảng từ -10°C đến 60°C, với độ ẩm không vượt quá 75% RH (không kondens)."
+P006,gold,B,1.0,1.0,401,"Khi vận hành, nhiệt độ tối đa là 40°C và độ ẩm tối đa là 90% RH (không kondens). Khi lưu kho/vận chuyển, nhiệt độ tối đa là 60°C và độ ẩm tối đa là 75% RH (không kondens)."
+P006,gold,C,1.0,1.0,419,"Khi vận hành, giới hạn nhiệt độ của Protective Box Light là 0°C đến 40°C, với độ ẩm không vượt quá 90% RH (không kondens). Khi lưu kho hoặc vận chuyển, giới hạn nhiệt độ là -10°C đến 60°C, với độ ẩm không vượt quá 75% RH (không kondens)."
+P006,gold,D,1.0,1.0,464,"Khi vận hành, nhiệt độ và độ ẩm của Protective Box Light được giới hạn trong khoảng 0°C đến 40°C, 90% RH hoặc ít hơn (không kondens). Khi lưu kho/vận chuyển, nhiệt độ và độ ẩm được giới hạn trong khoảng -10°C đến 60°C, 75% RH hoặc ít hơn (không kondens)."
+P006,gold,E,1.0,1.0,676,"Khi vận hành, nhiệt độ và độ ẩm của Protective Box Light được giới hạn trong khoảng từ 0°C đến 40°C, với độ ẩm không vượt quá 90% RH (không kondens). Trong khi lưu kho hoặc vận chuyển, nhiệt độ và độ ẩm được giới hạn trong khoảng từ -10°C đến 60°C, với độ ẩm không vượt quá 75% RH (không kondens)."
+P006,retrieved,A,1.0,1.0,599,"Khi vận hành, nhiệt độ tối đa là 40°C và độ ẩm tối đa là 90% RH (không kondens). Khi lưu kho hoặc vận chuyển, nhiệt độ tối đa là 60°C và độ ẩm tối đa là 75% RH (không kondens)."
+P006,retrieved,B,1.0,1.0,654,"Khi vận hành, Protective Box Light có thể chịu nhiệt độ từ 0°C đến 40°C và độ ẩm tối đa là 90% RH (không kondens). Khi lưu kho hoặc vận chuyển, nó có thể chịu nhiệt độ từ -10°C đến 60°C và độ ẩm tối đa là 75% RH (không kondens)."
+P006,retrieved,C,1.0,1.0,626,"Khi vận hành, nhiệt độ tối đa cho Protective Box Light là 40°C và độ ẩm tối đa là 90% RH (không kondensing). Trong khi lưu kho hoặc vận chuyển, nhiệt độ tối đa là 60°C và độ ẩm tối đa là 75% RH (không kondensing)."
+P006,retrieved,D,1.0,1.0,757,"Khi vận hành, nhiệt độ tối đa cho RC8 Controller Protective Box Light là 40°C và độ ẩm tối đa là 90% RH (không kondens). Khi lưu kho hoặc vận chuyển, nhiệt độ tối đa là 60°C và độ ẩm tối đa là 75% RH (không kondens)."
+P006,retrieved,E,1.0,1.0,1688,"Khi vận hành, nhiệt độ tối đa cho Protective Box Light là 40°C và độ ẩm tối đa là 90% RH (không kondens). Khi lưu kho hoặc vận chuyển, nhiệt độ tối đa là 60°C và độ ẩm tối đa là 75% RH (không kondens)."
+P008,gold,A,0.5,1.0,485,Mô-men siết cho nắp máy gang và nhôm lần lượt là 35-40 N·m và 20-30 N·m.
+P008,gold,B,0.5,1.0,489,Mô-men siết cho nắp máy gang là 35-40 N·m và mô-men siết cho nắp máy nhôm là 20-30 N·m.
+P008,gold,C,0.5,1.0,512,Mô-men siết cho nắp máy gang và nhôm lần lượt là 35-40 N·m và 20-30 N·m.
+P008,gold,D,0.5,1.0,621,Mô-men siết cho nắp máy gang và nhôm lần lượt là 35-40 N·m và 20-30 N·m.
+P008,gold,E,0.5,1.0,731,Mô-men siết cho nắp máy gang và nhôm lần lượt là 35-40 N·m và 20-30 N·m.
+P008,retrieved,A,0.5,1.0,1435,Mô-men siết cho nắp máy gang và nhôm lần lượt là 35-40 N·m và 20-30 N·m.
+P008,retrieved,B,0.5,1.0,1399,"Mô-men siết cho nắp máy gang là 35-40 N·m, và mô-men siết cho nắp máy nhôm là 20-30 N·m."
+P008,retrieved,C,0.5,1.0,1545,"Mô-men siết cho nắp máy gang là 35-40 N·m, và mô-men siết cho nắp máy nhôm là 20-30 N·m."
+P008,retrieved,D,0.5,0.75,1841,Mô-men siết cho nắp máy gang và nhôm lần lượt là 35-40 N·m và 26-30 N·m.
+P008,retrieved,E,0.5,1.0,2146,"Mô-men siết cho nắp máy gang là 35-40 N·m, và mô-men siết cho nắp máy nhôm là 20-30 N·m."
+P013,gold,A,1.0,1.0,839,"Đường kính ren của IU01* là 10 mm, IXU01* là 12 mm. Chiều cao bugi của IU01* là 50 mm, IXU01* là 51 mm."
+P013,gold,B,1.0,1.0,775,"Đường kính ren của IU01* là 10 mm, IXU01* là 12 mm. Chiều cao bugi của IU01* là 50 mm, IXU01* là 51 mm."
+P013,gold,C,1.0,1.0,894,"Đường kính ren của IU01* là 10 mm, IXU01* là 12 mm. Chiều cao bugi của IU01* là 50 mm, IXU01* là 51 mm."
+P013,gold,D,1.0,1.0,961,"Đường kính ren của IU01* là 10 mm, IXU01* là 12 mm. Chiều cao bugi của IU01* là 50 mm, IXU01* là 51 mm."
+P013,gold,E,1.0,1.0,991,"Đường kính ren của IU01* là 10 mm, IXU01* là 12 mm. Chiều cao bugi của IU01* là 50 mm, IXU01* là 51 mm."
+P013,retrieved,A,1.0,1.0,1227,Đường kính ren của IU01* là 10 mm và IXU01* là 12 mm. Chiều cao bugi của IU01* là 50 mm và IXU01* là 51 mm.
+P013,retrieved,B,1.0,1.0,1214,Đường kính ren của IU01* là 10 mm và IXU01* là 12 mm. Chiều cao bugi của IU01* là 50 mm và IXU01* là 51 mm.
+P013,retrieved,C,1.0,1.0,1281,Đường kính ren của IU01* là 10 mm và IXU01* là 12 mm. Chiều cao bugi của IU01* là 50 mm và IXU01* là 51 mm.
+P013,retrieved,D,1.0,1.0,1523,Đường kính ren của IU01* là 10 mm và IXU01* là 12 mm. Chiều cao bugi của IU01* là 50 mm và IXU01* là 51 mm.
+P013,retrieved,E,1.0,1.0,1722,Đường kính ren của IU01* là 10 mm và IXU01* là 12 mm. Chiều cao bugi của IU01* là 50 mm và IXU01* là 51 mm.
+P015,gold,A,1.0,,369,"Khi thấy các bu-lông của máy nén bị dính dầu, bảng chẩn đoán nêu vị trí rò gas là từ bu-lông và biện pháp là retighten bolts."
+P015,gold,B,1.0,,390,"Khi thấy các bu-lông của máy nén bị dính dầu, bảng chẩn đoán nêu rằng vị trí rò gas là từ bu-lông và biện pháp là retighten bolts."
+P015,gold,C,1.0,,399,"Khi thấy các bu-lông của máy nén bị dính dầu, bảng chẩn đoán nêu vị trí rò gas là từ các bu-lông được nối bằng vít và biện pháp là retighten bolts."
+P015,gold,D,1.0,,443,"Bảng chẩn đoán nêu rằng khi các bu-lông của máy nén bị dính dầu, có thể là do gas rò từ các bộ phận được gắn bằng bu-lông. Để khắc phục, cần retighten bolts."
+P015,gold,E,1.0,,557,"Khi thấy các bu-lông của máy nén bị dính dầu, bảng chẩn đoán nêu vị trí rò gas là từ "
+P015,retrieved,A,1.0,,1544,"Khi thấy các bu-lông của máy nén bị dính dầu, bảng chẩn đoán nêu rằng vị trí rò gas là bu-lông bị dính dầu và biện pháp là retighten bolts."
+P015,retrieved,B,1.0,,1618,"Khi thấy các bu-lông của máy nén bị dính dầu, bảng chẩn đoán nêu rằng vị trí rò gas là bu-lông bị dính dầu và biện pháp là retighten bolts."
+P015,retrieved,C,1.0,,1574,"Khi thấy các bu-lông của máy nén bị dính dầu, bảng chẩn đoán nêu rằng vị trí rò gas là bu-lông bị dính dầu và biện pháp là retighten bolts."
+P015,retrieved,D,1.0,,1758,Bolts get stained with oil.
+P015,retrieved,E,1.0,,2128,"Khi thấy các bu-lông của máy nén bị dính dầu, bảng chẩn đoán nêu vị trí rò gas là 'Gas leaking from bolted parts.' và biện pháp là 'Retighten bolts.'"
+P048,gold,A,1.0,0.75,313,"160-5512, 160-5612, 160-5712"
+P048,gold,B,0.5,1.0,332,"160-5512, 160-5612, 160-5712, 160-5912"
+P048,gold,C,0.5,1.0,336,"160-5512, 160-5612, 160-5712, 160-5912"
+P048,gold,D,1.0,0.5,488,160-5512 và 160-5612
+P048,gold,E,0.5,0.5,528,"Trong bảng Rear Wiper Blades, cỡ 12 inch/300 mm liệt kê những mã sản phẩm 160-5512 và 160-5612."
+P048,retrieved,A,0.5,0.75,562,"Cỡ 12 inch/300 mm liệt kê các mã sản phẩm 160-5512, 160-5612 và 160-5712."
+P048,retrieved,B,0.5,0.75,615,"Trong bảng Rear Wiper Blades, cỡ 12 inch/300 mm liệt kê những mã sản phẩm là 160-5512, 160-5612 và 160-5712."
+P048,retrieved,C,0.5,1.0,601,"160-5512, 160-5612, 160-5712, 160-5912"
+P048,retrieved,D,0.5,0.5,953,160-5512 và 160-5612
+P048,retrieved,E,0.5,0.5,1094,"Trong bảng Rear Wiper Blades, cỡ 12 inch/300 mm liệt kê những mã sản phẩm 160-5512 và 160-5612."

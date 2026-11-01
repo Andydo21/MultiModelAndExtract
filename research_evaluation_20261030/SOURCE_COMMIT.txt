@@ -1,0 +1,6 @@
+Runs of 2026-10-30/31 were made from the development repository at commit 562e4dc
+("feat: replace PaddleOCR with PlanA extraction pipeline") with uncommitted working-tree changes.
+The code in this release is the snapshot of that working tree used for the runs, plus the 2026-10-31 change
+that removed the output-language check (ai_extract/services/contract_pipeline_service.py) before the P007 rerun
+and the --modes/--questions/--rerun options and raw-output logging in evaluation/runners/pilot_mainflow.py.
+The release commit in this repository is therefore the authoritative code version.
