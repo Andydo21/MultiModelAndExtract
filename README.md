@@ -62,7 +62,7 @@ Requirements: Docker with an NVIDIA GPU for `a3-inference`, and a gateway servin
 
 4. **Open** http://127.0.0.1:8000/
 
-   No login is needed: `ensure_demo_user` creates a local admin, and `AutoDemoLoginMiddleware` gives that account to every visitor. Compose publishes the site only on `127.0.0.1`. Do not expose it publicly in this state, because anyone who reaches it has admin rights; remove the middleware from `config/settings.py` first.
+   No login is needed: `ensure_demo_user` creates a local admin, and `AutoDemoLoginMiddleware` gives that account to every visitor, without a CSRF check. Compose publishes the site only on `127.0.0.1`. Do not expose it publicly in this state, because anyone who reaches it has admin rights, and a page open in the same browser could send it requests; remove the middleware from `config/settings.py` first.
 
 | Page | URL |
 |---|---|
