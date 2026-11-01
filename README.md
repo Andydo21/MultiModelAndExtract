@@ -4,16 +4,29 @@ Code and evaluation evidence for *Hierarchical Evidence Pods: Structure-Preservi
 
 The system analyses document structure offline (layout, OCR, table grids, figures, a per-document graph). Online, it retrieves source regions with BM25, BGE-M3 and figure-level ColPali, expands them through the graph, and gives the generator scoped evidence as text, with stable citation IDs.
 
-## Layout
+## Folders
 
-| Path | Contents |
+The folder names come from the project's history, so some do not describe their contents. In the code, "A3" means the offline extraction stage and "A2" the online question-answering stage.
+
+| Folder | What it is | Main entry points |
+|---|---|---|
+| `ai_extract/` | **Offline extraction (A3).** Reads a document once and stores its structure: page rendering, layout and OCR with Surya, table grids with the Table Transformer, heading hierarchy, entities with GLiNER, the per-document Neo4j graph, and the BGE-M3 and ColPali indexes. Also holds the extraction pages of the website and the local GPU inference service | `services/layout_service.py`, `services/surya_inference_service.py`, `services/document_structure_service.py`, `services/document_graph_service.py`, `views/inference_app.py` |
+| `NewIdea/` | **Online question answering (A2).** Despite the name, this is the core of the paper: it takes a question, retrieves source regions (BM25, BGE-M3, ColPali, rank fusion, reranking), selects seeds, expands them through the graph, builds the **Hierarchical Evidence Pods** and generates the cited answer. Also serves the `/newidea/` page | `services/knowledge_search_service.py`, `services/search_evidence_service.py`, `services/knowledge_answer_service.py` |
+| `contracts/` | **The web application around both stages.** The project began as a contract-management system, so "contract" here means any uploaded document. Holds the document and version models, upload and download, login and access control, the dashboard pages, and the background commands | `models.py`, `urls.py`, `views/`, `templates/` |
+| `shared/` | **Code used by several apps:** BM25 and rank fusion, the client that calls the generator, and JWT login middleware | `retrieval.py`, `qwen_gateway.py`, `jwt_middleware.py` |
+| `config/` | **Django project settings:** environment variables, database connections, and the top-level URL routes | `settings.py`, `urls.py` |
+| `runtime/` | **Scripts for the GPU inference service** (the `a3-inference` container): one installs its Python environment and llama.cpp, the other starts it on port 8010 | `setup_a3_linux_runtime.sh`, `start_a3_linux_runtime.sh` |
+| `serving/` | **Notebook for the remote models.** Runs the generator (Qwen2.5-VL on vLLM) and ColPali on Kaggle behind one public gateway | `kaggle_vllm_qwen_colpali_gateway.ipynb` |
+| `research_evaluation_20261030/` | **Evidence for the paper,** from the evaluation of 30–31 October 2026. Nothing here is needed to run the system | See below |
+
+Inside `research_evaluation_20261030/`:
+
+| Folder | What it is |
 |---|---|
-| `ai_extract/` | Offline extraction, indexing, graph projection, inference runtime, pipeline and page-inspector pages |
-| `NewIdea/` | Online retrieval, seed selection, graph expansion, Evidence Pods, checked generation |
-| `contracts/`, `shared/`, `config/` | Web application, data models, access control, BM25/RRF, generator client, Django settings |
-| `runtime/` | Install and start scripts for the GPU inference runtime |
-| `serving/` | Kaggle notebook that serves the generator and ColPali behind one gateway |
-| `research_evaluation_20261030/` | Evidence for the paper (see below) |
+| `frozen_20261030/` | The fixed inputs: 50 questions with gold evidence, the evidence texts, retrieval rankings and rendered pods |
+| `mainflow_20261030/` | Raw per-question logs of the full system on the 50 questions (`images_off` is the text-only run in the paper) |
+| `runs/` | Raw logs of the smaller experiments: E1 evidence format, E2 graph expansion, E4 visual input |
+| `KET_QUA_20261030/` | Final results ("kết quả" is Vietnamese for "results"): CSV and XLSX tables, grades, error cases and charts |
 
 ## Run
 
