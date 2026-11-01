@@ -1,329 +1,152 @@
+x-app-env: &app-env
+  SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in .env}
+  DB_NAME: ${DB_NAME:-contract_db}
+  DB_USER: ${DB_USER:-postgres}
+  DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+  DB_HOST: postgres
+  DB_PORT: '5432'
+  DB_SSLMODE: disable
+  VLLM_BASE_URL: ${VLLM_BASE_URL:-}
+  COLPALI_BASE_URL: ${COLPALI_BASE_URL:-}
+  QWEN_MODEL_ID: ${QWEN_MODEL_ID:-Qwen/Qwen2.5-VL-7B-Instruct-AWQ}
+  QDRANT_URL: http://qdrant:6333
+  NEO4J_URI: bolt://neo4j:7687
+  NEO4J_USER: neo4j
+  NEO4J_PASSWORD: ${NEO4J_PASSWORD:?Set NEO4J_PASSWORD in .env}
+  NEO4J_DATABASE: neo4j
+  A3_GRAPH_ENABLED: 'True'
+  A3_KNOWLEDGE_ENABLED: 'True'
+  A3_ENTITY_PROVIDER: gliner
+  RAG_INFERENCE_URL: http://a3-inference:8010
+
+x-app: &app
+  image: evidence-pods-web:latest
+  restart: unless-stopped
+  working_dir: /app
+  volumes:
+    - .:/app
+  networks:
+    - app-net
+
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: contract_postgres
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${DB_NAME:-contract_db}
       POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in the root .env}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
     ports:
       - "127.0.0.1:55432:5432"
     volumes:
-      - contract-postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
       timeout: 5s
       retries: 20
     networks:
-      - riskdl-net
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: riskdl_web
-    restart: always
-    depends_on:
-      postgres:
-        condition: service_healthy
+      - app-net
+
+  qdrant:
+    image: qdrant/qdrant:v1.13.6
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:6335:6333"
+    volumes:
+      - qdrant-data:/qdrant/storage
+    networks:
+      - app-net
+
+  neo4j:
+    image: neo4j:5.26-community
+    restart: unless-stopped
     environment:
-      - SECRET_KEY=${SECRET_KEY}
-      - DB_NAME=${DB_NAME:-contract_db}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_SSLMODE=disable
-      - AI_SERVICE_URL=http://ai-service:8000
-      - BLOCKCHAIN_SERVICE_URL=http://blockchain-service:8000
-      - WORKFLOW_SERVICE_URL=http://workflow-service:8000
-      # Unified Kaggle/ngrok endpoint: summarize + entities + clauses.
-      - KAGGLE_QWEN_SERVICE_URL=${KAGGLE_QWEN_SERVICE_URL}
-      - COLPALI_BASE_URL=${COLPALI_BASE_URL:-}
-      - VLLM_BASE_URL=${VLLM_BASE_URL:-}
-      - QWEN_MODEL_ID=${QWEN_MODEL_ID:-Qwen/Qwen2.5-VL-7B-Instruct-AWQ}
-      - QDRANT_URL=${QDRANT_URL:-}
-      - QDRANT_API_KEY=${QDRANT_API_KEY:-}
-      - NEO4J_URI=${NEO4J_DOCKER_URI:-}
-      - NEO4J_USER=${NEO4J_USER:-neo4j}
-      - NEO4J_PASSWORD=${NEO4J_PASSWORD:-}
-      - NEO4J_DATABASE=${NEO4J_DATABASE:-neo4j}
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:?Set NEO4J_PASSWORD in .env}
+      NEO4J_server_memory_heap_initial__size: 256m
+      NEO4J_server_memory_heap_max__size: 512m
+      NEO4J_server_memory_pagecache_size: 256m
+    ports:
+      - "127.0.0.1:7475:7474"
+      - "127.0.0.1:7688:7687"
+    volumes:
+      - neo4j-data:/data
+    networks:
+      - app-net
+
+  a3-inference:
+    <<: *app
+    gpus: all
+    command: sh /app/runtime/start_a3_linux_runtime.sh
+    environment:
+      HF_HOME: /model-cache
+      HF_HUB_CACHE: /model-cache/hub
+      HUGGINGFACE_HUB_CACHE: /model-cache/hub
+      BGE_LOCAL_CACHE: /model-cache/hub
+      HF_HUB_OFFLINE: '1'
+      TRANSFORMERS_OFFLINE: '1'
+      RAG_TEXT_DEVICE: cuda
+      RAG_STREAM_CHECKPOINTS: '1'
+      RAG_IDLE_UNLOAD_SECONDS: '120'
+      GLINER_MODEL_PATH: /app/scratch/a3-models/gliner-relex-multi-v1.0
+      NLI_MODEL_PATH: /app/scratch/a3-models/nli-deberta-v3-xsmall
+      BGE_MODEL_PATH: /app/scratch/a3-models/bge-m3
+      SURYA_INFERENCE_BACKEND: llamacpp
+      SURYA_GGUF_LOCAL_MODEL_PATH: /app/scratch/a3-models/surya/surya-2.gguf
+      SURYA_GGUF_LOCAL_MMPROJ_PATH: /app/scratch/a3-models/surya/surya-2-mmproj.gguf
+      SURYA_INFERENCE_PARALLEL: '2'
+      SURYA_INFERENCE_CTX_SIZE: '32768'
+      SURYA_INFERENCE_KEEP_ALIVE: 'True'
+      SURYA_INFERENCE_AUTOSTART: 'False'
+      SURYA_INFERENCE_URL: http://127.0.0.1:8011/v1
+      SURYA_MANAGED_BACKEND: '1'
+      SURYA_EXCLUSIVE_GPU: '1'
+      SURYA_PAGE_GENERATION_TIMEOUT: '0'
+      SURYA_REQUEST_GENERATION_TIMEOUT: '0'
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
     volumes:
       - .:/app
-    networks:
-      - riskdl-net
+      - ${A3_HF_CACHE_DIR:?Set A3_HF_CACHE_DIR in .env}:/model-cache
+    healthcheck:
+      test: ['CMD', '/app/scratch/a3-linux-runtime/bin/python', '-c', "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8010/rag/health', timeout=5)"]
+      interval: 15s
+      timeout: 8s
+      retries: 8
+      start_period: 90s
 
-  ai-service:
+  web:
+    <<: *app
     build:
-      context: ./ai_service
-      dockerfile: Dockerfile
-    container_name: riskdl_ai
-    restart: always
-    environment:
-      - SECRET_KEY=${SECRET_KEY}
-      - KAGGLE_AI_URL=${KAGGLE_AI_URL:-}
-      - VLLM_BASE_URL=${VLLM_BASE_URL:-}
-      - QWEN_MODEL_ID=${QWEN_MODEL_ID:-Qwen/Qwen2.5-VL-7B-Instruct-AWQ}
-      - HF_TOKEN=${HF_TOKEN}
+      context: .
+    command: python manage.py runserver 0.0.0.0:8000 --noreload
+    environment: *app-env
     ports:
-      - "8001:8000"
-    volumes:
-      - ./ai_service:/app
-      - ./shared:/app/shared
-    networks:
-      - riskdl-net
-
-  ai-summary:
-    build:
-      context: ./ai_summary
-      dockerfile: Dockerfile
-    container_name: riskdl_ai_summary
-    restart: always
-    environment:
-      - SECRET_KEY=${SECRET_KEY}
-      - KAGGLE_AI_URL=${KAGGLE_AI_URL:-}
-      - VLLM_BASE_URL=${VLLM_BASE_URL:-}
-      - QWEN_MODEL_ID=${QWEN_MODEL_ID:-Qwen/Qwen2.5-VL-7B-Instruct-AWQ}
-    ports:
-      - "8004:8000"
-    volumes:
-      - ./ai_summary:/app
-      - ./shared:/app/shared
-    networks:
-      - riskdl-net
-
-  blockchain-service:
-    build:
-      context: ./blockchain_service
-      dockerfile: Dockerfile
-    container_name: blockchain_service
-    restart: always
+      - "127.0.0.1:8000:8000"
     depends_on:
       postgres:
         condition: service_healthy
-    environment:
-      - SECRET_KEY=${SECRET_KEY}
-      - FABRIC_GATEWAY_URL=http://fabric-gateway:5000
-      - DB_NAME=${BLOCKCHAIN_DB_NAME:-blockchain_db}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_SSLMODE=disable
-    volumes:
-      - ./blockchain_service:/app
-      - ./shared:/app/shared
-    networks:
-      - riskdl-net
 
-  workflow-service:
-    build:
-      context: ./workflow_service
-      dockerfile: Dockerfile
-    container_name: workflow_service
-    restart: always
+  knowledge-worker:
+    <<: *app
+    command: python manage.py knowledge_worker
+    environment: *app-env
     depends_on:
       postgres:
         condition: service_healthy
-    environment:
-      - SECRET_KEY=${SECRET_KEY}
-      - WORKFLOW_SERVICE_TOKEN=${WORKFLOW_SERVICE_TOKEN}
-      - BLOCKCHAIN_SERVICE_URL=http://blockchain-service:8000
-      - DB_NAME=${WORKFLOW_DB_NAME:-workflow_db}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_SSLMODE=disable
-      - KAGGLE_AI_URL=${KAGGLE_AI_URL}
-      - AI_SERVICE_URL=${AI_SERVICE_URL:-http://ai-service:8000}
-    volumes:
-      - ./workflow_service:/app
-      - ./shared:/app/shared
-    networks:
-      - riskdl-net
 
-  gateway:
-    image: nginx:alpine
-    container_name: riskdl_gateway
-    restart: always
-    ports:
-      - "80:80"
-    volumes:
-      - ./gateway/nginx.conf:/etc/nginx/nginx.conf:ro
+  entity-worker:
+    <<: *app
+    command: python manage.py resolve_document_entities --watch
+    environment: *app-env
     depends_on:
-      - web
-      - ai-service
-      - blockchain-service
-      - workflow-service
-    networks:
-      - riskdl-net
-
-  # Hyperledger Fabric v2.5 Network Services
-
-  fabric-init:
-    image: hyperledger/fabric-tools:2.5
-    container_name: fabric_init
-    volumes:
-      - ./fabric:/fabric
-    entrypoint: /bin/bash /fabric/bootstrap-init.sh
-    networks:
-      - riskdl-net
-
-  orderer.example.com:
-    image: hyperledger/fabric-orderer:2.5
-    container_name: orderer.example.com
-    environment:
-      - FABRIC_LOGGING_SPEC=INFO
-      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
-      - ORDERER_GENERAL_LISTENPORT=7050
-      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
-      - ORDERER_GENERAL_LOCALMSPDIR=/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp
-      - ORDERER_GENERAL_TLS_ENABLED=true
-      - ORDERER_GENERAL_TLS_PRIVATEKEY=/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key
-      - ORDERER_GENERAL_TLS_CERTIFICATE=/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-      - ORDERER_GENERAL_TLS_ROOTCAS=[/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt]
-      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key
-      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt]
-      - ORDERER_GENERAL_BOOTSTRAPMETHOD=none
-      - ORDERER_CHANNELPARTICIPATION_ENABLED=true
-      - ORDERER_ADMIN_LISTENADDRESS=0.0.0.0:7053
-      - ORDERER_ADMIN_TLS_ENABLED=true
-      - ORDERER_ADMIN_TLS_PRIVATEKEY=/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key
-      - ORDERER_ADMIN_TLS_CERTIFICATE=/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-      - ORDERER_ADMIN_TLS_CLIENTROOTCAS=[/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt]
-      - ORDERER_ADMIN_TLS_CLIENTPRIVATEKEY=/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key
-      - ORDERER_ADMIN_TLS_CLIENTCERTIFICATE=/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-    volumes:
-      - ./fabric:/fabric
-    ports:
-      - "7050:7050"
-      - "7053:7053"
-    depends_on:
-      fabric-init:
-        condition: service_completed_successfully
-    networks:
-      - riskdl-net
-
-  peer0.org1.example.com:
-    image: hyperledger/fabric-peer:2.5
-    container_name: peer0.org1.example.com
-    environment:
-      - FABRIC_LOGGING_SPEC=INFO
-      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=riskdl-net
-      - CORE_PEER_TLS_ENABLED=true
-      - CORE_PEER_PROFILE_ENABLED=false
-      - CORE_PEER_TLS_CERT_FILE=/fabric/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt
-      - CORE_PEER_TLS_KEY_FILE=/fabric/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key
-      - CORE_PEER_TLS_ROOTCERT_FILE=/fabric/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
-      - CORE_PEER_ID=peer0.org1.example.com
-      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
-      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.org1.example.com:7052
-      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
-      - CORE_PEER_LOCALMSPID=Org1MSP
-      - CORE_PEER_MSPCONFIGPATH=/fabric/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp
-    volumes:
-      - /var/run/docker.sock:/host/var/run/docker.sock
-      - ./fabric:/fabric
-    ports:
-      - "7051:7051"
-    depends_on:
-      fabric-init:
-        condition: service_completed_successfully
-    networks:
-      - riskdl-net
-
-  fabric-cli:
-    image: hyperledger/fabric-tools:2.5
-    container_name: fabric_cli
-    volumes:
-      - ./fabric:/fabric
-    entrypoint: /bin/bash /fabric/bootstrap-channel.sh
-    depends_on:
-      - orderer.example.com
-      - peer0.org1.example.com
-    networks:
-      - riskdl-net
-
-  fabric-chaincode:
-    image: golang:1.20-alpine
-    container_name: fabric_chaincode
-    working_dir: /chaincode
-    volumes:
-      - ./fabric/chaincode:/chaincode
-    environment:
-      - CHAINCODE_SERVER_ADDRESS=0.0.0.0:9999
-    entrypoint: /bin/sh /chaincode/start.sh
-    depends_on:
-      fabric-init:
-        condition: service_completed_successfully
-    networks:
-      - riskdl-net
-
-  fabric-gateway:
-    image: node:18-alpine
-    container_name: fabric_gateway
-    working_dir: /fabric/gateway
-    volumes:
-      - ./fabric:/fabric
-    ports:
-      - "5000:5000"
-    environment:
-      - PORT=5000
-      - PEER_ENDPOINT=peer0.org1.example.com:7051
-      - CHANNEL_NAME=contracts-channel
-      - CHAINCODE_NAME=ContractVerifyChaincode
-      - FABRIC_GATEWAY_TOKEN=${FABRIC_GATEWAY_TOKEN}
-    entrypoint: /bin/sh -c "npm install && npm start"
-    depends_on:
-      fabric-cli:
-        condition: service_completed_successfully
-      fabric-chaincode:
-        condition: service_started
-    networks:
-      - riskdl-net
-
-  explorer-db:
-    image: hyperledger/explorer-db:latest
-    container_name: explorer_db
-    environment:
-      - DATABASE_DATABASE=fabricexplorer
-      - DATABASE_USERNAME=hppoc
-      - DATABASE_PASSWORD=password
-    networks:
-      - riskdl-net
-
-  explorer:
-    image: hyperledger/explorer:latest
-    container_name: explorer
-    environment:
-      - DATABASE_HOST=explorer-db
-      - DATABASE_PORT=5432
-      - DATABASE_DATABASE=fabricexplorer
-      - DATABASE_USERNAME=hppoc
-      - DATABASE_PASSWORD=password
-      - DISCOVERY_AS_LOCALHOST=false
-    volumes:
-      - ./fabric/explorer/config.json:/opt/explorer/app/platform/fabric/config.json
-      - ./fabric/explorer/connection-profile.json:/opt/explorer/app/platform/fabric/connection-profile/first-network.json
-      - ./fabric/crypto-config:/tmp/crypto
-    ports:
-      - "8090:8080"
-    depends_on:
-      - explorer-db
-      - fabric-gateway
-    networks:
-      - riskdl-net
-
-networks:
-  riskdl-net:
-    name: riskdl-net
+      postgres:
+        condition: service_healthy
 
 volumes:
-  contract-postgres-data:
+  postgres-data:
+  qdrant-data:
+  neo4j-data:
+
+networks:
+  app-net:

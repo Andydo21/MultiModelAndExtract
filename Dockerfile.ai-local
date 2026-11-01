@@ -1,3 +1,0 @@
-ARG BASE_IMAGE=riskdl-ai-service:latest
-FROM ${BASE_IMAGE}
-RUN python -m pip install --no-cache-dir 'PyJWT>=2.8,<3' 'python-dotenv>=1.0'

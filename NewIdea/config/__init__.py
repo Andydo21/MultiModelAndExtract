@@ -1,1 +1,0 @@
-# NewIdea Config Package
