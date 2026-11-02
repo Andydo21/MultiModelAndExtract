@@ -222,7 +222,7 @@ The PDFs are publicly published documents and remain the property of their publi
 ### Reading the evidence
 
 - Gold evidence: 73 question–region pairs over 65 distinct regions, including 21 question–table pairs over 16 distinct tables.
-- Five answers come from a second run: P047–P050 after a temporary server outage, and P007 after the output-language check that rejected its first answer was removed. First-run rows are kept in `mainflow_20261030/answers_images_off.before_rerun_20261031.jsonl`.
+- Five answers come from a second run: P047–P050 after a temporary server outage, and P007 after the output-language check that rejected its first answer was removed. Their first-run rows remain in `mainflow_20261030/answers_images_off.jsonl`, above the rows that are reported.
 - Labels were assigned with LLM assistance and reviewed by the first author, without a second independent grader.
 - The E1, E2 and E4 schedules were stopped part-way, so only questions that completed every configuration are compared.
 - Evidence Pods gave no gain over row-wise text on the five E1 table questions. This negative result is kept.
@@ -245,7 +245,7 @@ The PDFs are publicly published documents and remain the property of their publi
 
 ### Removed tables
 
-Summary tables that repeat other files, and the tables of the first run, were removed to keep `results/` short; they remain in the Git history before this change. `results/SUMMARY_TABLES.xlsx` is the workbook to read first.
+Summary tables that repeat other files, the tables of the first run, and a separate copy of the first-run log were removed to keep the folders short; they remain in the Git history. `results/SUMMARY_TABLES.xlsx` is the workbook to read first.
 
 ### Renamed files
 
