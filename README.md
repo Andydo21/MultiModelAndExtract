@@ -130,6 +130,47 @@ Main flow, text-only generator input, 50 questions:
 | Citation faithfulness | 0.888 (87/98 claims) |
 | Key-value recall | 0.826 (24 questions) |
 
+### What the codes in the files mean
+
+The logs and tables use short codes. The definitions come from `runs/E1/manifest.json`, `runs/E2/manifest.json` and `runs/E4/manifest.json`.
+
+**E1: how the same evidence is formatted for the generator** (column `format`)
+
+| Code | Meaning |
+|---|---|
+| A | Flat text; each table row is one line, with cells written as `a ; b` |
+| B | JSON with the evidence ID, text and table |
+| C | Markdown tables |
+| D | Markdown tables (C) plus the heading breadcrumb |
+| E | Full Evidence Pods, as produced by the system |
+
+**E2: how far retrieved sources are expanded through the graph** (column `mode`; the paper's names in brackets)
+
+| Code | Meaning |
+|---|---|
+| A | No expansion (none) |
+| B | Adds the previous and next blocks (prev/next) |
+| C | B, plus the parent heading, sibling blocks, and figure captions and nearby or inner figure text (structural) |
+| D | C, but only inside the heading scope of the retrieved source (scope-aware) |
+
+**E4: what the generator receives** (column `input`)
+
+| Code | Meaning | Name in the paper |
+|---|---|---|
+| F | Images of the full pages only | Full-page image |
+| K | Image crops of the evidence regions only | Region crops |
+| O | OCR text only (format A of E1) | OCR text only |
+| S | OCR text and captions as Evidence Pods (format E of E1) | OCR + caption pods |
+
+**Other values**
+
+| Value | Meaning |
+|---|---|
+| `gold` / `retrieved` (columns `evidence`, `evidence_mode`) | The generator receives the human-marked gold evidence / the top 5 sources found by the system |
+| `images = off` / `on`, `text_only` / `image_policy` | The generator receives text only (reported in the paper) / also images when the system's policy asks for them (kept for the record, not used) |
+| `P001`–`P050` | Question IDs, as in `frozen_20261030/gold_questions.jsonl` |
+| `correct`, `partial`, `wrong`, `no_answer` | Answer labels. Accuracy counts `partial` as 0.5 |
+
 ### Where each table and figure of the paper comes from
 
 Figures 1 and 3 and Algorithms 1 and 2 describe the method and have no data file behind them, except that the pod excerpt in Figure 3 is taken from `production_pods.json`. Paths are relative to `research_evaluation_20261030/`.
