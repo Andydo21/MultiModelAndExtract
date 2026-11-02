@@ -4,8 +4,7 @@
   python -X utf8 -m evaluation.runners.pilot_metrics research_evaluation_20261030 --write
 
 Without --write it recomputes the per-question tables, compares them with results/*.csv and lists any
-difference; the exit code is 1 if there is one. With --write it also rewrites results/paper_numbers.csv
-and the two summary CSVs and two workbooks derived from the per-question tables.
+difference; the exit code is 1 if there is one. With --write it also rewrites results/paper_numbers.csv.
 
 Inputs: frozen_20261030/ (gold, evidence, retrieval, graphs), mainflow_20261030/answers_images_*.jsonl (the
 last row of a question is the reported run), runs/E*/questions.jsonl, and the human-reviewed labels in
@@ -289,45 +288,10 @@ def paper_numbers(data, retrieval, ranking, grades):
     return out
 
 
-def summaries(retrieval, grades):
-    measures = ('evidence_recall_at_10', 'evidence_precision_at_10', 'evidence_recall_all_sent', 'required_evidence_recall',
-                'citation_precision', 'citation_recall', 'sources_sent', 'cited_sources')
-    retrieval_summary, grade_summary = [], []
-    for mode in ('off', 'on'):
-        rows = [r for r in retrieval if r['images'] == mode]
-        line = dict(images=mode, questions=len(rows))
-        for m in measures:
-            values = [r[m] for r in rows if r[m] is not None]
-            line[m+'_mean'], line[m+'_sd'] = round(st.mean(values), 3), round(st.stdev(values), 3)
-        retrieval_summary.append(line)
-        g = [r for r in grades if r['images'] == mode]
-        counts = Counter(r['label'] for r in g)
-        claims = sum(int(r['claims']) for r in g)
-        grade_summary.append(dict(images=mode, answers=len(g), correct=counts['correct'], partial=counts['partial'], wrong=counts['wrong'],
-                                  no_answer=counts['no_answer'], answer_accuracy=round(st.mean(float(r['partial_credit']) for r in g), 3),
-                                  strict_accuracy=round(st.mean(int(r['accuracy']) for r in g), 3),
-                                  attribute_leakage_rate=round(sum(int(r['leaked_claims']) for r in g)/claims, 3),
-                                  answers_with_leakage=sum(int(r['leaked_claims']) > 0 for r in g),
-                                  citation_faithfulness=round(1-sum(int(r['unsupported_claims']) for r in g)/claims, 3), claims=claims))
-    return retrieval_summary, grade_summary
-
-
-def workbook(path, sheets):
-    from openpyxl import Workbook
-    book = Workbook()
-    book.remove(book.active)
-    for name, data in sheets:
-        sheet = book.create_sheet(name)
-        sheet.append(list(data[0]))
-        for row in data:
-            sheet.append(list(row.values()))
-    book.save(path)
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     parser.add_argument('base', help='The research_evaluation_20261030 folder')
-    parser.add_argument('--write', action='store_true', help='Rewrite paper_numbers.csv and the derived summaries')
+    parser.add_argument('--write', action='store_true', help='Rewrite paper_numbers.csv')
     args = parser.parse_args()
     data = Data(args.base)
     out = data.out
@@ -363,14 +327,6 @@ def main():
 
     if args.write:
         write_csv(out/'paper_numbers.csv', numbers)
-        retrieval_summary, grade_summary = summaries(retrieval, grades)
-        write_csv(out/'mainflow_retrieval_citation_summary.csv', retrieval_summary)
-        write_csv(out/'mainflow_manual_grades_summary.csv', grade_summary)
-        workbook(out/'recall_precision.xlsx', [('retrieval_summary', retrieval_summary), ('retrieval_per_question', retrieval),
-                                               ('E2_examples', examples['E2_examples']), ('E1_examples', examples['E1_examples']),
-                                               ('E4_examples', examples['E4_examples'])])
-        workbook(out/'mainflow_results.xlsx', [('summary', read_csv(out/'mainflow_summary.csv')), ('answers', answers_stored),
-                                               ('failures', read_csv(out/'mainflow_failures.csv'))])
         print('wrote', out/'paper_numbers.csv')
     return 1 if differences else 0
 

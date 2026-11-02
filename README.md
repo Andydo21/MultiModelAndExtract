@@ -112,7 +112,7 @@ Everything is under `research_evaluation_20261030/`.
 | E1, E2, E4 logs | `runs/E1`, `runs/E2`, `runs/E4`: prompts, selected evidence IDs, outputs, citations, tokens |
 | Summary with mean ± SD | `results/SUMMARY_TABLES.xlsx`, `summary_mean_sd.csv` |
 | Grades, error cases, comparison | `results/mainflow_manual_grades.csv`, `E4_manual_grades.csv`, `error_cases.csv`, `comparison_full.csv` |
-| Retrieval and citation metrics | `results/mainflow_retrieval_citation.csv`, `mainflow_ranking_metrics.csv`, `recall_precision.xlsx` |
+| Retrieval and citation metrics | `results/mainflow_retrieval_citation.csv`, `mainflow_ranking_metrics.csv` |
 | Worked examples, charts | `results/E1_examples.csv`, `E1_table_examples.csv`, `E2_examples.csv`, `E4_examples.csv`, `charts/` |
 
 Main flow, text-only generator input, 50 questions:
@@ -222,7 +222,7 @@ The PDFs are publicly published documents and remain the property of their publi
 ### Reading the evidence
 
 - Gold evidence: 73 question–region pairs over 65 distinct regions, including 21 question–table pairs over 16 distinct tables.
-- Five answers come from a second run: P047–P050 after a temporary server outage, and P007 after the output-language check that rejected its first answer was removed. First-run rows are kept in `mainflow_20261030/answers_images_off.before_rerun_20261031.jsonl` and `results/before_rerun_20261031/`.
+- Five answers come from a second run: P047–P050 after a temporary server outage, and P007 after the output-language check that rejected its first answer was removed. First-run rows are kept in `mainflow_20261030/answers_images_off.before_rerun_20261031.jsonl`.
 - Labels were assigned with LLM assistance and reviewed by the first author, without a second independent grader.
 - The E1, E2 and E4 schedules were stopped part-way, so only questions that completed every configuration are compared.
 - Evidence Pods gave no gain over row-wise text on the five E1 table questions. This negative result is kept.
@@ -242,6 +242,10 @@ The PDFs are publicly published documents and remain the property of their publi
 - Databases, extracted images and model weights.
 - Gateway host names and e-mail addresses found in third-party text are redacted in the logs, so the hash chain of the `runs/` logs only verifies against the originals.
 - An earlier copy of the paper source and a static results viewer are in commit [`43d5ff1`](https://github.com/Andydo21/MultiModelAndExtract/tree/43d5ff1).
+
+### Removed tables
+
+Summary tables that repeat other files, and the tables of the first run, were removed to keep `results/` short; they remain in the Git history before this change. `results/SUMMARY_TABLES.xlsx` is the workbook to read first.
 
 ### Renamed files
 
