@@ -78,7 +78,7 @@ docker compose exec web python manage.py test ai_extract     # also NewIdea, con
 python -X utf8 -m unittest discover -s evaluation/tests -t .
 ```
 
-**Not all tests pass.** Result of 1 November 2026, one app at a time, on the project's existing image with an empty temporary PostgreSQL and no model services or gateway. The full output is in `research_evaluation_20261030/results/test_run_20261101.txt`.
+**Not all tests pass.** Result of 1 November 2026, one app at a time, on the project's existing image with an empty temporary PostgreSQL and no model services or gateway.
 
 | Tests | Run | Passed | Failed | Errors | Skipped |
 |---|---|---|---|---|---|
