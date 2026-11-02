@@ -242,7 +242,7 @@ def paper_numbers(data, retrieval, ranking, grades):
 
     for category in ('table', 'footnote', 'condition'):
         members = [q for q, v in questions.items() if category in v['categories']]
-        add(f'Accuracy, {category} questions', st.mean(float(g[q]['partial_credit']) for q in members), '', len(members), grades_file)
+        add(f'Accuracy, {category} questions', st.mean(float(g[q]['answer_accuracy']) for q in members), '', len(members), grades_file)
         add(f'Required-evidence recall, {category} questions', st.mean(rt[q]['required_evidence_recall'] for q in members), '', len(members), answers_file)
 
     pairs = [(q, i) for q, v in questions.items() for i in v['gold_evidence_ids']]

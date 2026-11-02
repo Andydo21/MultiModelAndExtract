@@ -1,4 +1,4 @@
-﻿question_id,images,label,accuracy,partial_credit,claims,leaked_claims,unsupported_claims,attribute_leakage_rate,citation_faithfulness,note,grader
+﻿question_id,images,label,strict_accuracy,answer_accuracy,claims,leaked_claims,unsupported_claims,attribute_leakage_rate,citation_faithfulness,note,grader
 P001,off,correct,1,1,2,0,0,0.0,1.0,"on: generic, uses missing","Claude (manual reading vs reference answer, tuples and gold evidence; not independent)"
 P002,off,correct,1,1,2,0,0,0.0,1.0,"on: Ethernet IP unsupported, PLC/wiring missing","Claude (manual reading vs reference answer, tuples and gold evidence; not independent)"
 P003,off,partial,0,0.5,2,0,0,0.0,1.0,conveyors mistranslated (off: movement; on: springs),"Claude (manual reading vs reference answer, tuples and gold evidence; not independent)"

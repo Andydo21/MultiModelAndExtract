@@ -1,0 +1,7 @@
+# Sealed by SHA-256 hashes: keep the bytes on every platform.
+research_evaluation_20261030/frozen_20261030/** -text
+research_evaluation_20261030/runs/** -text
+research_evaluation_20261030/mainflow_20261030/** -text
+research_evaluation_20261030/PILOT50_PROTOCOL.md -text
+research_evaluation_20261030/protocol_sha256.txt -text
+evaluation/benchmarks/corpus20/pilot_source_export.json -text

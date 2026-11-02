@@ -28,7 +28,7 @@ Inside `research_evaluation_20261030/`:
 | `frozen_20261030/` | The fixed inputs: 50 questions with gold evidence, the evidence texts, retrieval rankings, rendered pods, and the per-document graphs |
 | `mainflow_20261030/` | Raw per-question logs of the full system on the 50 questions (`images_off` is the text-only run in the paper) |
 | `runs/` | Raw logs of the smaller experiments: E1 evidence format, E2 graph expansion, E4 visual input |
-| `documents/` | The test documents: the exact PDFs in the index. `pilot_20/` holds the 20 documents the questions ask about; `arxiv_180/` holds 180 arXiv papers that act as distractors. `DOCUMENT_INDEX.csv` maps all 201 indexed versions to a file, SHA-256 and source link (one version is a repeat upload of `DigitalTwinSoftware_en`) |
+| `documents/` | The test documents: the exact PDFs in the index. `pilot_20/` holds the 20 documents the questions ask about; `arxiv_180/` holds 180 arXiv papers that act as distractors. `DOCUMENT_INDEX.csv` maps all 201 indexed versions to a file and SHA-256, with a source link for the arXiv papers; source links of the 20 pilot documents were not recorded. Version 1000020 (role `pilot_repeat_upload`) is a repeat upload of `DigitalTwinSoftware_en` |
 | `results/` | Final results: CSV and XLSX tables, grades, error cases and charts |
 
 ## Run
@@ -166,10 +166,11 @@ The logs and tables use short codes. The definitions come from `runs/E1/manifest
 
 | Value | Meaning |
 |---|---|
-| `gold` / `retrieved` (columns `evidence`, `evidence_mode`) | The generator receives the human-marked gold evidence / the top 5 sources found by the system |
+| `gold` / `retrieved` (columns `evidence`, `evidence_mode`) | The generator receives the gold evidence regions of the question / the top 5 sources found by the system |
 | `images = off` / `on`, `text_only` / `image_policy` | The generator receives text only (reported in the paper) / also images when the system's policy asks for them (kept for the record, not used) |
 | `P001`–`P050` | Question IDs, as in `frozen_20261030/gold_questions.jsonl` |
-| `correct`, `partial`, `wrong`, `no_answer` | Answer labels. Accuracy counts `partial` as 0.5 |
+| `correct`, `partial`, `wrong`, `no_answer` | Answer labels. In `mainflow_manual_grades.csv`, `answer_accuracy` counts `partial` as 0.5 and `strict_accuracy` counts only `correct` |
+| `attribute_leakage_rate`, `citation_faithfulness` in `summary_mean_sd.csv` | Mean over questions. The rows ending in `_of_claims` are shares of all claims, which are the values in the paper (5/98 and 87/98) |
 
 ### Where each table and figure of the paper comes from
 
@@ -223,7 +224,11 @@ The PDFs are publicly published documents and remain the property of their publi
 
 - Gold evidence: 73 question–region pairs over 65 distinct regions, including 21 question–table pairs over 16 distinct tables.
 - Five answers come from a second run: P047–P050 after a temporary server outage, and P007 after the output-language check that rejected its first answer was removed. Their first-run rows remain in `mainflow_20261030/answers_images_off.jsonl`, above the rows that are reported.
-- Labels were assigned with LLM assistance and reviewed by the first author, without a second independent grader.
+- The 50 questions, reference answers, tuples and gold evidence regions were written by Claude from the extracted text, given a light check against that text (page images were not re-inspected) and accepted by the project owner, as recorded in `frozen_20261030/gold_questions.jsonl`. There was no independent review.
+- Labels were assigned with LLM assistance (column `grader`), so the same assistant wrote the gold data and graded against it. The paper states the labels were then reviewed by the first author; the files hold no separate record of that review. There was no second independent grader.
+- `GRADING_RUBRIC.md` treats a wrong subject–attribute–value binding as wrong, while the paper allows `partial` when one claim is wrong and the rest is right. The labels were not changed. In the text-only run, P010, P018, P033 and P050 are `partial` with a leaked claim, and P039 is `wrong` with one leaked claim of two, as is P040 with inputs O and S in E4. If those four were `wrong` as the rubric reads, answer accuracy would be 0.760 (38/50) instead of 0.800.
+- The column `note` in `mainflow_manual_grades.csv` is written per question and repeated on both the `off` and `on` rows, so a note may describe only one of them. Columns that are empty throughout, such as `key_value_recall` in `E1_examples.csv` and `E2_examples.csv`, mean those questions have no gold numbers or codes to match.
+- Personal email addresses and the private gateway host were masked for this release, as `<email>` and `<gateway-host>`; no other value was changed. So `graphs.json` and `graph_leaves.jsonl` no longer match `frozen_hashes` in the manifests, and the failed rows of `runs/E2` and `runs/E4` (5 in all) no longer match their own `record_sha256`. The other frozen files, including the gold questions, match.
 - The E1, E2 and E4 schedules were stopped part-way, so only questions that completed every configuration are compared.
 - Evidence Pods gave no gain over row-wise text on the five E1 table questions. This negative result is kept.
 - The image-input main-flow run (`answers_images_on.jsonl`) has 45 of 50 answers, was not rerun and is not used in the paper.
@@ -245,7 +250,7 @@ The PDFs are publicly published documents and remain the property of their publi
 
 ### Removed tables
 
-Summary tables that repeat other files, the tables of the first run, and a separate copy of the first-run log were removed to keep the folders short; they remain in the Git history. `results/SUMMARY_TABLES.xlsx` is the workbook to read first.
+Summary tables that repeat other files, the tables of the first run, a separate copy of the first-run log, and copies of the main-flow and E1 logs were removed to keep the folders short; they remain in the Git history. `results/SUMMARY_TABLES.xlsx` is the workbook to read first.
 
 ### Renamed files
 

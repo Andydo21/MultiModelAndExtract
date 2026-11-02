@@ -49,8 +49,8 @@ def main(base):
         rt = [r for r in retrieval if r['images'] == mode]
         kv = [number(r['key_value_recall']) for r in answers if r['images'] == mode and r['generation_status'] == 'generated']
         metrics = dict(
-            answer_accuracy=[number(r['partial_credit']) for r in g],
-            strict_accuracy=[number(r['accuracy']) for r in g],
+            answer_accuracy=[number(r['answer_accuracy']) for r in g],
+            strict_accuracy=[number(r['strict_accuracy']) for r in g],
             attribute_leakage_rate=[number(r['attribute_leakage_rate']) for r in g],
             citation_faithfulness=[number(r['citation_faithfulness']) for r in g],
             key_value_recall=kv,
@@ -67,8 +67,15 @@ def main(base):
             per_question = metrics
         for name, values in metrics.items():
             m, sd, n = mean_sd(values)
-            summary.append(dict(setting='text_only' if mode == 'off' else 'image_policy', metric=name, mean=m, sd=sd, n=n,
-                                used_in_paper='yes' if mode == 'off' else 'no (zero-shot VLM; kept for the record)'))
+            used = 'yes' if mode == 'off' else 'no (zero-shot VLM; kept for the record)'
+            if mode == 'off' and name in ('attribute_leakage_rate', 'citation_faithfulness'):
+                used = 'no (mean over questions; the paper uses the share of claims)'
+            summary.append(dict(setting='text_only' if mode == 'off' else 'image_policy', metric=name, mean=m, sd=sd, n=n, used_in_paper=used))
+        claims = sum(int(r['claims']) for r in g)
+        for name, value in (('attribute_leakage_rate_of_claims', sum(int(r['leaked_claims']) for r in g)/claims),
+                            ('citation_faithfulness_of_claims', 1-sum(int(r['unsupported_claims']) for r in g)/claims)):
+            summary.append(dict(setting='text_only' if mode == 'off' else 'image_policy', metric=name, mean=round(value, 3), sd=None, n=claims,
+                                used_in_paper='yes' if mode == 'off' else 'no'))
         for label in LABELS:
             summary.append(dict(setting='text_only' if mode == 'off' else 'image_policy', metric='count_'+label,
                                 mean=counts.get(label, 0), sd=None, n=len(g), used_in_paper='yes' if mode == 'off' else 'no'))
@@ -124,9 +131,12 @@ def main(base):
     book.remove(book.active)
     notes = [['Pilot evaluation 2026-10-30: 50 questions, 20 documents, one run per configuration; SD over questions.'],
              ['Paper reports the text-only main flow and the E1/E2/E4 worked examples. Image-policy rows are kept for the record.'],
-             ['Answer labels: manual reading by one author against reference answers, tuples and gold evidence (not independent).'],
-             ['Not completed: P047-P050 (generator offline), P007 (withheld by citation check); see sheet error_cases.'],
-             ['Not used: mainflow_20261030/judgments.jsonl and report/ (automatic Qwen judge stopped after 14 of 100 answers).']]
+             ['Gold questions, reference answers, tuples and evidence regions: written by Claude from the extracted text, light text check, accepted by the project owner (frozen_20261030/gold_questions.jsonl).'],
+             ['Answer labels: one LLM-assisted reading pass (Claude) against reference answers, tuples and gold evidence; not independent (column grader of sheet manual_grades).'],
+             ['Text-only main flow: all 50 answered; P047-P050 and P007 come from a second run.'],
+             ['Image policy: 45 of 50 answered; not completed: P047-P050 (generator offline), P007 (withheld by citation check); see sheet error_cases.'],
+             ['In summary_mean_sd, *_of_claims rows are shares of all claims (used in the paper); the rows without that suffix are means over questions.'],
+             ['Not used and not included in this repository: mainflow_20261030/judgments.jsonl and report/ (automatic Qwen judge stopped after 14 of 100 answers).']]
     for title, data in (('README', None), ('summary_mean_sd', summary), ('comparison_full', comparison), ('error_cases', errors),
                         ('manual_grades', grades), ('ranking', list(ranking.values())), ('E1_examples', e1),
                         ('E2_examples', e2), ('E4_examples', e4)):
@@ -174,13 +184,14 @@ def charts(out, grades, summary, e2, e4, e4_grades, per_question):
     for i, m in enumerate(means):
         axes[0].text(i, 0.03, f'{m:.2f}', ha='center', fontsize=7, color='white')
     axes[0].set_ylim(0, 1.05)
-    axes[0].set_title('Main flow, text-only: mean and 95% bootstrap CI (45 questions)', fontsize=10)
+    questions_answered = len(per_question['answer_accuracy'])
+    axes[0].set_title(f'Main flow, text-only: mean and 95% bootstrap CI ({questions_answered} questions)', fontsize=10)
     axes[0].tick_params(axis='x', rotation=45, labelsize=8)
     counts = [text['count_'+l]['mean'] for l in LABELS]
     axes[1].bar(['Correct', 'Partial', 'Wrong', 'No answer'], counts, color=['#59A14F', '#EDC948', '#E15759', '#BAB0AC'])
     for i, c in enumerate(counts):
         axes[1].text(i, c + .5, str(int(c)), ha='center', fontsize=9)
-    axes[1].set_title('Answer labels (45 questions)', fontsize=10)
+    axes[1].set_title(f'Answer labels ({questions_answered} questions)', fontsize=10)
     figure.tight_layout()
     figure.savefig(folder/'mainflow_text_only.png', dpi=160)
     plt.close(figure)

@@ -1,8 +1,8 @@
 ﻿setting,metric,mean,sd,n,used_in_paper
 text_only,answer_accuracy,0.8,0.303,50,yes
 text_only,strict_accuracy,0.66,0.479,50,yes
-text_only,attribute_leakage_rate,0.06,0.193,50,yes
-text_only,citation_faithfulness,0.89,0.249,50,yes
+text_only,attribute_leakage_rate,0.06,0.193,50,no (mean over questions; the paper uses the share of claims)
+text_only,citation_faithfulness,0.89,0.249,50,no (mean over questions; the paper uses the share of claims)
 text_only,key_value_recall,0.826,0.346,24,yes
 text_only,evidence_recall_at_10,0.905,0.222,50,yes
 text_only,evidence_precision_at_10,0.126,0.06,50,yes
@@ -11,6 +11,8 @@ text_only,citation_precision,0.839,0.308,50,yes
 text_only,citation_recall,0.81,0.312,50,yes
 text_only,hit_at_1,0.8,0.404,50,yes
 text_only,mrr,0.869,0.277,50,yes
+text_only,attribute_leakage_rate_of_claims,0.051,,98,yes
+text_only,citation_faithfulness_of_claims,0.888,,98,yes
 text_only,count_correct,33,,50,yes
 text_only,count_partial,14,,50,yes
 text_only,count_wrong,2,,50,yes
@@ -25,6 +27,8 @@ image_policy,evidence_precision_at_10,0.12,0.055,45,no (zero-shot VLM; kept for 
 image_policy,required_evidence_recall,0.956,0.179,45,no (zero-shot VLM; kept for the record)
 image_policy,citation_precision,0.741,0.382,45,no (zero-shot VLM; kept for the record)
 image_policy,citation_recall,0.737,0.385,45,no (zero-shot VLM; kept for the record)
+image_policy,attribute_leakage_rate_of_claims,0.082,,85,no
+image_policy,citation_faithfulness_of_claims,0.835,,85,no
 image_policy,count_correct,29,,45,no
 image_policy,count_partial,9,,45,no
 image_policy,count_wrong,7,,45,no
